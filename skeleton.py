@@ -28,8 +28,12 @@ def MSE(prediction, target):
     t = target
     n = prediction.size
 
-    ## Implement
+    if (y.size != n):
+        raise Exception("Parameters must have the same len!")
 
+    s = sum(y - t) ** 2
+
+    meanCost = 0.5 / n * s
 
 
     ## End
@@ -46,10 +50,14 @@ def dMSE(prediction, target):
     ## Implement
 
 
+    error = (y - t) * y*(1 - y)
 
     ## End
     return error
 
+def sigmoid(x):
+
+    return 1/(1 + math.e ** -x)
 
 class Perceptron:
     """
@@ -60,7 +68,7 @@ class Perceptron:
         The variables are stored inside a dictonary to make them easy accessible.
         """
         self.var = {
-         "W": np.array([[.8], [-.5]]),
+         "W": np.array([.8, -.5]),
          "b": 2
         }
 
@@ -73,16 +81,11 @@ class Perceptron:
         W = self.var['W']
         b = self.var['b']
 
-        ## Implement
-        X = np.append(x,b)
-        W = np.append(W,1)
-
-        print(X,W)
-
-        y = W * X
+        s = sum(x + W + b)
+        y = sigmoid(s)
 
         ## End
-        return
+        return y
 
     def backward(self, error):
         """
@@ -99,26 +102,49 @@ class Perceptron:
         ## End
         updates = {"W": dW,
                    "b": db}
+
         return updates
 
-X,T = get_part1_data()
-
-p = Perceptron()
-p.forward(X)
 
 def train_one_step(model, learning_rate, inputs, targets):
     """
     Uses the forward and backward function of a model to compute the error and updates the model
     weights while overwritting model.var. Returns the cost.
     """
-
+    costs = np.empty((0,len(inputs)))
     ## Implement
+    print(model.var['W'])
+
+    for n in range(5):
+        cost = np.array([])
+        for i in range(len(inputs)):
+            x = inputs[i]
+            t = targets[i]
+            y = np.array([model.forward(x)])
+
+            mse = MSE(y,t)
+
+            grad = dMSE(y, t)
+
+            cost = np.append(cost,np.array([grad]))
+
+            # w = model.var['W']
+            print("w: ", model.var['W'])
+            for w in model.var['W']:
+
+
+                w -=  learning_rate * grad * x
+            # print('-----------')
+            print("w_k+1: ", model.var['W'])
+
+        print(sum(cost)/len(inputs))
+        costs = np.vstack((costs,cost))
 
     #for varstr, grad in updates.items():
     #    model.var[varstr] = (...)
 
     ## End
-    return cost
+    return costs
 
 def plot_data(X,T):
     """
@@ -166,17 +192,12 @@ def compute_accuracy(model, X, T):
     """
     return np.mean(((model.forward(X) > 0.5)*1 == T)*1)
 
-def sigmoid(x):
 
-    return 1/(1 + math.e ** -x)
 
 def dsigmoid(x):
-    """
-    Implements the derivative of the sigmoid activation function.
-    """
-    ## Implement
 
-
+    sigma = sigmoid(x)
+    return sigma * (1.0 - sigma)
 
     ## End
     return x
@@ -424,3 +445,27 @@ def competition_load_weights_and_evaluate_X_and_T(testX, testT):
     ## End
 
     print("Accuracy from trained model: ", compute_accuracy(NN, testX, testT))
+
+
+X,T = get_part1_data()
+
+costs = train_one_step(Perceptron(),0.1,X,T)
+
+x = np.arange(T.size)
+
+print(x)
+
+lines = []
+labels = []
+
+for i in range(len(costs)):
+    label = "%s" % (i)
+    labels.append(label)
+
+    line = plt.plot(x, costs[i], label=label)
+    lines.append(line)
+
+
+# print(labels,lines)
+plt.legend()
+plt.show()
