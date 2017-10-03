@@ -7,8 +7,10 @@
 # Code Skeleton
 
 import numpy as np
+import math
 import matplotlib.pyplot as plt
-import math as math
+from utils import timing
+
 ## Part 1
 
 def get_part1_data():
@@ -33,7 +35,7 @@ def MSE(prediction, target):
 
     s = sum(y - t) ** 2
 
-    meanCost = 0.5 / n * s
+    meanCost = (0.5 / n) * s
 
 
     ## End
@@ -81,7 +83,7 @@ class Perceptron:
         W = self.var['W']
         b = self.var['b']
 
-        s = sum(x + W + b)
+        s = sum(x*W) + b
         y = sigmoid(s)
 
         ## End
@@ -105,46 +107,54 @@ class Perceptron:
 
         return updates
 
-
-def train_one_step(model, learning_rate, inputs, targets):
+@timing
+def train_one_step(model, learning_rate, inputs, targets, maxIter):
     """
     Uses the forward and backward function of a model to compute the error and updates the model
     weights while overwritting model.var. Returns the cost.
     """
     costs = np.empty((0,len(inputs)))
-    ## Implement
-    print(model.var['W'])
+    # results = np.empty((0,len(inputs)))
 
-    for n in range(5):
-        cost = np.array([])
+
+    results = []
+    grads = []
+    ## Implement
+    for n in range(maxIter):
+        gradValue = 0
+        results.append([])
+        # cost = np.array([])
+        # result = np.array([])
+
         for i in range(len(inputs)):
             x = inputs[i]
             t = targets[i]
-            y = np.array([model.forward(x)])
 
-            mse = MSE(y,t)
+            y = model.forward(x)
+
+            # result = np.append(result,np.array([y]))
 
             grad = dMSE(y, t)
 
-            cost = np.append(cost,np.array([grad]))
+            results[n].append(y)
+            # cost = np.append(cost,np.array([grad]))
 
-            # w = model.var['W']
-            print("w: ", model.var['W'])
-            for w in model.var['W']:
+            model.var['W'] =  model.var['W'] - learning_rate * grad * x
 
+            gradValue += grad
 
-                w -=  learning_rate * grad * x
-            # print('-----------')
-            print("w_k+1: ", model.var['W'])
+        gradValue /= len(inputs)
 
-        print(sum(cost)/len(inputs))
-        costs = np.vstack((costs,cost))
+        grads.append(gradValue)
+        # print(sum(cost)/len(inputs))
+        # costs = np.vstack((costs,cost))
+        # results = np.vstack((results, result))
 
     #for varstr, grad in updates.items():
     #    model.var[varstr] = (...)
 
     ## End
-    return costs
+    return costs, results, grads
 
 def plot_data(X,T):
     """
@@ -449,23 +459,30 @@ def competition_load_weights_and_evaluate_X_and_T(testX, testT):
 
 X,T = get_part1_data()
 
-costs = train_one_step(Perceptron(),0.1,X,T)
+MAX_ITER = 1000
+STEP = 10
+costs, results, grads = train_one_step(Perceptron(),0.5,X,T, MAX_ITER)
 
 x = np.arange(T.size)
 
 print(x)
 
-lines = []
-labels = []
+# TODO utils function
 
-for i in range(len(costs)):
-    label = "%s" % (i)
-    labels.append(label)
+plt.plot(x, T, 'ro',label="T")
 
-    line = plt.plot(x, costs[i], label=label)
-    lines.append(line)
+lastResult = results[len(results) - 1]
 
+plt.plot(x, lastResult, label='Y')
 
-# print(labels,lines)
+results = [results[i] for i in range(len(results)) if i % STEP == 0]
+
+# for i in range(len(results)):
+#     label = "%s" % (i)
+#     line = plt.plot(x, results[i], label=label)
+
 plt.legend()
 plt.show()
+
+# plt.plot(np.arange(maxIter), grads )
+# plt.show()
