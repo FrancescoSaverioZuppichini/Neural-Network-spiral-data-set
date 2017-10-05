@@ -1,5 +1,3 @@
-
-#
 # USI - Università della svizzera italiana
 #
 # Machine Learning - Fall 2017
@@ -12,6 +10,11 @@ import math
 import matplotlib.pyplot as plt
 from utils import timing
 
+from Perceptron import Perceptron
+from activation import sigmoid
+from MSE import MSE
+from MSE import dMSE
+
 ## Part 1
 
 def get_part1_data():
@@ -23,91 +26,7 @@ def get_part1_data():
     T = np.array([1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1]).reshape(-1, 1)
     return X, T
 
-def MSE(prediction, target):
-    """
-    Computes the Mean Squared Error of a prediction and its target
-    """
-    y = prediction
-    t = target
-    n = prediction.size
 
-    if (y.size != n):
-        raise Exception("Parameters must have the same len!")
-
-    s = sum(y - t) ** 2
-
-    meanCost = (0.5 / n) * s
-
-
-    ## End
-    return meanCost
-
-def dMSE(prediction, target):
-    """
-    Computes the derivative of the Mean Squared Error function.
-    """
-    y = prediction
-    t = target
-    n = prediction.size
-
-    ## Implement
-
-
-    error = (y - t) * y*(1 - y)
-
-    ## End
-    return error
-
-def sigmoid(x):
-
-    return 1/(1 + math.e ** -x)
-
-class Perceptron:
-    """
-    Keeps track of the variables of the Perceptron model. Can be used for predictoin and to compute the gradients.
-    """
-    def __init__(self):
-        """
-        The variables are stored inside a dictonary to make them easy accessible.
-        """
-        self.var = {
-         "W": np.array([.8, -.5]),
-         "b": 2
-        }
-
-    def forward(self, inputs):
-        """
-        Implements the forward pass of the perceptron model and returns the prediction y. We need to
-        store the current input for the backward function.
-        """
-        x = self.x = inputs
-        W = self.var['W']
-        b = self.var['b']
-
-        s = sum(x*W) + b
-
-        y = sigmoid(s)
-
-        ## End
-        return y
-
-    def backward(self, error):
-        """
-        Backpropagates through the model and computes the derivatives. The forward function must be
-        run before hand for self.x to be defined. Returns the derivatives without applying them using
-        a dictonary similar to self.var.
-        """
-        x = self.x
-
-        ## Implement
-
-
-
-        ## End
-        updates = {"W": dW,
-                   "b": db}
-
-        return updates
 
 @timing
 def train_one_step(model, learning_rate, inputs, targets, maxIter, momentum):
@@ -215,114 +134,6 @@ def compute_accuracy(model, X, T):
 
 
 
-def dsigmoid(x):
-
-    sigma = sigmoid(x)
-    return sigma * (1.0 - sigma)
-
-    ## End
-    return x
-
-def tanh(x):
-    """
-    Implements the hyperbolic tangent activation function.
-    """
-    ## Implement
-
-
-
-    ## End
-    return x
-
-def dtanh(x):
-    """
-    Implements the derivative of the hyperbolic tangent activation function.
-    """
-    ## Implement
-
-
-
-    ## End
-    return x
-
-
-class NeuralNetwork:
-    """
-    Keeps track of the variables of the Multi Layer Perceptron model. Can be
-    used for predictoin and to compute the gradients.
-    """
-    def __init__(self):
-        """
-        The variables are stored inside a dictonary to make them easy accessible.
-        """
-        ## Implement
-
-        #W1_in = ...
-        #W1_out = ...
-        #W2_in = ...
-        #W2_out = ...
-        #W3_in = ...
-        #W3_out = ...
-
-        self.var = {
-         #"W1": (...),
-         #"b1": (...),
-         #"W2": (...),
-         #"b2": (...),
-         #"W3": (...),
-         #"b3": (...)
-        }
-
-        ## End
-
-    def forward(self, inputs):
-        """
-        Implements the forward pass of the MLP model and returns the prediction y. We need to
-        store the current input for the backward function.
-        """
-        x = self.x = inputs
-
-        W1 = self.var['W1']
-        b1 = self.var['b1']
-        W2 = self.var['W2']
-        b2 = self.var['b2']
-        W3 = self.var['W3']
-        b3 = self.var['b3']
-
-        ## Implement
-
-
-
-        ## End
-        return y
-
-    def backward(self, error):
-        """
-        Backpropagates through the model and computes the derivatives. The forward function must be
-        run before hand for self.x to be defined. Returns the derivatives without applying them using
-        a dictonary similar to self.var.
-        """
-        x = self.x
-        W1 = self.var['W1']
-        b1 = self.var['b1']
-        W2 = self.var['W2']
-        b2 = self.var['b2']
-        W3 = self.var['W3']
-        b3 = self.var['b3']
-
-        ## Implement
-
-
-
-        ## End
-        updates = {"W1": dW1,
-                   "b1": db1,
-                   "W2": dW2,
-                   "b2": db2,
-                   "W3": dW3,
-                   "b3": db3}
-        return updates
-
 def gradient_check():
     """
     Computes the gradient numerically and analitically and compares them.
@@ -357,84 +168,6 @@ def run_part2():
     Train the multi layer perceptron according to the assignment.
     """
 
-
-
-## Part 3
-class BetterNeuralNetwork:
-    """
-    Keeps track of the variables of the Multi Layer Perceptron model. Can be
-    used for predictoin and to compute the gradients.
-    """
-    def __init__(self):
-        """
-        The variables are stored inside a dictonary to make them easy accessible.
-        """
-        ## Implement
-        #W1_in = ...
-        #W1_out = ...
-        #W2_in = ...
-        #W2_out = ...
-        #W3_in = ...
-        #W3_out = ...
-
-        self.var = {
-         #"W1": (...),
-         #"b1": (...),
-         #"W2": (...),
-         #"b2": (...),
-         #"W3": (...),
-         #"b3": (...),
-        }
-
-        ## End
-
-    def forward(self, inputs):
-        """
-        Implements the forward pass of the MLP model and returns the prediction y. We need to
-        store the current input for the backward function.
-        """
-        x = self.x = inputs
-
-        W1 = self.var['W1']
-        b1 = self.var['b1']
-        W2 = self.var['W2']
-        b2 = self.var['b2']
-        W3 = self.var['W3']
-        b3 = self.var['b3']
-
-        ## Implement
-
-
-
-        ## End
-        return y
-
-    def backward(self, error):
-        """
-        Backpropagates through the model and computes the derivatives. The forward function must be
-        run before hand for self.x to be defined. Returns the derivatives without applying them using
-        a dictonary similar to self.var.
-        """
-        x = self.x
-        W1 = self.var['W1']
-        b1 = self.var['b1']
-        W2 = self.var['W2']
-        b2 = self.var['b2']
-        W3 = self.var['W3']
-        b3 = self.var['b3']
-
-        ## Implement
-
-
-
-        ## End
-        updates = {"W1": dW1,
-                   "b1": db1,
-                   "W2": dW2,
-                   "b2": db2,
-                   "W3": dW3,
-                   "b3": db3}
-        return updates
 
 def competition_train_from_scratch(testX, testT):
     """
@@ -483,6 +216,7 @@ x = np.arange(T.size)
 plt.plot(x, T, 'ro',label="T")
 
 lastResult = results[len(results) - 1]
+
 
 
 # results = [results[i] for i in range(len(results)) if i % STEP == 0]
