@@ -1,6 +1,6 @@
 import numpy as np
 from activation import sigmoid
-
+from MSE import dMSE
 class Perceptron:
     """
     Keeps track of the variables of the Perceptron model. Can be used for predictoin and to compute the gradients.
@@ -40,7 +40,8 @@ class Perceptron:
 
         ## Implement
 
-
+        # NO idea of what to do, the derivative MUST be applied or the client will need to actually call
+        # forward again to get the prediction
 
         ## End
         updates = {"W": dW,
