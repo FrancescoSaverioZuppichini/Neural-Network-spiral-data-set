@@ -3,7 +3,7 @@ from NeuralNetwork import NeuralNetwork as NN
 import skeleton as sk
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
+import time
 import numpy as np
 from utils import timing
 
@@ -36,22 +36,39 @@ model = Perceptron()
 
 # total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.2,X,T, MAX_ITER, False, 0.5, 0)
 
-np.random.seed(0)
-MAX_ITER = 2000
-STEP = 100
 
-net = NN()
-X,T = sk.twospirals()
+for i in range(1):
+    # np.random.seed(int(time.time()))
+    np.random.seed(i)
 
-# for x in X:
-#     net.forward(x)
-grads, y = net.train(X,T, 0.001, MAX_ITER)
+    MAX_ITER = 1024
+    STEP = 100
 
-print(np.mean(((y > 0.5) * 1 == T) * 1))
+    train_size = 200
+    net = NN()
 
-grads = [grads[i] for i in range(len(grads)) if i % STEP == 0]
-plt.plot(grads)
-plt.show()
+    X,T = sk.twospirals()
+    X_train = X[0:train_size]
+    T_train = T[0:train_size]
+    X_test = X[train_size:]
+    T_test = T[train_size:]
+
+    # for x in X:
+    #     net.forward(x)
+    grads, y = net.train(X_train,T_train, 0.001, MAX_ITER)
+
+    print('--------')
+    print('TRAINING SET')
+    print(np.mean(((y > 0.5) * 1 == T_train) * 1))
+
+    print('--------')
+    print('TEST SET')
+    y = net.forward(X_test,T_test)
+    print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+
+# grads = [grads[i] for i in range(len(grads)) if i % STEP == 0]
+# plt.plot(grads)
+# plt.show()
 # print(error)
 #
 # plt.figure(1)

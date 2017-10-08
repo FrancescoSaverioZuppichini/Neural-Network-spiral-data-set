@@ -3,6 +3,8 @@ import activation as act
 import MSE as cost_func
 from utils import timing
 
+from concurrent.futures import ThreadPoolExecutor
+
 class NeuralNetwork:
     """
     Keeps track of the variables of the Multi Layer Perceptron model. Can be
@@ -29,13 +31,17 @@ class NeuralNetwork:
         #W3_in = ...
         #W3_out = ...
 
+        # according to this http://cs231n.github.io/neural-networks-2/
+        # bias must be small, so let's scale them
+        scale_factor = 0.01
+
         self.var = {
-         "W1": np.random.randn(2,20)/np.sqrt(2),
-         "b1": np.random.random([1,1]),
+         "W1": np.random.randn(2,20)/np.sqrt(2.0),
+         "b1": np.random.random([1,1]) * scale_factor,
          "W2": np.random.rand(20,15)/np.sqrt(20),
-         "b2": np.random.random([1,1]),
+         "b2": np.random.random([1,1]) * scale_factor,
          "W3": np.random.rand(15,1)/np.sqrt(15),
-         "b3": np.random.random([1,1])
+         "b3": np.random.random([1,1]) * scale_factor
         }
 
         ## End
@@ -47,6 +53,8 @@ class NeuralNetwork:
         """
         x = self.x = inputs
 
+        p = 0.5
+
         W1 = self.var['W1']
         b1 = self.var['b1']
         W2 = self.var['W2']
@@ -57,12 +65,18 @@ class NeuralNetwork:
         # prediction at each layer
         # find out each z -> zl = W^l * a^{l-1} + b^l
         z1 = inputs.dot(W1) + b1
+        # u1 = (np.random.rand(*z1.shape) < p) / p
+        # z1 *= u1
         a_1 = np.tanh(z1)
 
         z2 = a_1.dot(W2) + b2
+        # u2 = (np.random.rand(*z2.shape) < p) / p
+        # z2 *= u2
         a_2 = np.tanh(z2)
 
         z3 =  a_2.dot(W3) + b3
+        # u3 = (np.random.rand(*z3.shape) < p) / p
+        # z3 *= u3
         a_3 = act.sigmoid(z3)
 
         self.Z = [z1,z2,z3]
@@ -73,16 +87,22 @@ class NeuralNetwork:
         ## End
         return a_3
 
-    def backward(self, error):
+    def update(self, key, dx, learning_rage):
+        self.var[key] -= dx * learning_rage
+
+    def backward(self, error, learning_rate):
         """
         Backpropagates through the model and computes the derivatives. The forward function must be
         run before hand for self.x to be defined. Returns the derivatives without applying them using
         a dictonary similar to self.var.
         """
         x = self.x
-
+        W1 = self.var['W1']
+        b1 = self.var['b1']
         W2 = self.var['W2']
+        b2 = self.var['b2']
         W3 = self.var['W3']
+        b3 = self.var['b3']
 
         Z = self.Z
 
@@ -100,6 +120,13 @@ class NeuralNetwork:
         dW3 = self.A[2].T.dot(dW3)
         dW2 = self.A[1].T.dot(dW2)
         dW1 = self.A[0].T.dot(dW1)
+
+
+        # b1 -= db1 * learning_rate
+        # W2 -= dW2 * learning_rate
+        # b2 -= db2 * learning_rate
+        # W3 -= dW3 * learning_rate
+        # b3 -= db3 * learning_rate
 
         ## End
         updates = {"W1": dW1,
@@ -120,10 +147,10 @@ class NeuralNetwork:
 
             error = y - targets
 
-            updates = self.backward(error)
+            updates = self.backward(error, learning_rate)
 
             for var_str, delta in updates.items():
-                self.var[var_str] -= learning_rate * delta
+                self.var[var_str] -= (learning_rate * delta)
 
             grads.append(sum(error)/len(inputs))
 
