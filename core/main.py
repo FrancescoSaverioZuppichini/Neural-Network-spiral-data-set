@@ -9,10 +9,6 @@ from utils import timing
 
 # X,T = sk.get_part1_data()
 
-np.random.seed(0)
-MAX_ITER = 15
-STEP = 100
-
 @timing
 def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta, training_offset):
     grads_average = []
@@ -40,16 +36,22 @@ model = Perceptron()
 
 # total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.2,X,T, MAX_ITER, False, 0.5, 0)
 
+np.random.seed(0)
+MAX_ITER = 2000
+STEP = 100
 
 net = NN()
 X,T = sk.twospirals()
 
 # for x in X:
 #     net.forward(x)
-grads, costs = net.train(X,T)
+grads, y = net.train(X,T, 0.001, MAX_ITER)
 
-# plt.plot(grads)
-# plt.show()
+print(np.mean(((y > 0.5) * 1 == T) * 1))
+
+grads = [grads[i] for i in range(len(grads)) if i % STEP == 0]
+plt.plot(grads)
+plt.show()
 # print(error)
 #
 # plt.figure(1)
