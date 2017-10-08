@@ -7,9 +7,9 @@ import matplotlib.animation as animation
 import numpy as np
 from utils import timing
 
-X,T = sk.get_part1_data()
+# X,T = sk.get_part1_data()
 
-
+np.random.seed(1)
 MAX_ITER = 15
 STEP = 100
 
@@ -48,17 +48,21 @@ X,T = sk.twospirals()
 #     net.forward(x)
 grads, costs = net.train(X,T)
 
-plt.figure(1)
-
-plt.subplot(211)
-plt.title('costs')
-plt.plot(costs)
-
-plt.subplot(212)
-
-plt.title('grad')
-plt.plot(grads)
-plt.show()
+# plt.plot(grads)
+# plt.show()
+# print(error)
+#
+# plt.figure(1)
+#
+# plt.subplot(211)
+# plt.title('costs')
+# plt.plot(costs)
+#
+# plt.subplot(212)
+#
+# plt.title('grad')
+# plt.plot(grads)
+# plt.show()
 
 
 

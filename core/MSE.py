@@ -1,3 +1,5 @@
+import numpy as np
+
 def MSE(prediction, target):
     """
     Computes the Mean Squared Error of a prediction and its target
@@ -9,9 +11,9 @@ def MSE(prediction, target):
     if (y.size != n):
         raise Exception("Parameters must have the same len!")
 
-    s = sum(y - t) ** 2
+    s = y - t ** 2
 
-    meanCost = (0.5 / n) * s
+    meanCost = np.mean(s)
 
 
     ## End

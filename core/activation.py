@@ -10,12 +10,10 @@ def tanh(x):
     """
     Implements the hyperbolic tangent activation function.
     """
-    ## Implement
-    e_x = math.e ** 2* x
 
     # End
 
-    return (e_x + 1)/(e_x - 1)
+    return np.tanh(x)
 
 
 
