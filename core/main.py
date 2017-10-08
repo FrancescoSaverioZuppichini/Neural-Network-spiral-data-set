@@ -37,11 +37,11 @@ model = Perceptron()
 # total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.2,X,T, MAX_ITER, False, 0.5, 0)
 
 
-for i in range(1):
-    # np.random.seed(int(time.time()))
-    np.random.seed(i)
+for i in range(10):
+    np.random.seed(int(time.time()))
+    # np.random.seed(i)
 
-    MAX_ITER = 1000
+    MAX_ITER = 1300
     STEP = 100
 
     train_size = 200
@@ -55,7 +55,7 @@ for i in range(1):
 
     # for x in X:
     #     net.forward(x)
-    grads, y = net.train(X_train,T_train, 0.01, MAX_ITER)
+    grads, y = net.train(X_train,T_train, 0.001, MAX_ITER)
 
     print('--------')
     print('TRAINING SET')

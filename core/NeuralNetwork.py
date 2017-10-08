@@ -143,14 +143,14 @@ class NeuralNetwork:
         grads = []
         y = 0
 
-        momentum = {
-            "W1": 0,
-            "b1": 0,
-            "W2": 0,
-            "b2": 0,
-            "W3": 0,
-            "b3": 0
-        }
+        # momentum = {
+        #     "W1": 0,
+        #     "b1": 0,
+        #     "W2": 0,
+        #     "b2": 0,
+        #     "W3": 0,
+        #     "b3": 0
+        # }
         error_increase_tol = 10^10
         prev_delta = -1
         average_delta = 0
@@ -170,16 +170,9 @@ class NeuralNetwork:
             for var_str, delta in updates.items():
                 update = (learning_rate * delta)
                 self.var[var_str] -= update
+                # self.var[var_str] -= 0.5 *  momentum[var_str]
                 # momentum[var_str] = delta
-                average_delta += np.mean(delta)
 
-            average_delta = average_delta/6
-
-            if(average_delta != -1):
-                if(average_delta < prev_delta):
-                    learning_rate *= 1.02
-                elif((math.fabs(prev_delta - average_delta))) < error_increase_tol:
-                    learning_rate /= 2
 
             grads.append(sum(error)/len(inputs))
 
