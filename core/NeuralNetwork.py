@@ -2,7 +2,7 @@ import numpy as np
 import activation as act
 import MSE as cost_func
 from utils import timing
-
+import math
 from concurrent.futures import ThreadPoolExecutor
 
 class NeuralNetwork:
@@ -142,15 +142,44 @@ class NeuralNetwork:
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
         grads = []
         y = 0
+
+        momentum = {
+            "W1": 0,
+            "b1": 0,
+            "W2": 0,
+            "b2": 0,
+            "W3": 0,
+            "b3": 0
+        }
+        error_increase_tol = 10^10
+        prev_delta = -1
+        average_delta = 0
+
         for n in range(max_iter):
+            prev_delta = average_delta
+
             y = self.forward(inputs, targets)
 
             error = y - targets
 
             updates = self.backward(error, learning_rate)
 
+
+            average_delta = 0
+
             for var_str, delta in updates.items():
-                self.var[var_str] -= (learning_rate * delta)
+                update = (learning_rate * delta)
+                self.var[var_str] -= update
+                # momentum[var_str] = delta
+                average_delta += np.mean(delta)
+
+            average_delta = average_delta/6
+
+            if(average_delta != -1):
+                if(average_delta < prev_delta):
+                    learning_rate *= 1.02
+                elif((math.fabs(prev_delta - average_delta))) < error_increase_tol:
+                    learning_rate /= 2
 
             grads.append(sum(error)/len(inputs))
 

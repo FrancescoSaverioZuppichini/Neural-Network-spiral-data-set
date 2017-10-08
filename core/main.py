@@ -41,7 +41,7 @@ for i in range(1):
     # np.random.seed(int(time.time()))
     np.random.seed(i)
 
-    MAX_ITER = 1024
+    MAX_ITER = 1000
     STEP = 100
 
     train_size = 200
@@ -55,7 +55,7 @@ for i in range(1):
 
     # for x in X:
     #     net.forward(x)
-    grads, y = net.train(X_train,T_train, 0.001, MAX_ITER)
+    grads, y = net.train(X_train,T_train, 0.01, MAX_ITER)
 
     print('--------')
     print('TRAINING SET')
