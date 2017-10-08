@@ -26,14 +26,15 @@ def get_part1_data():
 
 
 
-def train_one_step(model, learning_rate, inputs, targets, momentum,beta):
+def train_one_step(model, learning_rate, inputs, targets, momentum,beta, training_offset):
     """
     Uses the forward and backward function of a model to compute the error and updates the model
     weights while overwritting model.var. Returns the cost.
     """
 
-    gradValue = 0
     grads = []
+    errors = []
+    results = []
 
     for i in range(len(inputs)):
         x = inputs[i]
@@ -43,26 +44,28 @@ def train_one_step(model, learning_rate, inputs, targets, momentum,beta):
 
         grad = dMSE(y, t)
 
+        updates = model.backward(grad)
 
-        z = learning_rate * grad * x
+        error = MSE(y,t)
 
-        if momentum:
-            z = beta * model.var['W'] + z
-
-        model.var['W'] = model.var['W'] - z
-
-        err = MSE(y, t)
         grads.append(grad)
-        gradValue += grad
+        errors.append(error)
+        results.append(y)
 
-        gradValue /= len(inputs)
+        for var_str, delta in updates.items():
+            z = delta * learning_rate
+            if momentum:
+                z = beta * model.var['W'] + delta
+            model.var[var_str]  -=  z
+        #
 
 
-    #for varstr, grad in updates.items():
-    #    model.var[varstr] = (...)
+        # model.var['W'] = model.var['W'] - z
+
+
 
     ## End
-    return y, gradValue, grad
+    return results, errors, grads
 
 def plot_data(X,T):
     """

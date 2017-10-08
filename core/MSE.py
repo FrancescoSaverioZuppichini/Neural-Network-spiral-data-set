@@ -28,7 +28,7 @@ def dMSE(prediction, target):
     ## Implement
 
 
-    error = (y - t) * y*(1 - y)
+    # error = (y - t) * y*(1 - y)
 
     ## End
-    return error
+    return (t - y)

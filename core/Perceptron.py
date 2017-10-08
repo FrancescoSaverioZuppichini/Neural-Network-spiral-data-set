@@ -23,7 +23,7 @@ class Perceptron:
         W = self.var['W']
         b = self.var['b']
 
-        s = np.dot(x,W)+ b
+        s = np.vdot(W,x)+ b
 
         y = sigmoid(s)
 
@@ -38,13 +38,9 @@ class Perceptron:
         """
         x = self.x
 
-        ## Implement
 
-        # NO idea of what to do, the derivative MUST be applied or the client will need to actually call
-        # forward again to get the prediction
 
-        ## End
-        updates = {"W": dW,
-                   "b": db}
+        updates = {"W": error * x,
+                   "b": error}
 
         return updates

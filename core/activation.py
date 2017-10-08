@@ -1,23 +1,23 @@
 import math
+import numpy as np
 
 def dsigmoid(x):
 
     sigma = sigmoid(x)
     return sigma * (1.0 - sigma)
 
-    ## End
-    return x
-
 def tanh(x):
     """
     Implements the hyperbolic tangent activation function.
     """
     ## Implement
+    e_x = math.e ** 2* x
+
+    # End
+
+    return (e_x + 1)/(e_x - 1)
 
 
-
-    ## End
-    return x
 
 def dtanh(x):
     """
@@ -28,7 +28,7 @@ def dtanh(x):
 
 
     ## End
-    return x
+    return 1 - np.tanh(x)**2
 
 
 def sigmoid(x):

@@ -1,56 +1,121 @@
 from Perceptron import Perceptron
+from NeuralNetwork import NeuralNetwork as NN
 import skeleton as sk
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 import numpy as np
 from utils import timing
 
 X,T = sk.get_part1_data()
 
 
-MAX_ITER = 200
+MAX_ITER = 15
 STEP = 100
 
 @timing
-def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta):
-    z = 1
-    results = []
-    grads = []
-    errors = []
+def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta, training_offset):
+    grads_average = []
+    errros_average = []
+
     total_grads = []
+    total_erros = []
+    total_results = []
+
     ## Implement
     for n in range(maxIter):
-        results.append([])
-        errors.append([])
 
-        y, grad, grads = sk.train_one_step(model, learning_rate, inputs, targets, momentum, beta)
+        results, errors, grads = sk.train_one_step(model, learning_rate, inputs, targets, momentum, beta, training_offset)
+
+        total_results.append(results)
+        total_erros.append(errors)
         total_grads.append(grads)
 
-        # append average gradient
-        grads.append(grad)
-        # append last prediction for this train
-        results.append(y)
+        grads_average.append(sum(grads)/len(inputs))
+        errros_average.append(sum(errors)/len(inputs))
 
-    return results,grads
+    return total_results,grads_average, errros_average, total_grads,total_erros
 
-results, grads = full_training(Perceptron(),0.5,X,T, MAX_ITER, False, 0.5)
+model = Perceptron()
 
-plt.plot(T, 'ro',label="T")
-
-lastResult = results[len(results) - 1]
+# total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.2,X,T, MAX_ITER, False, 0.5, 0)
 
 
+net = NN()
+X,T = sk.twospirals()
 
-# results = [results[i] for i in range(len(results)) if i % STEP == 0]
-# errors = [errors[i] for i in range(len(errors)) if i % STEP == 0]
+# for x in X:
+#     net.forward(x)
+grads, costs = net.train(X,T)
 
+plt.figure(1)
 
-plt.plot(lastResult, label='best')
+plt.subplot(211)
+plt.title('costs')
+plt.plot(costs)
 
+plt.subplot(212)
 
-plt.legend()
+plt.title('grad')
+plt.plot(grads)
 plt.show()
 
-plt.plot(grads, label='grad')
 
-plt.legend()
-plt.show()
+
+DEBUG = False
+
+# if(DEBUG):
+    # fig = plt.figure()
+    # ax = plt.axes(xlim=(0, 10), ylim=(-5, 5))
+    # iter_text = ax.text(0.02, 0.95, '', )
+    #
+    # line, = ax.plot([], [], lw=2)
+    #
+    # # initialization function: plot the background of each frame
+    # def init():
+    #     line.set_data([], [])
+    #     return line,
+    #
+    # # animation function.  This is called sequentially
+    # def animate(i):
+    #     x = np.arange(len(total_grads[i]))
+    #     y = total_erros[i]
+    #     print(i)
+    #
+    #     line.set_data(x, y)
+    #
+    #     return line,
+
+    # call the animator.  blit=True means only re-draw the parts that have changed.
+    # anim = animation.FuncAnimation(fig, animate, init_func=init,frames=2000, interval=50, blit=True)
+    # plt.show()
+    # plt.plot(T, 'ro',label="T")
+    #
+    # lastResult = total_results[len(total_results) - 1]
+    # plt.plot(lastResult, 'g',label="B")
+    #
+    #
+    # # results = [results[i] for i in range(len(results)) if i % STEP == 0]
+    # # errors = [errors[i] for i in range(len(errors)) if i % STEP == 0]
+    #
+    #
+    # # plt.plot(lastResult, label='best')
+    #
+    # plt.legend()
+    # plt.show()
+
+    # plt.figure(1)
+    #
+    # plt.subplot(211)
+    # plt.title('gradient')
+    # plt.plot(grads_average, label='grad')
+    # plt.legend()
+    # plt.grid(True)
+    #
+    # plt.subplot(212)
+    # plt.title('error')
+    # plt.plot(errros_average, label='errors')
+    # plt.legend()
+    # plt.grid(True)
+    #
+    # plt.show()
