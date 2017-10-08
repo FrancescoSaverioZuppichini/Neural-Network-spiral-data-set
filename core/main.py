@@ -9,7 +9,7 @@ from utils import timing
 
 # X,T = sk.get_part1_data()
 
-np.random.seed(1)
+np.random.seed(0)
 MAX_ITER = 15
 STEP = 100
 

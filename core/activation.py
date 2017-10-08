@@ -5,7 +5,8 @@ def dsigmoid(x):
 
     sigma = sigmoid(x)
     return sigma * (1.0 - sigma)
-
+    # return x * (1 - x)
+#
 def tanh(x):
     """
     Implements the hyperbolic tangent activation function.

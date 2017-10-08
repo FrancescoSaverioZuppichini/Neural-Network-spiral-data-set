@@ -57,13 +57,13 @@ class NeuralNetwork:
         # prediction at each layer
         # find out each z -> zl = W^l * a^{l-1} + b^l
         z1 = inputs.dot(W1) + b1
-        a_1 = act.sigmoid(z1)
+        a_1 = np.tanh(z1)
 
         z2 = a_1.dot(W2) + b2
         a_2 = np.tanh(z2)
 
         z3 =  a_2.dot(W3) + b3
-        a_3 = np.tanh(z3)
+        a_3 = act.sigmoid(z3)
 
         self.Z = [z1,z2,z3]
         # self.A = [np.array([inputs]),a_1,a_2,a_3]
@@ -91,24 +91,35 @@ class NeuralNetwork:
         A = self.A
 
         # back propagate and compute each output error
-        dW3 = error * act.dtanh(Z[-1])
-        dW3 = self.A[2].T.dot(dW3)
+        da3 = error * act.dsigmoid(Z[-1])
+        dW3 = self.A[2].T.dot(da3)
+        dh3 = da3.dot(W3.T)
         # print(A[2].shape,dw3.shape)
-        db3 = np.sum(dW3)
+        db3 = np.mean(dh3)
 
-        print(dW3.shape,W3.T.shape,self.A[1].shape)
+        da2 = dh3 * act.dtanh(Z[1])
+        dW2 = self.A[1].T.dot(da2)
+        dh2 = da2.dot(W2.T)
 
-        dW2 = dW3.dot(W3.T) * act.dtanh(Z[1])
+        db2 = np.mean(dh2)
 
-        dW2 = self.A[1].T.dot(dW2)
+        da1 = dh2 * act.dtanh(Z[0])
+        dW1 = self.A[0].T.dot(da1)
+        dh1 = da1.dot(W1.T)
 
-        db2 = np.sum(dW2)
-
-        dW1 = dW2.dot(W2.T) * act.sigmoid(Z[0])
-        dW1 = self.A[0].T.dot(dW1)
-        db1 = np.sum(dW1)
-
-        # compute grads
+        db1 = np.mean(dh1)
+        #
+        # dW3 = error * act.dsigmoid(Z[-1])
+        # db3 = np.mean(dW3)
+        #
+        #
+        # dW2 = dW3.dot(W3.T) * act.dtanh(Z[1])
+        # db2 = np.mean(dW2)
+        #
+        # dW1 = dW2.dot(W2.T) * act.dtanh(Z[0])
+        # db1 = np.mean(dW1)
+        #
+        # # compute grads
         # dW3 = self.A[2].T.dot(dW3)
         # dW2 = self.A[1].T.dot(dW2)
         # dW1 = self.A[0].T.dot(dW1)
@@ -124,7 +135,7 @@ class NeuralNetwork:
         return updates
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.1, max_iter=1000):
+    def train(self,inputs,targets,learning_rate=0.001, max_iter=3000):
         grads = []
         costs = []
         y = 0
@@ -149,17 +160,12 @@ class NeuralNetwork:
             # grads.append(grad/len(inputs))
             y = self.forward(inputs, targets)
 
-            error = y - targets
-            print(sum(error)/len(inputs))
+            updates = self.backward(y - targets)
 
-            updates = self.backward(error)
-            #
             for var_str, delta in updates.items():
                 change = learning_rate * delta
-                #
+
                 self.var[var_str] -= change
-
-
-        # print(np.mean(error))
+        print(np.mean(((y > 0.5) * 1 == targets) * 1))
 
         return grads, costs
