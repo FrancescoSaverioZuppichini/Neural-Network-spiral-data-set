@@ -5,11 +5,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
+from threading import Thread
+from queue import Queue
+
 from utils import timing
 
-# X,T = sk.get_part1_data()
+X,T = sk.get_part1_data()
 
-@timing
 def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta, training_offset):
     grads_average = []
     errros_average = []
@@ -34,28 +36,88 @@ def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta
 
 model = Perceptron()
 
-# total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.2,X,T, MAX_ITER, False, 0.5, 0)
+# total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.02,X,T, 100, False, 0.5, 0)
+# np.random.seed(0)
+# plt.plot(total_grads)
+# plt.show()
+
+# print(model.forward(X))
+
+def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2):
+
+    master = NN()
+    time1 = time.time()
+
+    step = len(X) // max_workers
+    # my_queue = Queue()
+
+    for i in range(steps):
+        threads = []
+        slaves = []
+        for i in range(max_workers):
+            x_batch = X[(i) * step:(i + 1) * step]
+            t_batch = T[(i) * step:(i + 1) * step]
+            slave = NN()
+            slaves.append(slave)
+            t = Thread(target=slave.train,args=(x_batch, t_batch, learning_rate, max_iter))
+            # my_queue.put(slave.train(x_batch, t_batch, learning_rate, max_iter))
+            threads.append(t)
+
+        print('Created {}'.format(len(threads)))
+        for t in threads:
+            t.start()
 
 
-for i in range(10):
-    np.random.seed(int(time.time()))
-    # np.random.seed(i)
+        for t in threads:
+            t.join()
 
-    MAX_ITER = 1300
-    STEP = 100
+        for var_str, var in master.var.items():
+            slave_vars = [slave.var[var_str] for slave in slaves]
 
-    train_size = 200
+            mean = np.average(slave_vars,axis=0)
+            master.var[var_str] = mean
+
+    # results = [my_queue.get() for x in range(max_workers)]
+    time2 = time.time()
+    print('All threads finish after {:0.3f} ms'.format(float(time2-time1)*1000.0))
+    return master
+
+
+
+LEARNING_RATE = 0.001
+MAX_ITER = 1000
+STEP = 1
+
+train_size = 200
+
+X,T = sk.twospirals()
+X_train = X[0:train_size]
+T_train = T[0:train_size]
+X_test = X[train_size:]
+T_test = T[train_size:]
+
+grads = []
+
+net = parall_train(X,T,0.01,MAX_ITER,4)
+
+y = net.forward(X_train,T_train)
+
+print('--------')
+print('TRAINING SET')
+print(np.mean(((y > 0.5) * 1 == T_train) * 1))
+print('--------')
+print('TEST SET')
+y = net.forward(X_test,T_test)
+print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+
+
+
+for i in range(1):
     net = NN()
 
-    X,T = sk.twospirals()
-    X_train = X[0:train_size]
-    T_train = T[0:train_size]
-    X_test = X[train_size:]
-    T_test = T[train_size:]
-
-    # for x in X:
-    #     net.forward(x)
-    grads, y = net.train(X_train,T_train, 0.001, MAX_ITER)
+    np.random.seed(int(time.time()))
+    # np.random.seed(i)
+    grads, y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
 
     print('--------')
     print('TRAINING SET')
@@ -65,6 +127,8 @@ for i in range(10):
     print('TEST SET')
     y = net.forward(X_test,T_test)
     print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+
+
 
 # grads = [grads[i] for i in range(len(grads)) if i % STEP == 0]
 # plt.plot(grads)
