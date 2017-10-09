@@ -33,9 +33,12 @@ def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta
 
 model = Perceptron()
 
-total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.01,X,T, 100, False, 0.5, 0)
+total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.02,X,T, 100, False, 0.5, 0)
 # np.random.seed(0)
-# print(total_results[-1])
+plt.plot(total_grads)
+plt.show()
+
+print(model.forward(X))
 LEARNING_RATE = 0.001
 MAX_ITER = 1200
 STEP = 1

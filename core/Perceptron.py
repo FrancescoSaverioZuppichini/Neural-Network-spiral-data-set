@@ -10,7 +10,7 @@ class Perceptron:
         The variables are stored inside a dictonary to make them easy accessible.
         """
         self.var = {
-         "W": np.array([.8, -.5]),
+         "W": np.array([[.8], [-.5]]),
          "b": 2
         }
 
@@ -23,7 +23,8 @@ class Perceptron:
         W = self.var['W']
         b = self.var['b']
 
-        s = np.vdot(W,x)+ b
+        # print(x.shape, W.shape)
+        s = x.dot(W)+ b
 
         y = sigmoid(s)
 
@@ -40,7 +41,7 @@ class Perceptron:
 
 
 
-        updates = {"W": error * x,
-                   "b": error}
+        updates = {"W": error.T.dot(x),
+                   "b": np.mean(error)}
 
         return updates

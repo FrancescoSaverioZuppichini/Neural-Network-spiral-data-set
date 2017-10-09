@@ -36,28 +36,40 @@ def train_one_step(model, learning_rate, inputs, targets, momentum,beta, trainin
     errors = []
     results = []
 
-    for i in range(len(inputs)):
-        x = inputs[i]
-        t = targets[i]
 
-        y = model.forward(x)
+    y = model.forward(inputs)
 
-        grad = dMSE(y, t)
+    error = dMSE(y,targets)
 
-        updates = model.backward(grad)
+    updates = model.backward(error)
 
-        error = MSE(y,t)
+    for var_str, delta in updates.items():
+        update = delta * learning_rate
+        model.var[var_str] -= update.T
 
-        grads.append(grad)
-        errors.append(error)
-        results.append(y)
-
-        for var_str, delta in updates.items():
-            z = delta * learning_rate
-            # if momentum:
-            #     z = beta * model.var['W'] + delta
-            model.var[var_str]  -=  z
-        #
+    grads.append(sum(dMSE(y,targets)[0])/len(inputs))
+    # for i in range(len(inputs)):
+    #     x = inputs[i]
+    #     t = targets[i]
+    #
+    #     y = model.forward(x)
+    #
+    #     grad = dMSE(y, t)
+    #
+    #     updates = model.backward(grad)
+    #
+    #     error = MSE(y,t)
+    #
+    #     grads.append(grad)
+    #     errors.append(error)
+    #     results.append(y)
+    #
+    #     for var_str, delta in updates.items():
+    #         z = delta * learning_rate
+    #         # if momentum:
+    #         #     z = beta * model.var['W'] + delta
+    #         model.var[var_str]  -=  z
+    #     #
 
 
         # model.var['W'] = model.var['W'] - z
