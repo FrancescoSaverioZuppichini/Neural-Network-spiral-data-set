@@ -12,6 +12,7 @@ from utils import timing
 
 from MSE import MSE
 from MSE import dMSE
+import Perceptron as pc
 
 ## Part 1
 
@@ -26,58 +27,33 @@ def get_part1_data():
 
 
 
-def train_one_step(model, learning_rate, inputs, targets, momentum,beta, training_offset):
+def train_one_step(model, learning_rate, inputs, targets):
     """
-    Uses the forward and backward function of a model to compute the error and updates the model
+    Uses the forward and backward function of a model to compute the error and updates the model 
     weights while overwritting model.var. Returns the cost.
     """
+    predictions = np.array([], dtype=float)
+    ## Implement
+    cost = 0
+    n = 0
+    for i in range(len(inputs)):
+        n += 1
+        y = model.forward(inputs[i])
+        predictions = np.append(predictions, y)
+        error = dMSE(y, targets[i])
+        cost += error
+        dW, b = model.backward(error).items()
+        deltaW = dW[1]*learning_rate
+        deltaB = b[1]*learning_rate
+        model.var['W'] = model.var['W'] - deltaW.reshape(-1,1)
+        model.var['b'] = model.var['b'] - deltaB
 
-    grads = []
-    errors = []
-    results = []
-
-
-    y = model.forward(inputs)
-
-    error = dMSE(y,targets)
-
-    updates = model.backward(error)
-
-    for var_str, delta in updates.items():
-        update = delta * learning_rate
-        model.var[var_str] -= update.T
-
-    grads.append(sum(dMSE(y,targets)[0])/len(inputs))
-    # for i in range(len(inputs)):
-    #     x = inputs[i]
-    #     t = targets[i]
-    #
-    #     y = model.forward(x)
-    #
-    #     grad = dMSE(y, t)
-    #
-    #     updates = model.backward(grad)
-    #
-    #     error = MSE(y,t)
-    #
-    #     grads.append(grad)
-    #     errors.append(error)
-    #     results.append(y)
-    #
-    #     for var_str, delta in updates.items():
-    #         z = delta * learning_rate
-    #         # if momentum:
-    #         #     z = beta * model.var['W'] + delta
-    #         model.var[var_str]  -=  z
-    #     #
-
-
-        # model.var['W'] = model.var['W'] - z
-
-
-
+    cost = cost/len(inputs)
+    # cost = dMSE(predictions.reshape(-1,1), targets)
+    print("asdasdasdasdasddas")
+    print(predictions.reshape(-1,1))
     ## End
-    return results, errors, grads
+    return cost
 
 def plot_data(X,T):
     """
@@ -103,6 +79,17 @@ def run_part1():
     """
     Train the perceptron according to the assignment.
     """
+    LEARNING_RATE = 0.02
+    ITERATIONS =15
+    perceptron = pc.Perceptron()
+
+    X, T = get_part1_data()
+    Xp = []
+    for i in range(ITERATIONS):
+        Xp.append(train_one_step(perceptron, LEARNING_RATE, X, T))
+    # print(Xp)
+    plt.plot(Xp)
+    plt.show()
 
 
 ## Part 2
