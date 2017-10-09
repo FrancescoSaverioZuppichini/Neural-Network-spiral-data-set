@@ -4,6 +4,7 @@ import MSE as cost_func
 from utils import timing
 import math
 from concurrent.futures import ThreadPoolExecutor
+from threading import Thread
 
 class NeuralNetwork:
     """
@@ -120,6 +121,7 @@ class NeuralNetwork:
                    "b3": db3}
 
         return updates
+
 
     @timing
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
