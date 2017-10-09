@@ -1,0 +1,41 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+
+\author{Francesco Saverio Zuppichini}
+\title{Machine Learning - Assignment 1}
+\begin{document}
+\maketitle
+
+\section{The Perceptron}
+\subsection{Vectorized equations}
+The vectorized equation for a single perceptron
+
+\begin{equation}
+output = XW + b
+\end{equation}
+Where $X = {x_1, ... x_n}$, $W = {w_1, ..., w_n}$. We denote $y$ the output of the perceptron
+
+\subsection{Mean Squared Error}
+The mean squared error function for our single perceptron
+\begin{equation}
+	E(w) = \frac{1}{N}\sum_{i = 1}^N(\underbrace{y(x_i,w_i)}_{\text{predicted}} - \underbrace{t_i}_{\text{actual}})^2)
+\end{equation}
+One trick that is usual done is to multiply equation $(2)$ by $\frac{1}{2}$, so when we take the derivative the $2$ goes away. This is called One Half Mean Squared Error.
+
+\subsection{Derivate of the error with respect to the weights}
+In order to reduce our error function and adjust each weight we need to compute the first derivati with respect to the weights. We will use the modified version of equation $(2)$ called One Half Mean Squared Error.
+\begin{equation}
+\frac{\delta E}{\delta w_i}	= y - t
+	
+\end{equation}
+\subsection{Gradient Descend}
+The gradient descend is an iterative optimisation algorithm that follow the direction of the negative descent in order to find the minimum of an objective function. It is can be used as Learning Algorithm since it allows to reduce our error function, equation $(2)$, and adjust the weights properly.
+It's equation
+\begin{equation}
+	w_{k + 1} = w_k - \eta \nabla E(w_k)
+\end{equation}
+Where $\eta$ is the step size, also called \textbf{learning rate} in Machine Learning. This parameter influence the behavior of Grandient Descent, a small number can lead to local minimum, while a bigger learning rate could "over-shoot" and decreaasing the converge ration. 
+
+For this reasons, numerous improvements have been proposed to avoid local minima and increase its convergence ration. Some of them are: Conjugate Gradient and Momentum.
+% TODO if time talk about them
+\end{document}
