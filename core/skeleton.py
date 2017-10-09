@@ -9,7 +9,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 from utils import timing
-
+from Perceptron import Perceptron
 from MSE import MSE
 from MSE import dMSE
 
@@ -26,16 +26,11 @@ def get_part1_data():
 
 
 
-def train_one_step(model, learning_rate, inputs, targets, momentum,beta, training_offset):
+def train_one_step(model, learning_rate, inputs, targets):
     """
     Uses the forward and backward function of a model to compute the error and updates the model
     weights while overwritting model.var. Returns the cost.
     """
-
-    grads = []
-    errors = []
-    results = []
-
 
     y = model.forward(inputs)
 
@@ -47,10 +42,8 @@ def train_one_step(model, learning_rate, inputs, targets, momentum,beta, trainin
         update = delta * learning_rate
         model.var[var_str] -= update.T
 
-    grads.append(sum(error[0])/len(inputs))
-
     ## End
-    return results, errors, grads
+    return y
 
 def plot_data(X,T):
     """
@@ -76,6 +69,23 @@ def run_part1():
     """
     Train the perceptron according to the assignment.
     """
+    MAX_ITER = 15
+
+    model = Perceptron()
+    X, T = get_part1_data()
+
+    y = 0
+
+    learning_rate = 0.02
+    for n in range(MAX_ITER):
+        y = train_one_step(model, learning_rate, X, T)
+
+
+    plot_boundary(model,X,T)
+    plt.savefig('/Users/VaeVictis/Desktop/Assignment1/docs/images/run_part1.png')
+    plt.show()
+
+    return y
 
 
 ## Part 2

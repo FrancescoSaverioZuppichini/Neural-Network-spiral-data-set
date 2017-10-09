@@ -10,7 +10,6 @@ from queue import Queue
 
 from utils import timing
 
-X,T = sk.get_part1_data()
 
 def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta, training_offset):
     grads_average = []
@@ -34,12 +33,7 @@ def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta
 
     return total_results,grads_average, errros_average, total_grads,total_erros
 
-model = Perceptron()
-
-# total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.02,X,T, 100, False, 0.5, 0)
-# np.random.seed(0)
-# plt.plot(total_grads)
-# plt.show()
+sk.run_part1()
 
 # print(model.forward(X))
 
@@ -84,6 +78,7 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
 
 
+
 LEARNING_RATE = 0.001
 MAX_ITER = 1000
 STEP = 1
@@ -97,36 +92,37 @@ X_test = X[train_size:]
 T_test = T[train_size:]
 
 grads = []
-
-net = parall_train(X,T,0.01,MAX_ITER,4)
-
-y = net.forward(X_train,T_train)
-
-print('--------')
-print('TRAINING SET')
-print(np.mean(((y > 0.5) * 1 == T_train) * 1))
-print('--------')
-print('TEST SET')
-y = net.forward(X_test,T_test)
-print(np.mean(((y > 0.5) * 1 == T_test) * 1))
-
-
-
-for i in range(1):
-    net = NN()
-
-    np.random.seed(int(time.time()))
-    # np.random.seed(i)
-    grads, y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
-
-    print('--------')
-    print('TRAINING SET')
-    print(np.mean(((y > 0.5) * 1 == T_train) * 1))
-
-    print('--------')
-    print('TEST SET')
-    y = net.forward(X_test,T_test)
-    print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+#
+# net = parall_train(X,T,0.01,MAX_ITER,4)
+#
+# y = net.forward(X_train,T_train)
+#
+# print('--------')
+# print('TRAINING SET')
+# print(np.mean(((y > 0.5) * 1 == T_train) * 1))
+# print('--------')
+# print('TEST SET')
+#
+# y = net.forward(X_test,T_test)
+# print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+#
+#
+#
+# for i in range(1):
+#     net = NN()
+#
+#     np.random.seed(int(time.time()))
+#     # np.random.seed(i)
+#     grads, y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
+#
+#     print('--------')
+#     print('TRAINING SET')
+#     print(np.mean(((y > 0.5) * 1 == T_train) * 1))
+#
+#     print('--------')
+#     print('TEST SET')
+#     y = net.forward(X_test,T_test)
+#     print(np.mean(((y > 0.5) * 1 == T_test) * 1))
 
 
 
