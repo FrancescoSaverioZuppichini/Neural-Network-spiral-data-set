@@ -7,9 +7,8 @@ import time
 import numpy as np
 from utils import timing
 
-# X,T = sk.get_part1_data()
+X,T = sk.get_part1_data()
 
-@timing
 def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta, training_offset):
     grads_average = []
     errros_average = []
@@ -34,28 +33,28 @@ def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta
 
 model = Perceptron()
 
-# total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.2,X,T, MAX_ITER, False, 0.5, 0)
+total_results, grads_average, errros_average, total_grads, total_erros = full_training(model,0.01,X,T, 100, False, 0.5, 0)
+# np.random.seed(0)
+# print(total_results[-1])
+LEARNING_RATE = 0.001
+MAX_ITER = 1200
+STEP = 1
 
+train_size = 200
+net = NN()
 
-for i in range(10):
+X,T = sk.twospirals()
+X_train = X[0:train_size]
+T_train = T[0:train_size]
+X_test = X[train_size:]
+T_test = T[train_size:]
+
+grads = []
+
+for i in range(0):
     np.random.seed(int(time.time()))
     # np.random.seed(i)
-
-    MAX_ITER = 1300
-    STEP = 100
-
-    train_size = 200
-    net = NN()
-
-    X,T = sk.twospirals()
-    X_train = X[0:train_size]
-    T_train = T[0:train_size]
-    X_test = X[train_size:]
-    T_test = T[train_size:]
-
-    # for x in X:
-    #     net.forward(x)
-    grads, y = net.train(X_train,T_train, 0.001, MAX_ITER)
+    grads, y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
 
     print('--------')
     print('TRAINING SET')

@@ -54,8 +54,8 @@ def train_one_step(model, learning_rate, inputs, targets, momentum,beta, trainin
 
         for var_str, delta in updates.items():
             z = delta * learning_rate
-            if momentum:
-                z = beta * model.var['W'] + delta
+            # if momentum:
+            #     z = beta * model.var['W'] + delta
             model.var[var_str]  -=  z
         #
 

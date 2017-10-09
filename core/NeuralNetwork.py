@@ -22,14 +22,6 @@ class NeuralNetwork:
         self.Z = []
         # will hold all the activation functions
         self.A = []
-        # store all the delta for each layer
-        self.deltas = []
-        #W1_in = ...
-        #W1_out = ...
-        #W2_in = ...
-        #W2_out = ...
-        #W3_in = ...
-        #W3_out = ...
 
         # according to this http://cs231n.github.io/neural-networks-2/
         # bias must be small, so let's scale them
@@ -80,8 +72,6 @@ class NeuralNetwork:
         a_3 = act.sigmoid(z3)
 
         self.Z = [z1,z2,z3]
-        # self.A = [np.array([inputs]),a_1,a_2,a_3]
-
         self.A = [inputs,a_1,a_2,a_3]
 
         ## End
@@ -105,10 +95,10 @@ class NeuralNetwork:
         b3 = self.var['b3']
 
         Z = self.Z
+        A = self.A
 
         dW3 = error * act.dsigmoid(Z[-1])
         db3 = np.mean(dW3)
-
 
         dW2 = dW3.dot(W3.T) * act.dtanh(Z[1])
         db2 = np.mean(dW2)
@@ -117,16 +107,9 @@ class NeuralNetwork:
         db1 = np.mean(dW1)
 
         # compute grads
-        dW3 = self.A[2].T.dot(dW3)
-        dW2 = self.A[1].T.dot(dW2)
-        dW1 = self.A[0].T.dot(dW1)
-
-
-        # b1 -= db1 * learning_rate
-        # W2 -= dW2 * learning_rate
-        # b2 -= db2 * learning_rate
-        # W3 -= dW3 * learning_rate
-        # b3 -= db3 * learning_rate
+        dW3 = A[2].T.dot(dW3)
+        dW2 = A[1].T.dot(dW2)
+        dW1 = A[0].T.dot(dW1)
 
         ## End
         updates = {"W1": dW1,
