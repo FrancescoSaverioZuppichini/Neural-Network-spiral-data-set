@@ -24,7 +24,7 @@ class Perceptron:
         b = self.var['b']
 
         # print(x.shape, W.shape)
-        s = x.dot(W)+ b
+        s = x.dot(W) + b
 
         y = sigmoid(s)
 

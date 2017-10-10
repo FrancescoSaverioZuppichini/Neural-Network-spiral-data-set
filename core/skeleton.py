@@ -10,7 +10,11 @@ import math
 import matplotlib.pyplot as plt
 from utils import timing
 from Perceptron import Perceptron
+from NeuralNetwork import NeuralNetwork
+from BetterNeuralNetwork import BetterNeuralNetwork
+import activation as act
 from MSE import MSE
+import time
 from MSE import dMSE
 
 ## Part 1
@@ -151,9 +155,15 @@ def competition_train_from_scratch(testX, testT):
     competition funciton to check the accuracy.
     """
     trainX, trainT = twospirals(n_points=250, noise=0.6, twist=800)
+    np.random.seed(int(time.time()))
     NN = BetterNeuralNetwork()
+    # NN = NeuralNetwork()
+    NN.addInputLayer(2, 20)
+    NN.addHiddenLayer(15, act.tanh, act.dtanh)
+    NN.addOutputLayer(1, act.tanh, act.dtanh)
 
     ## Implement
+    NN.train(trainX,trainT,0.001,1000)
 
 
 

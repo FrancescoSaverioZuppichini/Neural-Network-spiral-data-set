@@ -14,6 +14,10 @@ class Layer:
 
         self.W = np.random.randn(size_in,size_out)/np.sqrt(2.0)
         self.b = np.random.random([1,1]) * self.bias_scale
+
+        self.dW = 0
+        self.db = 0
+
         self.activation = activation
         self.d_activation = d_activation
 
@@ -61,13 +65,13 @@ class BetterNeuralNetwork:
         self.freeze = True
 
 
-    def addHiddenLayer(self,size,activation=act.sigmoid, d_activation=act.dsigmoid):
+    def addHiddenLayer(self,size, activation=act.sigmoid, d_activation=act.dsigmoid):
         prev_layer_size = self.layers[-1].size
 
         self.layers.append(self.createLayer(prev_layer_size,size,activation,d_activation))
 
 
-    def forward(self, inputs, targets):
+    def forward(self, inputs):
         """
         Implements the forward pass of the MLP model and returns the prediction y. We need to
         store the current input for the backward function.
@@ -77,7 +81,6 @@ class BetterNeuralNetwork:
         p = 0.5
 
         self.A = [inputs]
-
 
         for l in self.layers:
             a_prev = self.A[-1]
@@ -107,22 +110,34 @@ class BetterNeuralNetwork:
 
             dW = A[-i -1].T.dot(dW)
             # directly update weight -> FASTER!
-            l.b -= db * learning_rate
-            l.W -= dW * learning_rate
-
-        return ""
+            l.db = db
+            l.dW = dW
+            # l.b -= db * learning_rate
+            # l.W -= dW * learning_rate
 
 
     @timing
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
+        grads = []
+
+        y = self.forward(inputs)
+        # f0
+        error = y - targets
 
         for n in range(max_iter):
-            y = self.forward(inputs, targets)
+            prev_error = error
+
+            y = self.forward(inputs)
 
             error = y - targets
 
             self.backward(error,learning_rate)
 
+            for l in self.layers:
+                l.W -= l.dW * learning_rate
+                l.b -= l.db * learning_rate
+
+            grads.append(np.sum(error)/len(inputs))
 
 
-        return y
+        return y, grads

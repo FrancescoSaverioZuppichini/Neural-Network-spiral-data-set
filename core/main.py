@@ -88,7 +88,7 @@ STEP = 1
 
 train_size = 200
 
-X,T = sk.twospirals()
+X,T = sk.twospirals(120)
 X_train = X[0:train_size]
 T_train = T[0:train_size]
 X_test = X[train_size:]
@@ -112,7 +112,11 @@ grads = []
 #
 #
 #
-for i in range(10):
+
+for i in range(1):
+    sk.competition_train_from_scratch(X_train,T_train)
+
+for i in range(0):
     np.random.seed(int(time.time()))
 
     net = BNN()
@@ -120,14 +124,16 @@ for i in range(10):
     net.addHiddenLayer(15, act.tanh, act.dtanh)
     net.addOutputLayer(1, act.tanh, act.dtanh)
 
-    y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
+    y,grads = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
+    # plt.plot(grads)
+    # plt.show()
     print('--------')
     print('TRAINING SET')
     print(np.mean(((y > 0.5) * 1 == T_train) * 1))
 
     print('--------')
     print('TEST SET')
-    y = net.forward(X_test,T_test)
+    y = net.forward(X_test)
     print(np.mean(((y > 0.5) * 1 == T_test) * 1))
 
 

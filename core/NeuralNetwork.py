@@ -39,7 +39,7 @@ class NeuralNetwork:
 
         ## End
 
-    def forward(self, inputs, targets):
+    def forward(self, inputs):
         """
         Implements the forward pass of the MLP model and returns the prediction y. We need to
         store the current input for the backward function.
@@ -143,7 +143,7 @@ class NeuralNetwork:
         for n in range(max_iter):
             prev_delta = average_delta
 
-            y = self.forward(inputs, targets)
+            y = self.forward(inputs)
 
             error = y - targets
 
