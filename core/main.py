@@ -1,6 +1,9 @@
 from Perceptron import Perceptron
 from NeuralNetwork import NeuralNetwork as NN
+from BetterNeuralNetwork import BetterNeuralNetwork as BNN
 import skeleton as sk
+import activation as act
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
@@ -33,7 +36,7 @@ def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta
 
     return total_results,grads_average, errros_average, total_grads,total_erros
 
-sk.run_part1()
+# sk.run_part1()
 
 # print(model.forward(X))
 
@@ -93,6 +96,7 @@ T_test = T[train_size:]
 
 grads = []
 #
+
 # net = parall_train(X,T,0.01,MAX_ITER,4)
 #
 # y = net.forward(X_train,T_train)
@@ -108,21 +112,24 @@ grads = []
 #
 #
 #
-# for i in range(1):
-#     net = NN()
-#
-#     np.random.seed(int(time.time()))
-#     # np.random.seed(i)
-#     grads, y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
-#
-#     print('--------')
-#     print('TRAINING SET')
-#     print(np.mean(((y > 0.5) * 1 == T_train) * 1))
-#
-#     print('--------')
-#     print('TEST SET')
-#     y = net.forward(X_test,T_test)
-#     print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+for i in range(10):
+    np.random.seed(int(time.time()))
+
+    net = BNN()
+    net.addInputLayer(2, 20)
+    net.addHiddenLayer(15, act.tanh, act.dtanh)
+    net.addOutputLayer(1, act.tanh, act.dtanh)
+
+    y = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
+    print('--------')
+    print('TRAINING SET')
+    print(np.mean(((y > 0.5) * 1 == T_train) * 1))
+
+    print('--------')
+    print('TEST SET')
+    y = net.forward(X_test,T_test)
+    print(np.mean(((y > 0.5) * 1 == T_test) * 1))
+
 
 
 

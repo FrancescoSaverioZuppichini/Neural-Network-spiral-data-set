@@ -15,4 +15,10 @@ def timing(f):
         return ret
     return wrap
 
+
+# def train_and_store():
+#     best_so_far = 0
+#
+#     seed = int(time.time())
+
 # def plotResultsVsTest()

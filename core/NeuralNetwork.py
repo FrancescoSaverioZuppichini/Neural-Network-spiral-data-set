@@ -39,7 +39,7 @@ class NeuralNetwork:
 
         ## End
 
-    def forward(self, inputs, t):
+    def forward(self, inputs, targets):
         """
         Implements the forward pass of the MLP model and returns the prediction y. We need to
         store the current input for the backward function.

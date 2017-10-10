@@ -76,16 +76,32 @@ a^l = \sigma(W^la^{l-1} + b^l)
 \end{equation}
 
 \subsubsection{delta rules}
-A Neural Network try to change its weights in order to decrease the error function, $E$. We define $\deta^l_j$ the error of neuron $j$ in layer $l$
+A Neural Network try to change its weights in order to decrease the error function, $E$. We define $\delta^l_j$ the output error of neuron $j$ in layer $l$
 \begin{equation}
-	\label{eq:errorLayer}
+	\label{eq:deltaRule_1}
 	\delta^l_j = \frac{\delta E}{\delta z^l_j}
 \end{equation}
-Stringly speaking, $\delta^l_j$, is how much the error function change by changing the weighted input on that layer. %
+Stringly speaking, $\delta^l_j$, is how much the error function changes by changing the weighted input on that layer. Applying the chain rule, equation \ref{eq:deltaRule_1} becomes
+\begin{equation}
+\label{eq:deltaRule_2}
+\delta^l_j = \frac{\delta E}{\delta a^l_j} \frac{\delta a^l_j}{\delta z^l_j}
+\end{equation}
+Knowning that $a^l_j = \sigma(z^l_j)$ equation \ref{eq:deltaRule_2} can be rewritted
+\begin{equation}
+\label{eq:deltaRule}	
+\delta^l_j = \frac{\delta E}{\delta a^l_j} \sigma'(z^l_j)
+\end{equation}  
+
+ %
 %We define $\Delta z^l_j$ the quantity added to the $j$-th neuron's weighted input in the $l$ layer by the network.
 % The new output of that neuron becomes $\sigma(z^l_k + \Delta z^l_j)$ causing a changing by $\frac{\delta E}{\delta z^l_k}\Delta z^l_j$. 
 \subsubsection{Derivatives of the weights}
-We can express $\frac{\delta E}{\delta w^l_{jk}}$ by using equation \ref{eq:errorLayer}.
+We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule
+\begin{equation}
+\frac{\delta E}{\delta w^l_{jk}} = \frac{\delta E}{\delta z^l_j}\frac{\delta z^l_j}{\delta w^l_{jk}} =	
+\frac{\delta E}{\delta a^l_j}\frac{\delta a^l_j}{\delta z^l_{j}}
+\frac{\delta z^l_j}{\delta w^l_{jk}}
+\end{equation}
 \begin{equation}
 \label{eq:derivativesWeigthDeltas}	
 \frac{\delta E}{\delta w^l_{jk}} = a^{l-1}_k \delta^l_j
