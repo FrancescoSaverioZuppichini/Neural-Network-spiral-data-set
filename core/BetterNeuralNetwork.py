@@ -5,15 +5,19 @@ from utils import timing
 import math
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
-
 class Layer:
 
     def __init__(self,size_in,size_out, activation=act.sigmoid, d_activation=act.dsigmoid):
         self.size = size_out
         self.bias_scale = 0.01
 
-        self.W = np.random.randn(size_in,size_out)/np.sqrt(2.0)
+        # self.gain = np.ones([size_out])
+
+        self.W = np.random.randn(size_in,size_out)/np.sqrt(size_in)
         self.b = np.random.random([1,1]) * self.bias_scale
+
+        # self.dW = []
+        # self.db = []
 
         self.dW = 0
         self.db = 0
@@ -84,8 +88,7 @@ class BetterNeuralNetwork:
 
         for l in self.layers:
             a_prev = self.A[-1]
-            w = l.W
-            z = a_prev.dot(w) + l.b
+            z = a_prev.dot(l.W) + l.b
             a = l.activation(z)
             # store
             self.A.append(a)
@@ -100,18 +103,36 @@ class BetterNeuralNetwork:
 
         delta = error
 
-        for i in range(1,len(self.layers)):
-            l = self.layers[-i]
+        i = len(self.layers) - 1
 
-            dW  = delta * l.d_activation(Z[-i])
+        while(i >= 0):
+            l = self.layers[i]
+
+            dW = delta * l.d_activation(Z[i])
             db = np.mean(dW)
 
             delta = dW.dot(l.W.T)
 
-            dW = A[-i -1].T.dot(dW)
-            # directly update weight -> FASTER!
-            l.db = db
+            dW = A[i].T.dot(dW)
+
             l.dW = dW
+            l.db = db
+
+            i -= 1
+        # for i in range(1,len(self.layers)):
+        #     l = self.layers[-i]
+        #
+        #     dW  = delta * l.d_activation(Z[-i])
+        #     db = np.mean(dW)
+        #
+        #     delta = dW.dot(l.W.T)
+        #
+        #     dW = A[-i -1].T.dot(dW)
+        #     # directly update weight -> FASTER!
+        #     l.dW = dW
+        #     l.db = db
+            # l.db.append(db)
+            # l.dW.append(dW)
             # l.b -= db * learning_rate
             # l.W -= dW * learning_rate
 
@@ -120,22 +141,28 @@ class BetterNeuralNetwork:
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
         grads = []
 
-        y = self.forward(inputs)
-        # f0
-        error = y - targets
+        Beta = 0
+        g = 0
+        epoch = 1
+        n = 1
 
         for n in range(max_iter):
-            prev_error = error
 
             y = self.forward(inputs)
 
             error = y - targets
+            print(np.mean(np.abs(error)))
 
             self.backward(error,learning_rate)
 
             for l in self.layers:
+                # dW = l.dW.pop()
+                # db = l.db.pop()
+
                 l.W -= l.dW * learning_rate
                 l.b -= l.db * learning_rate
+
+
 
             grads.append(np.sum(error)/len(inputs))
 

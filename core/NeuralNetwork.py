@@ -149,6 +149,8 @@ class NeuralNetwork:
 
             updates = self.backward(error, learning_rate)
 
+            print(np.mean(np.abs(error)))
+
 
             average_delta = 0
 
@@ -162,4 +164,4 @@ class NeuralNetwork:
             grads.append(sum(error)/len(inputs))
 
 
-        return grads, y
+        return y, grads

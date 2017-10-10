@@ -83,7 +83,7 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
 
 LEARNING_RATE = 0.001
-MAX_ITER = 1000
+MAX_ITER = 6000
 STEP = 1
 
 train_size = 200
@@ -113,17 +113,19 @@ grads = []
 #
 #
 
+# for i in range(1):
+#     sk.competition_train_from_scratch(X_train,T_train)
+
 for i in range(1):
-    sk.competition_train_from_scratch(X_train,T_train)
-
-for i in range(0):
-    np.random.seed(int(time.time()))
-
-    net = BNN()
-    net.addInputLayer(2, 20)
-    net.addHiddenLayer(15, act.tanh, act.dtanh)
-    net.addOutputLayer(1, act.tanh, act.dtanh)
-
+    np.random.seed(1)
+    #
+    net = NN()
+    #
+    # net = BNN()
+    # net.addInputLayer(2, 20)
+    # net.addHiddenLayer(15, act.tanh, act.dtanh)
+    # net.addOutputLayer(1, act.tanh, act.dtanh)
+    #
     y,grads = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
     # plt.plot(grads)
     # plt.show()
