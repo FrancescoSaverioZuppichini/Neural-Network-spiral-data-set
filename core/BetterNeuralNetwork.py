@@ -118,24 +118,21 @@ class BetterNeuralNetwork:
 
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.001, max_iter=200):
+    def train(self,inputs,targets,learning_rate=0.001, max_iter=200,X_val=None,T_val=None):
         grads = []
 
-        Beta = 0
-        g = 0
-        epoch = 1
-        n = 1
+        accuracy = 0
 
         for n in range(max_iter):
 
             y = self.forward(inputs)
 
-            error = y - targets
+            error = (y - targets)
 
             self.backward(error)
 
-            if(n % 100 == 1):
-                print(np.mean(np.abs(error)))
+            # if(n % 100 == 1):
+            #     print('Error: ',np.mean(np.abs(error)))
 
             for i in range(1,len(self.layers)):
                 l = self.layers[i]
@@ -150,10 +147,20 @@ class BetterNeuralNetwork:
                 l.dW = [update_W]
                 l.db = [update_b]
 
+            # if(X_val != None):
+            #     y_val = self.forward(X_val)
+            #
+            #     temp = np.mean(((y_val > 0.5) * 1 == T_val) * 1)
+            #     if (n > 1000):
+            #         if (temp <= accuracy):
+            #             print('Early stopped after {} iterations'.format(n))
+            #             return y, grads
+            #         if(temp > accuracy):
+            #             accuracy = temp
 
 
 
-            # grads.append(np.sum(error)/len(inputs))
+        print('Error: ',np.mean(np.abs(y)))
 
 
         return y, grads

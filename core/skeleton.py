@@ -155,26 +155,31 @@ def competition_train_from_scratch(testX, testT):
     competition funciton to check the accuracy.
     """
     trainX, trainT = twospirals(n_points=250, noise=0.6, twist=800)
+
+    # X = trainX[0:450]
+    # T = trainT[0:450]
+    # X_val = trainX[450:]
+    # T_val = trainT[450:]
+
     np.random.seed(int(time.time()))
     NN = BetterNeuralNetwork()
     # NN = NeuralNetwork()
-    NN.addInputLayer(2, 20, act.tanh, act.dtanh)
-    NN.addHiddenLayer(15, act.tanh, act.dtanh)
+    NN.addInputLayer(2, 10, act.tanh, act.dtanh)
+    NN.addHiddenLayer(10, act.tanh, act.dtanh)
     NN.addOutputLayer(1)
-
     ## Implement
-    NN.train(trainX,trainT,0.001,10000)
-
-
+    NN.train(trainX,trainT,0.01,3000)
 
     ## End
 
-    print("Accuracy from scratch BNN: ", compute_accuracy(NN, testX, testT))
+    testX, testT = twospirals()
 
+
+    print("Accuracy from scratch BNN: ", compute_accuracy(NN, testX, testT))
     NN = NeuralNetwork()
 
     ## Implement
-    NN.train(trainX, trainT, 0.001, 10000)
+    NN.train(trainX, trainT, 0.01, 3000)
     print("Accuracy from scratch NN: ", compute_accuracy(NN, testX, testT))
 
 

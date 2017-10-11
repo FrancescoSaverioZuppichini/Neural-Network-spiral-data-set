@@ -136,14 +136,12 @@ class NeuralNetwork:
 
             updates = self.backward(error)
 
-            if (n % 100 == 1):
-                print(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = (learning_rate * delta)
                 self.var[var_str] -= update
-                # self.var[var_str] -= 0.5 *  momentum[var_str]
-                # momentum[var_str] = delta
 
+
+        print('Error: ',np.mean(np.abs(y)))
 
         return y, grads
