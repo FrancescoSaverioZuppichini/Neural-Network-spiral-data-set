@@ -88,47 +88,95 @@ STEP = 1
 
 train_size = 200
 
+X_train,T_train = sk.twospirals()
+
+grads = []
+
+for i in range(0):
+    print('****************************')
+    BNN_acc, NN_acc = sk.competition_train_from_scratch(X_train,T_train)
+#
+#     BNN_accs.append(BNN_acc)
+#     NN_accs.append(NN_acc)
+#
+# plt.plot(BNN_accs,label='BNN')
+# plt.plot(NN_accs,label='NN')
+# plt.legend()
+# plt.show()
+
+# learning_rates = [0.05,0.01,0.005,0.001]
+
+learning_rates = [0.001]
+
+size = 1100
+X, T = sk.twospirals(600)
+X_train, T_train = X[:size],T[:size]
+X_test, T_test = X[size:],T[size:]
+
+# np.random.seed(1)
+ITER = 4000
+for i in range(1):
+    for eta in learning_rates:
+        # seed = int(time.time())
+        # np.random.seed(seed)
+
+        np.random.seed(i)
+
+        # nn = NN()
+        bnn = BNN()
+        bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
+        bnn.addHiddenLayer(15, np.tanh, act.dtanh)
+        bnn.addOutputLayer(1)
+
+        # np.random.seed(seed)
+        np.random.seed(i)
+
+        #
+        bnn2 = BNN()
+        bnn2.addInputLayer(2, 20)
+        bnn2.addHiddenLayer(15, act.tanh, act.dtanh)
+        bnn2.addHiddenLayer(15, act.tanh, act.dtanh)
+        # bnn2.addHiddenLayer(8, act.tanh, act.dtanh)
+        bnn2.addOutputLayer(1)
+
+        y, grads, BNN_errros = bnn2.train(X_train,T_train,eta,ITER)
+        y, grads, NN_errros = bnn.train(X_train,T_train,eta,ITER)
+        # y, grads, BNN_errros = bnn2.train(X_train,T_train,eta,ITER)
+
+        # testX, testT = sk.twospirals(50)
+
+        # np.random.seed(i)
+        # net = NN()
+        # net.train(X_train,T_train,eta,ITER)
+        #
+        # print("Accuracy from scratch NN: ", sk.compute_accuracy(net,X_test,T_test))
+
+        print("Accuracy from scratch BNN: ", sk.compute_accuracy(bnn,X_test,T_test))
+
+        print("Accuracy from scratch BNN with momentum: ", sk.compute_accuracy(bnn2,X_test,T_test))
+
+        # plt.title("BNN vs NN with eta={}".format(eta))
+        # NN_errros = np.mean(np.array(NN_errros).reshape(-1, 100), 1)
+        # BNN_errros = np.mean(np.array(BNN_errros).reshape(-1, 100), 1)
+        #
+        # fig = plt.figure()
+        # plt.plot(NN_errros,label='normal')
+        # plt.plot(BNN_errros,label='momentum')
+        # plt.legend()
+        # plt.show()
+        # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
+
+
+
+
 X,T = sk.twospirals(120)
 X_train = X[0:train_size]
 T_train = T[0:train_size]
 X_test = X[train_size:]
 T_test = T[train_size:]
-
-grads = []
-#
-
-# net = parall_train(X,T,0.01,MAX_ITER,4)
-#
-# y = net.forward(X_train,T_train)
-#
-# print('--------')
-# print('TRAINING SET')
-# print(np.mean(((y > 0.5) * 1 == T_train) * 1))
-# print('--------')
-# print('TEST SET')
-#
-# y = net.forward(X_test,T_test)
-# print(np.mean(((y > 0.5) * 1 == T_test) * 1))
-#
-#
-#
-BNN_accs = []
-NN_accs = []
-for i in range(100):
-    BNN_acc, NN_acc = sk.competition_train_from_scratch(X_train,T_train)
-
-    BNN_accs.append(BNN_acc)
-    NN_accs.append(NN_acc)
-
-plt.plot(BNN_accs,label='BNN')
-plt.plot(NN_accs,label='NN')
-plt.legend()
-plt.show()
-
-
 for i in range(0):
-    # np.random.seed(int(time.time()))
-    np.random.seed(1)
+    np.random.seed(int(time.time()))
+    # np.random.seed(1)
     #
     # net = NN()
     #

@@ -126,6 +126,7 @@ class NeuralNetwork:
     @timing
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
         grads = []
+        errors = []
         y = 0
 
         for n in range(max_iter):
@@ -135,7 +136,9 @@ class NeuralNetwork:
             error = y - targets
 
             updates = self.backward(error)
-
+            # if (n % 100 == 1):
+            #     print('Error: ', np.mean(np.abs(error)))
+            errors.append(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = (learning_rate * delta)
@@ -144,4 +147,4 @@ class NeuralNetwork:
 
         # print('Error: ',np.mean(np.abs(y)))
 
-        return y, grads
+        return y, grads, errors

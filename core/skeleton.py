@@ -160,8 +160,9 @@ def competition_train_from_scratch(testX, testT):
     # T = trainT[0:450]
     # X_val = trainX[450:]
     # T_val = trainT[450:]
-
     np.random.seed(int(time.time()))
+
+    # np.random.seed(1)
     NN = BetterNeuralNetwork()
     # NN = NeuralNetwork()
     NN.addInputLayer(2, 10, act.tanh, act.dtanh)
@@ -170,7 +171,7 @@ def competition_train_from_scratch(testX, testT):
 
     NN.addOutputLayer(1)
     ## Implement
-    NN.train(trainX,trainT,0.01,1200)
+    NN.train(trainX,trainT,0.01,1000,True)
 
     ## End
 
@@ -183,7 +184,7 @@ def competition_train_from_scratch(testX, testT):
     NN = NeuralNetwork()
 
     ## Implement
-    NN.train(trainX, trainT, 0.01, 1200)
+    NN.train(trainX, trainT, 0.001, 2000)
     NN_acc = compute_accuracy(NN, testX, testT)
     print("Accuracy from scratch NN: ", NN_acc)
 

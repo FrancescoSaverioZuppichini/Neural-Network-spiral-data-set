@@ -19,6 +19,8 @@ class Layer:
         self.W = np.random.randn(size_in,size_out)/np.sqrt(size_in)
         self.b = np.random.random([1,1]) * self.bias_scale
 
+        # self.dW = np.zeros(self.W.shape)
+        # self.dB = np.zeros([1,1])
         self.dW = [np.zeros(self.W.shape)]
         self.db = [np.zeros([1,1])]
 
@@ -80,7 +82,7 @@ class BetterNeuralNetwork:
         x = self.x = inputs
 
         self.A = [inputs]
-
+        self.Z = []
         a = inputs
 
         for l in self.layers:
@@ -90,7 +92,7 @@ class BetterNeuralNetwork:
             self.A.append(a)
             self.Z.append(z)
 
-        return self.A[-1]
+        return a
 
 
     def backward(self, error):
@@ -99,47 +101,71 @@ class BetterNeuralNetwork:
 
         delta = error
 
-        for i in range(1,len(self.layers)):
-            l = self.layers[-i]
+        i = len(self.layers) - 1
+        #
+        while (i >= 0):
+            l = self.layers[i]
 
-            dW  = delta * l.d_activation(Z[-i])
-            db = np.mean(dW)
+            dW = delta * l.d_activation(Z[i])
 
             delta = dW.dot(l.W.T)
 
-            dW = A[-i -1].T.dot(dW)
-            # directly update weight -> FASTER!
-            # l.dW = dW
-            # l.db = db
-            l.db.append(db)
+            dW = A[i].T.dot(dW)
+            db = np.mean(dW)
             l.dW.append(dW)
+            l.db.append(db)
+
+            i -= 1
+
+        # for i in range(1,len(self.layers)):
+        #     l = self.layers[-i]
+        #
+        #     dW  = delta * l.d_activation(Z[-i])
+        #     db = np.mean(dW)
+        #
+        #     delta = dW.dot(l.W.T)
+        #
+        #     dW = A[-i -1].T.dot(dW)
+        #     # directly update weight -> FASTER!
+        #     # l.dW = dW
+        #     # l.db = db
+        #     l.db.append(db)
+        #     l.dW.append(dW)
             # l.b -= db * learning_rate
             # l.W -= dW * learning_rate
 
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.001, max_iter=200,X_val=None,T_val=None):
+    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=False,X_val=None,T_val=None):
         grads = []
-
+        errors = []
         accuracy = 0
 
         for n in range(max_iter):
 
             y = self.forward(inputs)
 
-            error = (y - targets)
+            error = y - targets
 
             self.backward(error)
 
-            # if(n % 100 == 1):
-            #     print('Error: ',np.mean(np.abs(error)))
+            errors.append(np.mean(np.abs(error)))
 
-            for i in range(1,len(self.layers)):
+            if(n % 100 == 1):
+                print('Error: ',np.mean(np.abs(error)))
+
+            for i in range(len(self.layers)):
                 l = self.layers[i]
-                mom  = 0.5
+                mom  = 0.3
 
-                update_W = l.dW[1] * learning_rate + mom  * l.dW[0]
-                update_b = l.db[1] * learning_rate + mom  * l.db[0]
+                # update_W = l.dW * learning_rate
+                # update_b = l.db * learning_rate
+                update_W = l.dW[1] * learning_rate
+                update_b = l.db[1] * learning_rate
+
+                if(momentum):
+                    update_W += mom * l.dW[0]
+                    update_b += mom * l.db[0]
 
                 l.W -= update_W
                 l.b -= update_b
@@ -163,4 +189,4 @@ class BetterNeuralNetwork:
         # print('Error: ',np.mean(np.abs(y)))
 
 
-        return y, grads
+        return y, grads, errors
