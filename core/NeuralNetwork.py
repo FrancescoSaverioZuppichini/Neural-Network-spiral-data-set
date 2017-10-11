@@ -142,6 +142,6 @@ class NeuralNetwork:
                 self.var[var_str] -= update
 
 
-        print('Error: ',np.mean(np.abs(y)))
+        # print('Error: ',np.mean(np.abs(y)))
 
         return y, grads

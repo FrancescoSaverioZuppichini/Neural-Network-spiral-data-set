@@ -112,9 +112,19 @@ grads = []
 #
 #
 #
+BNN_accs = []
+NN_accs = []
+for i in range(100):
+    BNN_acc, NN_acc = sk.competition_train_from_scratch(X_train,T_train)
 
-for i in range(1):
-    sk.competition_train_from_scratch(X_train,T_train)
+    BNN_accs.append(BNN_acc)
+    NN_accs.append(NN_acc)
+
+plt.plot(BNN_accs,label='BNN')
+plt.plot(NN_accs,label='NN')
+plt.legend()
+plt.show()
+
 
 for i in range(0):
     # np.random.seed(int(time.time()))

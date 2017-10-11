@@ -160,7 +160,7 @@ class BetterNeuralNetwork:
 
 
 
-        print('Error: ',np.mean(np.abs(y)))
+        # print('Error: ',np.mean(np.abs(y)))
 
 
         return y, grads
