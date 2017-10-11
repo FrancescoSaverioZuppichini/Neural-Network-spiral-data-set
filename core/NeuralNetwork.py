@@ -81,7 +81,7 @@ class NeuralNetwork:
     def update(self, key, dx, learning_rage):
         self.var[key] -= dx * learning_rage
 
-    def backward(self, error, learning_rate):
+    def backward(self, error):
         """
         Backpropagates through the model and computes the derivatives. The forward function must be
         run before hand for self.x to be defined. Returns the derivatives without applying them using
@@ -128,40 +128,22 @@ class NeuralNetwork:
         grads = []
         y = 0
 
-        # momentum = {
-        #     "W1": 0,
-        #     "b1": 0,
-        #     "W2": 0,
-        #     "b2": 0,
-        #     "W3": 0,
-        #     "b3": 0
-        # }
-        error_increase_tol = 10^10
-        prev_delta = -1
-        average_delta = 0
-
         for n in range(max_iter):
-            prev_delta = average_delta
 
             y = self.forward(inputs)
 
             error = y - targets
 
-            updates = self.backward(error, learning_rate)
+            updates = self.backward(error)
 
-            print(np.mean(np.abs(error)))
-
-
-            average_delta = 0
+            if (n % 100 == 1):
+                print(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = (learning_rate * delta)
                 self.var[var_str] -= update
                 # self.var[var_str] -= 0.5 *  momentum[var_str]
                 # momentum[var_str] = delta
-
-
-            grads.append(sum(error)/len(inputs))
 
 
         return y, grads

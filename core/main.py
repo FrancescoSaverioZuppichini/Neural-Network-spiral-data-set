@@ -113,19 +113,20 @@ grads = []
 #
 #
 
-# for i in range(1):
-#     sk.competition_train_from_scratch(X_train,T_train)
-
 for i in range(1):
+    sk.competition_train_from_scratch(X_train,T_train)
+
+for i in range(0):
+    # np.random.seed(int(time.time()))
     np.random.seed(1)
     #
-    net = NN()
+    # net = NN()
     #
-    # net = BNN()
-    # net.addInputLayer(2, 20)
-    # net.addHiddenLayer(15, act.tanh, act.dtanh)
-    # net.addOutputLayer(1, act.tanh, act.dtanh)
-    #
+    net = BNN()
+    net.addInputLayer(2, 20, act.tanh, act.dtanh)
+    net.addHiddenLayer(15, act.tanh, act.dtanh)
+    net.addOutputLayer(1)
+
     y,grads = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
     # plt.plot(grads)
     # plt.show()

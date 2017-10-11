@@ -158,18 +158,25 @@ def competition_train_from_scratch(testX, testT):
     np.random.seed(int(time.time()))
     NN = BetterNeuralNetwork()
     # NN = NeuralNetwork()
-    NN.addInputLayer(2, 20)
+    NN.addInputLayer(2, 20, act.tanh, act.dtanh)
     NN.addHiddenLayer(15, act.tanh, act.dtanh)
-    NN.addOutputLayer(1, act.tanh, act.dtanh)
+    NN.addOutputLayer(1)
 
     ## Implement
-    NN.train(trainX,trainT,0.001,1000)
+    NN.train(trainX,trainT,0.001,10000)
 
 
 
     ## End
 
-    print("Accuracy from scratch: ", compute_accuracy(NN, testX, testT))
+    print("Accuracy from scratch BNN: ", compute_accuracy(NN, testX, testT))
+
+    NN = NeuralNetwork()
+
+    ## Implement
+    NN.train(trainX, trainT, 0.001, 10000)
+    print("Accuracy from scratch NN: ", compute_accuracy(NN, testX, testT))
+
 
 
 def competition_load_weights_and_evaluate_X_and_T(testX, testT):
