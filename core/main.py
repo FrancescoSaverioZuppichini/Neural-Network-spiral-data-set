@@ -48,7 +48,7 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
     step = len(X) // max_workers
     # my_queue = Queue()
 
-    for i in range(steps):
+    for i in range(2000):
         threads = []
         slaves = []
         for i in range(max_workers):
@@ -56,7 +56,7 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
             t_batch = T[(i) * step:(i + 1) * step]
             slave = NN()
             slaves.append(slave)
-            t = Thread(target=slave.train,args=(x_batch, t_batch, learning_rate, max_iter))
+            t = Thread(target=slave.train,args=(x_batch, t_batch, learning_rate, 10))
             # my_queue.put(slave.train(x_batch, t_batch, learning_rate, max_iter))
             threads.append(t)
 
@@ -76,46 +76,54 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
     # results = [my_queue.get() for x in range(max_workers)]
     time2 = time.time()
-    print('All threads finish after {:0.3f} ms'.format(float(time2-time1)*1000.0))
+    total_time = float(time2-time1)*1000.0
+    print('All threads finish after {:0.3f} ms'.format(total_time))
+    print('{} iterations per seconds'.format((max_iter * max_workers *steps)/ total_time))
     return master
 
 
 
-
-LEARNING_RATE = 0.001
-MAX_ITER = 6000
-STEP = 1
-
-train_size = 200
-
-X_train,T_train = sk.twospirals()
-
-grads = []
-
-for i in range(0):
-    print('****************************')
-    BNN_acc, NN_acc = sk.competition_train_from_scratch(X_train,T_train)
-#
-#     BNN_accs.append(BNN_acc)
-#     NN_accs.append(NN_acc)
-#
-# plt.plot(BNN_accs,label='BNN')
-# plt.plot(NN_accs,label='NN')
-# plt.legend()
-# plt.show()
-
 # learning_rates = [0.05,0.01,0.005,0.001]
 
-learning_rates = [0.001]
 
-size = 1100
-X, T = sk.twospirals(600)
+# sk.run_part1()
+
+learning_rates = [0.05,0.01,0.005,0.001,0.0001]
+
+size = 200
+X, T = sk.twospirals()
 X_train, T_train = X[:size],T[:size]
 X_test, T_test = X[size:],T[size:]
 
-# np.random.seed(1)
+
+# part 4
 ITER = 4000
-for i in range(1):
+# plots = []
+fig = plt.figure()
+plt.title('Learning rates in training')
+for i in range(len(learning_rates)):
+
+    np.random.seed(i)
+    eta = learning_rates[i]
+
+    bnn = BNN()
+    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
+    bnn.addHiddenLayer(15, np.tanh, act.dtanh)
+    bnn.addOutputLayer(1)
+    y,grads, errors = bnn.train(X,T,eta,ITER)
+
+    plt.plot(np.mean(np.array(errors).reshape(-1, 100), 1), label="eta={}".format(eta))
+
+plt.legend()
+# plt.show()
+fig.savefig('/Users/vaevictis/Desktop/Assignment1/docs/images/NN_eta_vs_training.png')
+
+# model = parall_train(X,T,0.001,1000,4)
+#
+# print(sk.compute_accuracy(model,X_test,T_test))
+
+# np.random.seed(1)
+for i in range(0):
     for eta in learning_rates:
         # seed = int(time.time())
         # np.random.seed(seed)
@@ -159,63 +167,17 @@ for i in range(1):
         # NN_errros = np.mean(np.array(NN_errros).reshape(-1, 100), 1)
         # BNN_errros = np.mean(np.array(BNN_errros).reshape(-1, 100), 1)
         #
-        # fig = plt.figure()
-        # plt.plot(NN_errros,label='normal')
+        fig = plt.figure()
+        plt.title('Learning rate')
+        plt.plot(NN_errros,label='normal')
         # plt.plot(BNN_errros,label='momentum')
-        # plt.legend()
-        # plt.show()
-        # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
+        plt.legend()
+        plt.show()
+        fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
 
 
 
 
-X,T = sk.twospirals(120)
-X_train = X[0:train_size]
-T_train = T[0:train_size]
-X_test = X[train_size:]
-T_test = T[train_size:]
-for i in range(0):
-    np.random.seed(int(time.time()))
-    # np.random.seed(1)
-    #
-    # net = NN()
-    #
-    net = BNN()
-    net.addInputLayer(2, 20, act.tanh, act.dtanh)
-    net.addHiddenLayer(15, act.tanh, act.dtanh)
-    net.addOutputLayer(1)
-
-    y,grads = net.train(X_train,T_train, LEARNING_RATE , MAX_ITER)
-    # plt.plot(grads)
-    # plt.show()
-    print('--------')
-    print('TRAINING SET')
-    print(np.mean(((y > 0.5) * 1 == T_train) * 1))
-
-    print('--------')
-    print('TEST SET')
-    y = net.forward(X_test)
-    print(np.mean(((y > 0.5) * 1 == T_test) * 1))
-
-
-
-
-# grads = [grads[i] for i in range(len(grads)) if i % STEP == 0]
-# plt.plot(grads)
-# plt.show()
-# print(error)
-#
-# plt.figure(1)
-#
-# plt.subplot(211)
-# plt.title('costs')
-# plt.plot(costs)
-#
-# plt.subplot(212)
-#
-# plt.title('grad')
-# plt.plot(grads)
-# plt.show()
 
 
 

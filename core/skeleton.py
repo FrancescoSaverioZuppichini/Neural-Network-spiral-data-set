@@ -40,13 +40,14 @@ def train_one_step(model, learning_rate, inputs, targets):
 
     error = dMSE(y,targets)
 
+    print('Error: ', np.mean(np.abs(error)))
+
     updates = model.backward(error)
 
     for var_str, delta in updates.items():
         update = delta * learning_rate
         model.var[var_str] -= update.T
 
-    ## End
     return y
 
 def plot_data(X,T):
@@ -73,21 +74,23 @@ def run_part1():
     """
     Train the perceptron according to the assignment.
     """
-    MAX_ITER = 15
+    MAX_ITER = 1500
 
     model = Perceptron()
+
     X, T = get_part1_data()
 
-    y = 0
+    y = None
 
     learning_rate = 0.02
+
     for n in range(MAX_ITER):
         y = train_one_step(model, learning_rate, X, T)
-
+        # print(compute_accuracy(model,X,T))
 
     plot_boundary(model,X,T)
     plt.savefig('/Users/VaeVictis/Desktop/Assignment1/docs/images/run_part1.png')
-    plt.show()
+    # plt.show()
 
     return y
 

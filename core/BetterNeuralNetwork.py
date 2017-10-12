@@ -151,8 +151,8 @@ class BetterNeuralNetwork:
 
             errors.append(np.mean(np.abs(error)))
 
-            if(n % 100 == 1):
-                print('Error: ',np.mean(np.abs(error)))
+            # if(n % 100 == 1):
+            #     print('Error: ',np.mean(np.abs(error)))
 
             for i in range(len(self.layers)):
                 l = self.layers[i]

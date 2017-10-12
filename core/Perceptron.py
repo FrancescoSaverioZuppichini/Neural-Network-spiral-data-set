@@ -1,6 +1,7 @@
 import numpy as np
 from activation import sigmoid
 from MSE import dMSE
+
 class Perceptron:
     """
     Keeps track of the variables of the Perceptron model. Can be used for predictoin and to compute the gradients.
@@ -23,13 +24,9 @@ class Perceptron:
         W = self.var['W']
         b = self.var['b']
 
-        # print(x.shape, W.shape)
-        s = x.dot(W) + b
+        prediction = x.dot(W) + b
 
-        y = sigmoid(s)
-
-        ## End
-        return y
+        return prediction
 
     def backward(self, error):
         """
@@ -38,8 +35,6 @@ class Perceptron:
         a dictonary similar to self.var.
         """
         x = self.x
-
-
 
         updates = {"W": error.T.dot(x),
                    "b": np.mean(error)}
