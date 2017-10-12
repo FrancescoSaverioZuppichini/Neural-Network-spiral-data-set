@@ -1,5 +1,5 @@
 import numpy as np
-from activation import sigmoid
+from activation import tanh
 from MSE import dMSE
 
 class Perceptron:
@@ -36,7 +36,7 @@ class Perceptron:
         """
         x = self.x
 
-        updates = {"W": error.T.dot(x),
-                   "b": np.sum(error)}
+        updates = {"W": error * x,
+                   "b": np.mean(error)}
 
         return updates

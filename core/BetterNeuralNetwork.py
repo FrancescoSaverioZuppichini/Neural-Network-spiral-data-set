@@ -123,8 +123,7 @@ class BetterNeuralNetwork:
 
         # backprop starting from the last layer
         i = len(self.layers) - 1
-        # TODO make it coller by using reverse index
-        # or fancy recursion
+     
         while (i >= 0):
             l = self.layers[i]
             # d = (W^{l+1}).d^{l+1} * a^l
@@ -174,10 +173,5 @@ class BetterNeuralNetwork:
 
                 l.dW = [update_W]
                 l.db = [update_b]
-            print(n)
-            plot_boundary(self,inputs,targets)
-            plt.show(block=False)
-            plt.pause(0.05)
-            plt.clf()
 
         return y, grads, errors

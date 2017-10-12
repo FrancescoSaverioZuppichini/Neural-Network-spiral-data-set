@@ -33,16 +33,19 @@ def train_one_step(model, learning_rate, inputs, targets):
     Uses the forward and backward function of a model to compute the error and updates the model
     weights while overwritting model.var. Returns the cost.
     """
+    for i in range(len(inputs)):
+        x = inputs[i]
+        t = targets[i]
 
-    y = model.forward(inputs)
+        y = model.forward(x)
 
-    error = dMSE(y,targets)
+        error = dMSE(y,t)
 
-    updates = model.backward(error)
+        updates = model.backward(error)
 
-    for var_str, delta in updates.items():
-        update = delta * learning_rate
-        model.var[var_str] -= update.T
+        for var_str, delta in updates.items():
+            update = np.array([delta]) * learning_rate
+            model.var[var_str] -= update.T
 
     return y
 
@@ -70,7 +73,7 @@ def run_part1():
     """
     Train the perceptron according to the assignment.
     """
-    MAX_ITER = 15
+    MAX_ITER = 150000
 
     model = Perceptron()
 
@@ -78,14 +81,17 @@ def run_part1():
 
     y = None
 
-    learning_rate = 0.000001
+    learning_rate = 0.002
 
     for n in range(MAX_ITER):
         y = train_one_step(model, learning_rate, X, T)
 
-    plot_boundary(model,X,T)
+        plot_boundary(model,X,T)
+        plt.show(block=False)
+        plt.pause(0.1)
+        plt.clf()
     # plt.savefig('/Users/VaeVictis/Desktop/Assignment1/docs/images/run_part1.png')
-    plt.show()
+
 
     return y
 
@@ -158,18 +164,19 @@ def competition_train_from_scratch(testX, testT):
     # T = trainT[0:450]
     # X_val = trainX[450:]
     # T_val = trainT[450:]
-    np.random.seed(int(time.time()))
+    # np.random.seed(int(time.time()))
 
-    # np.random.seed(1)
+    np.random.seed(1)
     NN = BetterNeuralNetwork()
     # NN = NeuralNetwork()
-    NN.addInputLayer(2, 10, act.tanh, act.dtanh)
+    NN.addInputLayer(2, 20, act.tanh, act.dtanh)
     NN.addHiddenLayer(10, act.tanh, act.dtanh)
-    NN.addHiddenLayer(10, act.tanh, act.dtanh)
+    # NN.addHiddenLayer(10, act.tanh, act.dtanh)
+    # NN.addOutputLayer(1)
 
     NN.addOutputLayer(1)
     ## Implement
-    NN.train(trainX,trainT,0.01,1000,True)
+    NN.train(trainX,trainT,0.001,2000,True)
 
     ## End
 

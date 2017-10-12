@@ -78,8 +78,6 @@ class NeuralNetwork:
         ## End
         return a_3
 
-    def update(self, key, dx, learning_rage):
-        self.var[key] -= dx * learning_rage
 
     def backward(self, error):
         """
@@ -140,7 +138,7 @@ class NeuralNetwork:
             errors.append(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
-                update = (learning_rate * delta)
+                update = learning_rate * delta
                 self.var[var_str] -= update
 
 

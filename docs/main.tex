@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath}
+\usepackage{listings}
 \usepackage{graphicx}
+\usepackage{pythonhighlight}
 \usepackage{subfig}
 \usepackage{caption}
 \usepackage{float}
@@ -60,7 +62,7 @@ You can find the implementation in the code. The plot showed in figure \ref{fig:
 You can find them inside \emph{activation.py}
 \subsection{Question 2}
 \subsubsection{Forward pass}
-In order to calculate the forward pass of a Neural Network we need to compute the activation of each layer, $l$, ad use it as input of the next one until we reach the output layer.
+In order to calculate the forward pass of a Neural Network we need to compute the activation of each layer, $l$, ad use it as input of the next one until we reach the output layer. 
 
 Equation \ref{eq:forwardPass} shows the activation $a$ of layer $l$ for the $j$-th neuron on that layer.
 
@@ -108,6 +110,25 @@ We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule
 \end{equation}
 \subsection{Implement the functions forward and backward of the Neural Network class.}
 \subsection{Train Network}
-I decide to split my Training set and Test set by a ratio of 80:20. Figure METTI FIGURA shows the converge of the network with different steps size on the training set, while Figure DIOCANE FIGURE shows it on the test set.
+\subsubsection{ Split the data into a train set and a test set}
+I decide to split my Training set and Test set by a ratio of 80:20. If we choose a smaller train set we may under-train the network, on the other hand we if we shrink the test set we may \emph{overfit}.
+\subsubsection{Initialize the weights randomly and find a good learning rate to train the network until convergence}
+I initialialized the weight using following formula:
 
+$$w = random(n)/\sqrt{2}$$
+
+Where $n$ is the size of the input. This ensures that all neurons in the network initially have approximately the same output distribution and empirically improves the rate of convergence. \footnote{http://cs231n.github.io/neural-networks-2/}
+
+Using $numpy$:
+\begin{python}
+np.random.randn(in\_size,out\_size)/np.sqrt(in\_size)
+\end{python}
+\subsubsection{Plot the learning rate of at least 5 different learning rates on both sets}
+TODO
+\subsubsection{Plot the boundary of the model which converged the most on the training data}
+TODO
+\subsection{Explain if this is a good model for the data}
+
+\section{Further Improvements}
+\subsection{Momentum}
 \end{document}
