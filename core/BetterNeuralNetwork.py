@@ -5,6 +5,30 @@ from utils import timing
 import math
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
+import matplotlib.pyplot as plt
+
+def plot_data(X,T):
+    """
+    Plots the 2D data as a scatterplot
+    """
+    plt.scatter(X[:,0], X[:,1], s=40, c=T, cmap=plt.cm.Spectral)
+
+
+def plot_boundary(model, X, targets, threshold=0.0):
+    """
+    Plots the data and the boundary lane which seperates the input space into two classes.
+    """
+    x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
+    y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200), np.linspace(y_min, y_max, 200))
+    X_grid = np.c_[xx.ravel(), yy.ravel()]
+    y = model.forward(X_grid)
+    plt.contourf(xx, yy, y.reshape(*xx.shape) < threshold, alpha=0.5)
+    plot_data(X, targets)
+    plt.ylim([y_min, y_max])
+    plt.xlim([x_min, x_max])
+
+
 class Layer:
 
     def __init__(self,size_in,size_out, activation=act.sigmoid, d_activation=act.dsigmoid):
@@ -45,9 +69,7 @@ class BetterNeuralNetwork:
         self.layers = []
         # freeze the network when the output layer as been added
         # or no input layer is added
-        self.freeze = True
-
-
+        self.freeze = True\
 
     def createLayer(self,size_in,size_out,activation,d_activation):
 
@@ -63,14 +85,12 @@ class BetterNeuralNetwork:
 
         self.layers.append(self.createLayer(size_in,size_out,activation,d_activation))
 
-
     def addOutputLayer(self, size_out,activation=act.sigmoid, d_activation=act.dsigmoid):
         prev_layer_size = self.layers[-1].shape[1]
 
         self.layers.append(self.createLayer(prev_layer_size,size_out,activation,d_activation))
 
         self.freeze = True
-
 
     def addHiddenLayer(self,size, activation=act.sigmoid, d_activation=act.dsigmoid):
         prev_layer_size = self.layers[-1].shape[1]
@@ -101,45 +121,30 @@ class BetterNeuralNetwork:
 
         delta = error
 
+        # backprop starting from the last layer
         i = len(self.layers) - 1
-        #
+        # TODO make it coller by using reverse index
+        # or fancy recursion
         while (i >= 0):
             l = self.layers[i]
-
+            # d = (W^{l+1}).d^{l+1} * a^l
             dW = delta * l.d_activation(Z[i])
-
+            # will be used next iteration
             delta = dW.dot(l.W.T)
-
+            # get the gradient
+            # grad = a^{l-1}.d^l
             dW = A[i].T.dot(dW)
             db = np.mean(dW)
+
             l.dW.append(dW)
             l.db.append(db)
 
             i -= 1
 
-        # for i in range(1,len(self.layers)):
-        #     l = self.layers[-i]
-        #
-        #     dW  = delta * l.d_activation(Z[-i])
-        #     db = np.mean(dW)
-        #
-        #     delta = dW.dot(l.W.T)
-        #
-        #     dW = A[-i -1].T.dot(dW)
-        #     # directly update weight -> FASTER!
-        #     # l.dW = dW
-        #     # l.db = db
-        #     l.db.append(db)
-        #     l.dW.append(dW)
-            # l.b -= db * learning_rate
-            # l.W -= dW * learning_rate
-
-
     @timing
     def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=False,X_val=None,T_val=None):
         grads = []
         errors = []
-        accuracy = 0
 
         for n in range(max_iter):
 
@@ -154,39 +159,25 @@ class BetterNeuralNetwork:
             # if(n % 100 == 1):
             #     print('Error: ',np.mean(np.abs(error)))
 
-            for i in range(len(self.layers)):
-                l = self.layers[i]
-                mom  = 0.3
+            for l in self.layers:
+                beta  = 0.5
 
-                # update_W = l.dW * learning_rate
-                # update_b = l.db * learning_rate
                 update_W = l.dW[1] * learning_rate
                 update_b = l.db[1] * learning_rate
 
                 if(momentum):
-                    update_W += mom * l.dW[0]
-                    update_b += mom * l.db[0]
+                    update_W += beta * l.dW[0]
+                    update_b += beta * l.db[0]
 
                 l.W -= update_W
                 l.b -= update_b
 
                 l.dW = [update_W]
                 l.db = [update_b]
-
-            # if(X_val != None):
-            #     y_val = self.forward(X_val)
-            #
-            #     temp = np.mean(((y_val > 0.5) * 1 == T_val) * 1)
-            #     if (n > 1000):
-            #         if (temp <= accuracy):
-            #             print('Early stopped after {} iterations'.format(n))
-            #             return y, grads
-            #         if(temp > accuracy):
-            #             accuracy = temp
-
-
-
-        # print('Error: ',np.mean(np.abs(y)))
-
+            print(n)
+            plot_boundary(self,inputs,targets)
+            plt.show(block=False)
+            plt.pause(0.05)
+            plt.clf()
 
         return y, grads, errors

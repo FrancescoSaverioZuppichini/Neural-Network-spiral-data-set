@@ -28,8 +28,6 @@ def get_part1_data():
     T = np.array([1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1]).reshape(-1, 1)
     return X, T
 
-
-
 def train_one_step(model, learning_rate, inputs, targets):
     """
     Uses the forward and backward function of a model to compute the error and updates the model
@@ -39,8 +37,6 @@ def train_one_step(model, learning_rate, inputs, targets):
     y = model.forward(inputs)
 
     error = dMSE(y,targets)
-
-    print('Error: ', np.mean(np.abs(error)))
 
     updates = model.backward(error)
 
@@ -74,7 +70,7 @@ def run_part1():
     """
     Train the perceptron according to the assignment.
     """
-    MAX_ITER = 1500
+    MAX_ITER = 15
 
     model = Perceptron()
 
@@ -82,15 +78,14 @@ def run_part1():
 
     y = None
 
-    learning_rate = 0.02
+    learning_rate = 0.000001
 
     for n in range(MAX_ITER):
         y = train_one_step(model, learning_rate, X, T)
-        # print(compute_accuracy(model,X,T))
 
     plot_boundary(model,X,T)
-    plt.savefig('/Users/VaeVictis/Desktop/Assignment1/docs/images/run_part1.png')
-    # plt.show()
+    # plt.savefig('/Users/VaeVictis/Desktop/Assignment1/docs/images/run_part1.png')
+    plt.show()
 
     return y
 

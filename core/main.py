@@ -3,7 +3,7 @@ from NeuralNetwork import NeuralNetwork as NN
 from BetterNeuralNetwork import BetterNeuralNetwork as BNN
 import skeleton as sk
 import activation as act
-
+import MSE as cost
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
@@ -64,7 +64,6 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
         for t in threads:
             t.start()
 
-
         for t in threads:
             t.join()
 
@@ -81,12 +80,16 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
     print('{} iterations per seconds'.format((max_iter * max_workers *steps)/ total_time))
     return master
 
-
-
 # learning_rates = [0.05,0.01,0.005,0.001]
 
-
 # sk.run_part1()
+
+# X,T = sk.get_part1_data()
+# p = Perceptron()
+# y = sk.run_part1()
+# print(y)
+# print(cost.MSE(y,T))
+# print(np.mean(np.abs(y - T)))
 
 learning_rates = [0.05,0.01,0.005,0.001,0.0001]
 
@@ -95,32 +98,23 @@ X, T = sk.twospirals()
 X_train, T_train = X[:size],T[:size]
 X_test, T_test = X[size:],T[size:]
 
+bnn = BNN()
+bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
+bnn.addHiddenLayer(15, np.tanh, act.dtanh)
+bnn.addOutputLayer(1)
+
+# nn = NN()
+
+for i in range(1):
+    seed = int(time.time())
+    np.random.seed(i)
+    y, grads, errors = bnn.train(X, T, 0.001, 1500,True)
+    sk.plot_boundary(bnn,X,T)
+    # print(abs(cost.MSE(y,T)))
+    print(sk.compute_accuracy(bnn,X,T))
 
 # part 4
 ITER = 4000
-# plots = []
-fig = plt.figure()
-plt.title('Learning rates in training')
-for i in range(len(learning_rates)):
-
-    np.random.seed(i)
-    eta = learning_rates[i]
-
-    bnn = BNN()
-    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-    bnn.addHiddenLayer(15, np.tanh, act.dtanh)
-    bnn.addOutputLayer(1)
-    y,grads, errors = bnn.train(X,T,eta,ITER)
-
-    plt.plot(np.mean(np.array(errors).reshape(-1, 100), 1), label="eta={}".format(eta))
-
-plt.legend()
-# plt.show()
-fig.savefig('/Users/vaevictis/Desktop/Assignment1/docs/images/NN_eta_vs_training.png')
-
-# model = parall_train(X,T,0.001,1000,4)
-#
-# print(sk.compute_accuracy(model,X_test,T_test))
 
 # np.random.seed(1)
 for i in range(0):
@@ -173,7 +167,7 @@ for i in range(0):
         # plt.plot(BNN_errros,label='momentum')
         plt.legend()
         plt.show()
-        fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
+        # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
 
 
 

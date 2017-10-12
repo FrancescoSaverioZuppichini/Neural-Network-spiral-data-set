@@ -122,7 +122,6 @@ class NeuralNetwork:
 
         return updates
 
-
     @timing
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
         grads = []

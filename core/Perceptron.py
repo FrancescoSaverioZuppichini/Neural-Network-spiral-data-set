@@ -37,6 +37,6 @@ class Perceptron:
         x = self.x
 
         updates = {"W": error.T.dot(x),
-                   "b": np.mean(error)}
+                   "b": np.sum(error)}
 
         return updates

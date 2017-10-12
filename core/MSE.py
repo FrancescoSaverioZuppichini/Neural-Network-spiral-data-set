@@ -11,10 +11,9 @@ def MSE(prediction, target):
     if (y.size != n):
         raise Exception("Parameters must have the same len!")
 
-    s = y - t ** 2
+    s = (y - t) ** 2
 
     meanCost = np.mean(s)
-
 
     ## End
     return meanCost
@@ -26,11 +25,6 @@ def dMSE(prediction, target):
     y = prediction
     t = target
     n = prediction.size
-
-    ## Implement
-
-
-    # error = (y - t) * y*(1 - y)
 
     ## End
     return (t - y)
