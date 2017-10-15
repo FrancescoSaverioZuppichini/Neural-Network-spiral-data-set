@@ -2,6 +2,8 @@ import numpy as np
 import activation as act
 import MSE as cost_func
 from utils import timing
+from utils import get_train_and_test_data
+
 import math
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
@@ -57,7 +59,7 @@ class BetterNeuralNetwork:
     Keeps track of the variables of the Multi Layer Perceptron model. Can be
     used for predictoin and to compute the gradients.
     """
-    def __init__(self):
+    def __init__(self, DEBUG=False):
 
         # will hold all the intermediate quantity
         self.Z = []
@@ -68,6 +70,8 @@ class BetterNeuralNetwork:
         # freeze the network when the output layer as been added
         # or no input layer is added
         self.freeze = True
+        # enable debug flag to store useful data
+        self.DEBUG = DEBUG
 
     def createLayer(self,size_in,size_out,activation,d_activation):
 
@@ -146,56 +150,70 @@ class BetterNeuralNetwork:
             i -= 1
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=0.0,X_val=None,T_val=None):
+    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=0.0, stochastic=False,X_val=None,T_val=None):
         grads = []
         errors = []
-        lrs = []
+        accuracy = []
+        accuracy_val = []
 
         # decay = learning_rate/len(inputs)
         y = 0
         # print(decay)
         for n in range(max_iter):
 
-            y = self.forward(inputs)
+            batch_size = 1
 
-            error = y - targets
+            for i in range(batch_size):
+                x = inputs
+                t = targets
 
-            # learning_rate *= (1. / (1. + decay ))
-            # print(learning_rate)
+                if(stochastic):
+                    inputs, targets, dio, porco = get_train_and_test_data(inputs, targets, 100)
+                    x = np.array([inputs[i]])
+                    t = np.array([targets[i]])
+                    batch_size = len(inputs)
 
-            self.backward(error)
+                y = self.forward(x)
 
-            # errors.append(cost_func.MSE(y,targets))
-            # grads.append(np.mean(np.abs(error)))
-            # if(n % 100 == 1):
-            #     print('Error: ',np.mean(np.abs(error)))
+                error = y - t
 
-            for l in self.layers:
-                beta  = momentum
+                # learning_rate *= (1. / (1. + decay ))
+                # print(learning_rate)
 
-                update_W = l.dW[1] * learning_rate
-                update_b = l.db[1] * learning_rate
+                self.backward(error)
 
-                if(momentum != 0.0):
-                    update_W += beta * l.dW[0]
-                    update_b += beta * l.db[0]
+                if(self.DEBUG):
+                    errors.append(cost_func.MSE(y,t))
+                    grads.append(np.mean(np.abs(error)))
+                    accuracy.append(np.mean(((y > 0.5)*1 == t)*1))
 
-                l.W -= update_W
-                l.b -= update_b
+                if(len(X_val) > 0):
+                    acc = np.mean(((self.forward(X_val) > 0.5)*1 == T_val)*1)
+                    accuracy_val.append(acc)
 
-                l.dW = [update_W]
-                l.db = [update_b]
+                for l in self.layers:
+                    beta  = momentum
 
-            # if(cost_func.MSE(y,targets) < 0.02):
-            #     print("DIOCAENE {}".format(cost_func.MSE(y,targets)))
-            #     break
+                    update_W = l.dW[1] * learning_rate
+                    update_b = l.db[1] * learning_rate
+
+                    if(momentum != 0.0):
+                        update_W += beta * l.dW[0]
+                        update_b += beta * l.db[0]
+
+                    l.W -= update_W
+                    l.b -= update_b
+
+                    l.dW = [update_W]
+                    l.db = [update_b]
+
             # plt.title(np.mean(np.abs(error)))
             # plot_boundary(self, inputs, targets,0.5)
             # plt.show(block=False)
             # plt.pause(0.001)
             # plt.clf()
 
-        return y, grads, errors
+        return y, grads, errors, accuracy, accuracy_val
 
     def save(self,file_name):
         W = []
@@ -209,16 +227,24 @@ class BetterNeuralNetwork:
         np.save(file_name + "_b", b)
 
     def load(self,file_name):
+        # TODO add file check
 
-        W = np.load(file_name + "_W")
-        b = np.load(file_name + "_W")
+        W = np.load(file_name + "_W.npy")
+        b = np.load(file_name + "_b.npy")
+
+        # unlock net
+        self.freeze = False
 
         for i in range(len(W)):
             j, k = W[i].shape
 
-            new_layer = self.createLayer(j,k)
+            new_layer = self.createLayer(j,k,act.sigmoid,act.dsigmoid)
+
+            self.layers.append(new_layer)
 
             new_layer.W = W[i]
             new_layer.b = b[i]
 
+        # lock net
+        self.freeze = True
 

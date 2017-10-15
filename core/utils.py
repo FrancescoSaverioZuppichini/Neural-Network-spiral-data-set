@@ -16,9 +16,36 @@ def timing(f):
         print('{:0.3f} iterations per seconds'.format(max_iter/total_time))
         return ret
     return wrap
-
+#
+# def get_train_and_test_data(X,T,train_ratio=80):
+#     if(train_ratio > 100 or train_ratio < 0):
+#         raise Exception("train ratio must be >= 0 and <= 100")
+#     # deep copy the source array
+#     # so we do not change them
+#     X = np.copy(X)
+#     T = np.copy(T)
+#
+#     temp = np.array([X],[T])
+#
+#     np.random.shuffle(temp)
+#
+#     size = int(len(X) * train_ratio/100)
+#
+#     X = temp[0]
+#     T = temp[1]
+#
+#     X_train = X[:size]
+#     T_train = T[:size]
+#
+#     X_test = X[size:]
+#     T_test = T[size:]
+#
+#     return X_train,T_train,X_test,T_test
 
 def get_train_and_test_data(X,T,train_ratio=80):
+
+    if (train_ratio > 100 or train_ratio < 0):
+        raise Exception("train ratio must be >= 0 and <= 100")
     # convert to list so it is easier lol
     X = X.tolist()
     T = T.tolist()
@@ -34,7 +61,8 @@ def get_train_and_test_data(X,T,train_ratio=80):
 
     indices = [x for x in range(train_size)]
 
-    while(len(X_test) < test_size):
+    i = 0
+    while(i < test_size):
         random_index = choice(indices)
         indices.remove(random_index)
 
@@ -48,6 +76,7 @@ def get_train_and_test_data(X,T,train_ratio=80):
         T_test.append(temp)
         T[random_index] = None
 
+        i += 1
 
     X = [x for x in X if x != None]
     T = [t for t in T if t != None]

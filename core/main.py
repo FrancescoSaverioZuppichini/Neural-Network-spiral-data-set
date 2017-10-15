@@ -98,19 +98,19 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
 learning_rates = [0.1,0.01,0.002,0.001,0.0001]
 
+# X,T = sk.twospirals(350, noise=0.6, twist=800)
 X,T = sk.twospirals()
 
 X_train, T_train, X_test, T_test  = utils.get_train_and_test_data(X,T)
-
-fig =  plt.figure()
-plt.title('Train')
-sk.plot_data(X_train,T_train)
-fig.savefig('/Users/vaevictis/Documents/As1/docs/images/train_set.png')
-fig2 =  plt.figure()
-plt.title('Test')
-sk.plot_data(X_test,T_test)
-fig2.savefig('/Users/vaevictis/Documents/As1/docs/images/test_set.png')
 #
+# fig =  plt.figure()
+# plt.title('Train')
+# sk.plot_data(X_train,T_train)
+# fig.savefig('/Users/vaevictis/Documents/As1/docs/images/train_set.png')
+# fig2 =  plt.figure()
+# plt.title('Test')
+# sk.plot_data(X_test,T_test)
+# fig2.savefig('/Users/vaevictis/Documents/As1/docs/images/test_set.png')
 nn_speed = []
 bnn_speed = []
 # test performance
@@ -137,60 +137,56 @@ for i in range(0):
     time2 = time.time()
     bnn_speed.append(float(time2 - time1) * 1000.0)
 
-print(nn_speed,bnn_speed)
-# sk.competition_train_from_scratch(X_test,T_test)
-# master = parall_train(X_train,T_train,0.002,2000,4,4)
-#
-# print(sk.compute_accuracy(master,X_test,T_test))
 
 
-# plt.show()
 # sk.competition_train_from_scratch(X_train,T_train)
+seed = int(time.time())
+# print(seed)
+np.random.seed(seed)
 
-# bnn = NN()
-# X_train, T_train = sk.twospirals(250, noise=0.6, twist=800)
+bnn = BNN(True)
+# bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
+# bnn.addHiddenLayer(15, np.tanh, act.dtanh)
+# bnn.addOutputLayer(1)
 
-best = 100
-seed_best = 0
+bnn.load('test')
+
+print(bnn.layers[0].W[0])
+
 for i in range(0):
-    seed = i
-    # seed = int(time.time())
+    # seed = i
+    seed = int(time.time())
     # print(seed)
     np.random.seed(seed)
-    # np.random.seed(seed)
-    bnn = BNN()
+    bnn = BNN(True)
     bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
     bnn.addHiddenLayer(15, np.tanh, act.dtanh)
     bnn.addOutputLayer(1)
 
-    # np.random.seed(int(time.time()))
-    y, grads, errors = bnn.train(X_train, T_train, 0.0002, 3000,0.5)
+    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 0.001, 8000,0.5, False, X_test, T_test)
     errors = np.mean(np.array(errors).reshape(-1, 100), 1)
     grads = np.mean(np.array(grads).reshape(-1, 100), 1)
+    accuracy = np.mean(np.array(accuracy).reshape(-1, 100), 1)
+    accuracy_val = np.mean(np.array(accuracy_val).reshape(-1, 100), 1)
+
     # print(errors[-1])
     # plt.plot(grads,label="grad")
     # plt.plot(errors, label='error')
-    # plt.legend()
-    # plt.show()
-    # BNN_errros = np.mean(np.array(errors).reshape(-1, 100), 1)
-    # plt.plot(BNN_errros)
+    plt.plot(accuracy, label='test')
+    plt.plot(accuracy_val, label='validation')
+
+    plt.legend()
+    plt.show()
+
     # y = bnn.forward(X_train)
     # y, grads, errors = bnn.train(X, T, 0.001, 5000)
     # sk.plot_boundary(bnn,X_train,T_train,0.5)
     # plt.show()
     # plt.plot(lrs)
     # plt.show()
-    # cost_temp = cost.MSE(y,T_train)
-    # if(cost_temp < best):
-    #     best = cost_temp
-    #     seed_best = seed
-    #     print('** new found ***')
-    #     print(seed_best)
-    # print(cost_temp)
 
+    print(sk.compute_accuracy(bnn,X_train,T_train))
     print(sk.compute_accuracy(bnn,X_test,T_test))
-print(seed_best)
-
 # part 4
 ITER = 10000
 

@@ -153,13 +153,13 @@ def competition_train_from_scratch(testX, testT):
     """
     trainX, trainT = twospirals(250, noise=0.6, twist=800)
 
-    np.random.seed(1)
+    np.random.seed(int(time.time()))
     model = BetterNeuralNetwork()
     model.addInputLayer(2, 20, act.tanh, act.dtanh)
     model.addHiddenLayer(15, act.tanh, act.dtanh)
     model.addOutputLayer(1)
     ## Implement
-    model.train(trainX,trainT,0.001,3000,True)
+    model.train(trainX,trainT,0.001,4000,0.5)
 
     BNN_acc = compute_accuracy(model, trainX, trainT)
     print("Accuracy from scratch Train: ", BNN_acc)

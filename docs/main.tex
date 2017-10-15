@@ -135,7 +135,7 @@ You can find them in \emph{NeuralNetwork.py}
 \subsection{Train Network}
 \subsubsection{ Split the data into a train set and a test set}
 I decide to split my Training set and Test set by a ratio of 80:20. If we choose a smaller train set we may under-train the network, on the other hand we if we shrink the test set we may \emph{overfit}. We created a function called \texttt{get\_train\_and\_test\_data} in \emph{utils.py} that create the two sets with random sampling.
-Figure \ref{fig: train_test_set} shows the plot for the train set and the test set. They are created using \texttt{twospirals} using the standard configuration.
+Figure \ref{fig: train_test_set} shows the plot for the train set and the test set. They are created using \texttt{twospirals} using the configuration used for the competition.
 
 \begin{figure}[h]
 	\centering
@@ -146,19 +146,7 @@ Figure \ref{fig: train_test_set} shows the plot for the train set and the test s
 \end{figure}
 
 
-\subsubsection{Initialise the weights randomly and find a good learning rate to train the network until convergence}
-I initialialised the weight using following formula:
-
-$$w = random(n)/\sqrt{2}$$
-
-Where $n$ is the size of the input. This ensures that all neurons in the network initially have approximately the same output distribution and empirically improves the rate of convergence. \footnote{http://cs231n.github.io/neural-networks-2/}
-
-Using $numpy$:
-\begin{python}
-np.random.randn(in_size,out_size)/np.sqrt(in_size)
-\end{python}
-
-\subsubsection{Find a good learning rate}
+\subsubsection{Initialise the weights randomly and find a good learning rate to train}
 In order to find the correct learning rate, we decided to fist test the network with different sizes in order have some empirical data. Figure \ref{fig:learning_rate_convergence} shows the convergence rate with five learning rates. The data was generated using the standard inputs and target from \texttt{twospirals} and then normalised the gradient with its average each 100 iterations in order to provide a smoothed line.
 
 \begin{figure}[H]
@@ -200,9 +188,24 @@ After instance the class, is it possible to add a input layer by calling \texttt
 For each layer is also possible to specified the activation function, as default value \emph{signmoid} is used. We have also implemented \texttt{relu} and \texttt{dRelu} to try them.
 
 \texttt{BetterNeuralNetwork} also has \texttt{train} method that performs forward, backpropagation and weight updates directly. It accepts as input the training sets, the targets, learning rate and the momentum flag.
-\subsection{Performace}
+
+\subsection{Initial weight and bias}
+Weight initialisation is crucial to create a good model. I used the following formula.
+
+$$w = random(n)/\sqrt{n}$$
+
+Where $n$ is the size of the input. This ensures that all neurons in the network initially have approximately the same output distribution and empirically improves the rate of convergence. \footnote{http://cs231n.github.io/neural-networks-2/}
+
+Using $numpy$:
+\begin{python}
+np.random.randn(in_size,out_size)/np.sqrt(in_size)
+\end{python}
+
+The bias are initialised with a very small number close to zero, for such reason I scaled down the each random value by a factor of $100$.
+
+\subsection{Performance}
 Due to a better and generic implementation, our \texttt{BetterNeuralNetwork} is slightly faster than the one from Section 2. Table \ref{table: performance_NN_BNN} shows the result of a little benchmark
-\begin{table}[ht]
+\begin{table}[H]
 	\label{table: performance_NN_BNN}
 \centering
   \begin{tabular}{ | l | c | r |}
@@ -215,7 +218,7 @@ Due to a better and generic implementation, our \texttt{BetterNeuralNetwork} is 
   \end{tabular}
   \caption{}
 \end{table}
-
+I have also tried to create a small thread pool, so we can save time in thread allocation, in order to parallelise the weight updates, since they are independent operation but without any real advantages. Probably the network is so small that it take more time to call a free thread and submit a work than to compute the operations  sequentially.
 \subsection{Momentum}
 We used Momentum to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula. 
 
@@ -236,6 +239,9 @@ $\Beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In 
 \caption{Gradient Discent vs Momentum}
 \end{figure}
 In the \texttt{BetterNeuralNetwork} momentum can be enabled by passing \texttt{True} as last parameter to the \texttt{train} method.
+\\
+%%%%%%%%%%%%%%%%%%% PUT SOME SECTION IN ORDER TO INTRODUCE THE OTHER MERDA CHE HO PROVATO 
+We trying other techniques with no luck. We also include them in this report.
 \subsection{Dropout}
 Dropout is a recently introduced regularisation technique. Basically, each node has a probability to be enable on disable in each forward pass. We implemented it by changing the \texttt{forward} method inside \texttt{BetterNeuralNetwork}
 \begin{python}
@@ -260,5 +266,5 @@ Dropout is a recently introduced regularisation technique. Basically, each node 
 
         return a
 \end{python}
-At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence.
+At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence, probably because the network is too small.
 \end{document}
