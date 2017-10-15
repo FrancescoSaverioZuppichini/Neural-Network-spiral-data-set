@@ -146,7 +146,7 @@ class BetterNeuralNetwork:
             i -= 1
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=False,X_val=None,T_val=None):
+    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=0.0,X_val=None,T_val=None):
         grads = []
         errors = []
         lrs = []
@@ -165,18 +165,18 @@ class BetterNeuralNetwork:
 
             self.backward(error)
 
-            errors.append(cost_func.MSE(y,targets))
-            grads.append(np.mean(np.abs(error)))
+            # errors.append(cost_func.MSE(y,targets))
+            # grads.append(np.mean(np.abs(error)))
             # if(n % 100 == 1):
             #     print('Error: ',np.mean(np.abs(error)))
 
             for l in self.layers:
-                beta  = 0.5
+                beta  = momentum
 
                 update_W = l.dW[1] * learning_rate
                 update_b = l.db[1] * learning_rate
 
-                if(momentum):
+                if(momentum != 0.0):
                     update_W += beta * l.dW[0]
                     update_b += beta * l.db[0]
 
@@ -220,5 +220,5 @@ class BetterNeuralNetwork:
 
             new_layer.W = W[i]
             new_layer.b = b[i]
-         
+
 

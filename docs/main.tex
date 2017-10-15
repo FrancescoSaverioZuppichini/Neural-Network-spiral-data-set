@@ -134,8 +134,8 @@ We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule
 You can find them in \emph{NeuralNetwork.py}
 \subsection{Train Network}
 \subsubsection{ Split the data into a train set and a test set}
-I decide to split my Training set and Test set by a ratio of 80:20. If we choose a smaller train set we may under-train the network, on the other hand we if we shrink the test set we may \emph{overfit}.
-Figure \ref{fig:train_test_set} shows the plot for the train set and the test set. They are created using \texttt{twospirals} using the standard configuration.
+I decide to split my Training set and Test set by a ratio of 80:20. If we choose a smaller train set we may under-train the network, on the other hand we if we shrink the test set we may \emph{overfit}. We created a function called \texttt{get\_train\_and\_test\_data} in \emph{utils.py} that create the two sets with random sampling.
+Figure \ref{fig: train_test_set} shows the plot for the train set and the test set. They are created using \texttt{twospirals} using the standard configuration.
 
 \begin{figure}[h]
 	\centering
@@ -200,9 +200,24 @@ After instance the class, is it possible to add a input layer by calling \texttt
 For each layer is also possible to specified the activation function, as default value \emph{signmoid} is used. We have also implemented \texttt{relu} and \texttt{dRelu} to try them.
 
 \texttt{BetterNeuralNetwork} also has \texttt{train} method that performs forward, backpropagation and weight updates directly. It accepts as input the training sets, the targets, learning rate and the momentum flag.
+\subsection{Performace}
+Due to a better and generic implementation, our \texttt{BetterNeuralNetwork} is slightly faster than the one from Section 2. Table \ref{table: performance_NN_BNN} shows the result of a little benchmark
+\begin{table}[ht]
+	\label{table: performance_NN_BNN}
+\centering
+  \begin{tabular}{ | l | c | r |}
+    \hline
+    iterations & time NN & time BNN\\ \hline
+    10 & 17.5ms  & 13.7ms \\ \hline
+    100 & 134.5ms  & 128.2ms \\ 
+    1000 & 461.6ms  & 458.84ms \\ \hline
+    10000 & 4455.6ms & 4157.9ms \\ \hline    
+  \end{tabular}
+  \caption{}
+\end{table}
 
 \subsection{Momentum}
-We used Momentum to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula.
+We used Momentum to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula. 
 
 \begin{equation}
 	\label{eq: momentum}
