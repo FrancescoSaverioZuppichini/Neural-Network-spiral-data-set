@@ -16,9 +16,13 @@ def timing(f):
     return wrap
 
 
-# def train_and_store():
-#     best_so_far = 0
-#
-#     seed = int(time.time())
+def get_data(*args, data_func, train_ratio=100):
 
-# def plotResultsVsTest()
+    X, T = data_func(*args)
+
+    size = int((len(X) / 100) * train_ratio)
+
+    X_train, T_train = X[:size], T[:size]
+    X_test, T_test = X[size:], T[size:]
+
+    return X_train, T_train, X_test, T_test

@@ -1,6 +1,7 @@
 from Perceptron import Perceptron
 from NeuralNetwork import NeuralNetwork as NN
 from BetterNeuralNetwork import BetterNeuralNetwork as BNN
+import utils
 import skeleton as sk
 import activation as act
 import MSE as cost
@@ -84,8 +85,10 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
 # sk.run_part1()
 
-# X,T = sk.get_part1_data()
-# p = Perceptron()
+X,T = sk.get_part1_data()
+p = Perceptron()
+sk.train_one_step(p,0.02,X,T)
+print(p.var['b'])
 # sk.run_part1()
 # y = sk.train_one_step(p,0.001,X,T)
 
@@ -93,43 +96,72 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 # print(cost.MSE(y,T))
 # print(np.mean(np.abs(y - T)))
 
-learning_rates = [0.05,0.01,0.005,0.001,0.0001]
+learning_rates = [0.1,0.01,0.002,0.001,0.0001]
 
-X, T = sk.twospirals()
-size = (len(X)//100) * 80
-X_train, T_train = X[:size],T[:size]
-X_test, T_test = X[size:],T[size:]
+X_train, T_train, X_test, T_test = utils.get_data(data_func=sk.twospirals,train_ratio=80)
 
+print(X_train.shape)
+
+# fig =  plt.figure()
+# plt.title('Train')
+# sk.plot_data(X_train,T_train)
+# fig.savefig('/Users/vaevictis/Documents/As1/docs/images/train_set.png')
+# fig2 =  plt.figure()
+# plt.title('Test')
+# sk.plot_data(X_test,T_test)
+# fig.savefig('/Users/vaevictis/Documents/As1/docs/images/test_set.png')
+# sk.plot_data(X_test,T_test)
+#
+# plt.show()
 # sk.competition_train_from_scratch(X,T)
 
 # bnn = NN()
 
-
-for i in range(10):
-    np.random.seed(i)
+best = 100
+seed_best = 0
+for i in range(0):
+    # seed = i
+    seed = int(time.time())
+    print(seed)
+    np.random.seed(seed)
+    # np.random.seed(seed)
     bnn = BNN()
     bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
     bnn.addHiddenLayer(15, np.tanh, act.dtanh)
     bnn.addOutputLayer(1)
     # np.random.seed(int(time.time()))
-    y, grads, errors = bnn.train(X_train, T_train, 0.001, 10000, True)
+    y, grads, errors = bnn.train(X_train, T_train, 0.002, 15000)
+    y = bnn.forward(X_train)
     # y, grads, errors = bnn.train(X, T, 0.001, 5000)
-    print(abs(cost.MSE(y,T_train)))
+    sk.plot_boundary(bnn,X_train,T_train,0.5)
+    plt.show()
+    cost_temp = cost.MSE(y,T_train)
+    # if(cost_temp < best):
+    #     best = cost_temp
+    #     seed_best = seed
+    #     print('** new found ***')
+    #     print(seed_best)
+    print(cost_temp)
+
     print(sk.compute_accuracy(bnn,X_train,T_train))
+print(seed_best)
 
 # part 4
-ITER = 4000
+ITER = 10000
 
 # np.random.seed(1)
-for i in range(0):
+for i in range(1):
+
     fig = plt.figure()
-
+    seed = int(time.time())
+    # print(seed)
     for eta in learning_rates:
+
         # seed = int(time.time())
-        # np.random.seed(seed)
-
-        np.random.seed(i)
-
+        np.random.seed(seed)
+        #
+        # np.random.seed(10)
+        #
         # nn = NN()
         bnn = BNN()
         bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
@@ -139,13 +171,13 @@ for i in range(0):
         # np.random.seed(seed)
         # np.random.seed(i)
 
-        bnn2 = BNN()
-        bnn2.addInputLayer(2, 20, np.tanh, act.dtanh)
-        bnn2.addHiddenLayer(15, np.tanh, act.dtanh)
-        bnn2.addOutputLayer(1)
+        # bnn2 = BNN()
+        # bnn2.addInputLayer(2, 20, np.tanh, act.dtanh)
+        # bnn2.addHiddenLayer(15, np.tanh, act.dtanh)
+        # bnn2.addOutputLayer(1)
 
-        y, grads, BNN_errros = bnn2.train(X_train,T_train,eta,ITER,True)
-        # y, grads, BNN_errros_2 = bnn.train(X_train,T_train,eta,ITER,True)
+        y, grads, BNN_errros = bnn.train(X_train,T_train,eta,ITER,True)
+        # y, grads, BNN_errros_2 = bnn2.train(X_train,T_train,eta,ITER,True)
         # y, grads, BNN_errros = bnn2.train(X_train,T_train,eta,ITER)
 
         # testX, testT = sk.twospirals(50)
@@ -154,9 +186,9 @@ for i in range(0):
         # net = NN()
         # net.train(X_train,T_train,eta,ITER)
         #
-        # print("Accuracy from scratch NN: ", sk.compute_accuracy(net,X_test,T_test))
+        print("Accuracy from scratch NN: ", sk.compute_accuracy(bnn,X_test,T_test))
 
-        print("Accuracy from scratch BNN: ", sk.compute_accuracy(bnn,X_test,T_test))
+        # print("Accuracy from scratch BNN: ", sk.compute_accuracy(bnn2,X_test,T_test))
 
         # print("Accuracy from scratch BNN with momentum: ", sk.compute_accuracy(bnn2,X_test,T_test))
 
@@ -164,12 +196,17 @@ for i in range(0):
         BNN_errros = np.mean(np.array(BNN_errros).reshape(-1, 100), 1)
         # BNN_errros_2 = np.mean(np.array(BNN_errros_2).reshape(-1, 100), 1)
         # fig = plt.figure()
-
+        plt.title('Learning rates')
+        #
         # plt.title('Learning rate {}'.format(eta))
-        # plt.plot(BNN_errros,label='normal')
-        plt.plot(BNN_errros,label='eta {}'.format(eta))
-        # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
+        plt.plot(BNN_errros,label='eta={}'.format(eta))
 
+        # plt.plot(BNN_errros,label='normal')
+        # plt.plot(BNN_errros_2,label='momentum')
+        # plt.legend()
+        # plt.show()
+        # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
+        #
         # plt.plot(BNN_errros_2,label='momentum')
     plt.legend()
     fig.savefig('/Users/vaevictis/Documents/As1/docs/images/NN_eta_vs_training_momentum.png')

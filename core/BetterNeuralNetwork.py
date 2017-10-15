@@ -69,7 +69,7 @@ class BetterNeuralNetwork:
         self.layers = []
         # freeze the network when the output layer as been added
         # or no input layer is added
-        self.freeze = True\
+        self.freeze = True
 
     def createLayer(self,size_in,size_out,activation,d_activation):
 
@@ -77,6 +77,7 @@ class BetterNeuralNetwork:
             return
 
         new_layer = Layer(size_in,size_out,activation,d_activation)
+
         return new_layer
 
 
@@ -99,10 +100,9 @@ class BetterNeuralNetwork:
 
 
     def forward(self, inputs):
-        x = self.x = inputs
-
         self.A = [inputs]
         self.Z = []
+
         a = inputs
 
         for l in self.layers:
@@ -116,8 +116,8 @@ class BetterNeuralNetwork:
 
 
     def backward(self, error):
-        Z = self.Z
         A = self.A
+        Z = self.Z
 
         delta = error
 
@@ -154,7 +154,6 @@ class BetterNeuralNetwork:
             self.backward(error)
 
             errors.append(np.mean(np.abs(error)))
-
             # if(n % 100 == 1):
             #     print('Error: ',np.mean(np.abs(error)))
 
@@ -174,4 +173,12 @@ class BetterNeuralNetwork:
                 l.dW = [update_W]
                 l.db = [update_b]
 
+            # if(cost_func.MSE(y,targets) < 0.02):
+            #     print("DIOCAENE {}".format(cost_func.MSE(y,targets)))
+            #     break
+            # plt.title(np.mean(np.abs(error)))
+            # plot_boundary(self, inputs, targets,0.5)
+            # plt.show(block=False)
+            # plt.pause(0.001)
+            # plt.clf()
         return y, grads, errors

@@ -2,6 +2,7 @@ import numpy as np
 import activation as act
 import MSE as cost_func
 from utils import timing
+import MSE as cost
 import math
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
@@ -60,23 +61,23 @@ class NeuralNetwork:
         z1 = inputs.dot(W1) + b1
         # u1 = (np.random.rand(*z1.shape) < p) / p
         # z1 *= u1
-        a_1 = np.tanh(z1)
+        a1 = np.tanh(z1)
 
-        z2 = a_1.dot(W2) + b2
+        z2 = a1.dot(W2) + b2
         # u2 = (np.random.rand(*z2.shape) < p) / p
         # z2 *= u2
-        a_2 = np.tanh(z2)
+        a2 = np.tanh(z2)
 
-        z3 =  a_2.dot(W3) + b3
+        z3 =  a2.dot(W3) + b3
         # u3 = (np.random.rand(*z3.shape) < p) / p
         # z3 *= u3
-        a_3 = act.sigmoid(z3)
+        a3 = act.sigmoid(z3)
 
         self.Z = [z1,z2,z3]
-        self.A = [inputs,a_1,a_2,a_3]
+        self.A = [inputs,a1,a2,a3]
 
         ## End
-        return a_3
+        return a3
 
 
     def backward(self, error):
@@ -133,15 +134,20 @@ class NeuralNetwork:
             error = y - targets
 
             updates = self.backward(error)
+
             # if (n % 100 == 1):
-            #     print('Error: ', np.mean(np.abs(error)))
+                # print(cost.MSE(y, targets))
+                # print('Error: ', np.mean(np.abs(error)))
+
             errors.append(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = learning_rate * delta
                 self.var[var_str] -= update
 
-
+            if (cost_func.MSE(y, targets) < 0.02):
+                print("DIOCAENE {}".format(cost_func.MSE(y, targets)))
+                break
         # print('Error: ',np.mean(np.abs(y)))
 
         return y, grads, errors

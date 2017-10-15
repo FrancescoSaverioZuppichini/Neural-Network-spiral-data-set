@@ -33,19 +33,15 @@ def train_one_step(model, learning_rate, inputs, targets):
     Uses the forward and backward function of a model to compute the error and updates the model
     weights while overwritting model.var. Returns the cost.
     """
-    for i in range(len(inputs)):
-        x = inputs[i]
-        t = targets[i]
+    y = model.forward(inputs)
 
-        y = model.forward(x)
+    error = dMSE(y,targets)
 
-        error = dMSE(y,t)
+    updates = model.backward(error)
 
-        updates = model.backward(error)
-
-        for var_str, delta in updates.items():
-            update = np.array([delta]) * learning_rate
-            model.var[var_str] -= update.T
+    for var_str, delta in updates.items():
+        update = delta * learning_rate
+        model.var[var_str] -= update
 
     return y
 
@@ -73,7 +69,7 @@ def run_part1():
     """
     Train the perceptron according to the assignment.
     """
-    MAX_ITER = 150000
+    MAX_ITER = 15
 
     model = Perceptron()
 
@@ -81,16 +77,13 @@ def run_part1():
 
     y = None
 
-    learning_rate = 0.002
+    learning_rate = 0.02
 
     for n in range(MAX_ITER):
         y = train_one_step(model, learning_rate, X, T)
 
-        plot_boundary(model,X,T)
-        plt.show(block=False)
-        plt.pause(0.1)
-        plt.clf()
-    # plt.savefig('/Users/VaeVictis/Desktop/Assignment1/docs/images/run_part1.png')
+    plot_boundary(model, X, T)
+    plt.savefig('/Users/vaevictis/Documents/As1/docs/images/run_part1.png')
 
 
     return y

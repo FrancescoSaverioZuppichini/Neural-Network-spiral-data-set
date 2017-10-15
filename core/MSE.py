@@ -11,7 +11,7 @@ def MSE(prediction, target):
     if (y.size != n):
         raise Exception("Parameters must have the same len!")
 
-    s = (1/(2*n)) * (np.sum(np.square(t - y)))
+    s = (1 / ( 2 * n )) * np.sum(np.square(y - t))
 
     ## End
     return s
@@ -25,4 +25,4 @@ def dMSE(prediction, target):
     n = prediction.size
 
     ## End
-    return (t - y)
+    return (1 / n) * (y - t)
