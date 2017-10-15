@@ -219,6 +219,8 @@ Due to a better and generic implementation, our \texttt{BetterNeuralNetwork} is 
   \caption{}
 \end{table}
 I have also tried to create a small thread pool, so we can save time in thread allocation, in order to parallelise the weight updates, since they are independent operation but without any real advantages. Probably the network is so small that it take more time to call a free thread and submit a work than to compute the operations  sequentially.
+\subsection{Stochastic Gradient Descent}
+TODO does it work?
 \subsection{Momentum}
 We used Momentum to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula. 
 

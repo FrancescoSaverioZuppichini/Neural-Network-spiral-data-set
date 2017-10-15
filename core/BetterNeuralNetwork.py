@@ -150,7 +150,7 @@ class BetterNeuralNetwork:
             i -= 1
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=0.0, stochastic=False,X_val=None,T_val=None):
+    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=0.0, stochastic=False,X_val=[],T_val=[]):
         grads = []
         errors = []
         accuracy = []
@@ -168,6 +168,7 @@ class BetterNeuralNetwork:
                 t = targets
 
                 if(stochastic):
+
                     inputs, targets, dio, porco = get_train_and_test_data(inputs, targets, 100)
                     x = np.array([inputs[i]])
                     t = np.array([targets[i]])
@@ -185,7 +186,8 @@ class BetterNeuralNetwork:
                 if(self.DEBUG):
                     errors.append(cost_func.MSE(y,t))
                     grads.append(np.mean(np.abs(error)))
-                    accuracy.append(np.mean(((y > 0.5)*1 == t)*1))
+                    acc = np.mean(((y > 0.5)*1 == t)*1)
+                    accuracy.append(acc)
 
                 if(len(X_val) > 0):
                     acc = np.mean(((self.forward(X_val) > 0.5)*1 == T_val)*1)
@@ -206,16 +208,18 @@ class BetterNeuralNetwork:
 
                     l.dW = [update_W]
                     l.db = [update_b]
-
-            # plt.title(np.mean(np.abs(error)))
-            # plot_boundary(self, inputs, targets,0.5)
-            # plt.show(block=False)
-            # plt.pause(0.001)
-            # plt.clf()
+            # if(n % 100 == 0):
+            #     plt.title(acc)
+            #     plot_boundary(self, inputs, targets,0.5)
+            #     plt.show(block=False)
+            #     plt.pause(0.001)
+            #     plt.clf()
 
         return y, grads, errors, accuracy, accuracy_val
 
     def save(self,file_name):
+        # TODO Save activations
+
         W = []
         b = []
 
@@ -228,7 +232,7 @@ class BetterNeuralNetwork:
 
     def load(self,file_name):
         # TODO add file check
-
+        # TODO load activations
         W = np.load(file_name + "_W.npy")
         b = np.load(file_name + "_b.npy")
 

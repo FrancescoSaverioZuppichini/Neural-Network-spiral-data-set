@@ -140,46 +140,47 @@ for i in range(0):
 
 
 # sk.competition_train_from_scratch(X_train,T_train)
-seed = int(time.time())
+# seed = int(time.time())
 # print(seed)
-np.random.seed(seed)
+# np.random.seed(seed)
 
-bnn = BNN(True)
+# bnn = BNN(True)
 # bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
 # bnn.addHiddenLayer(15, np.tanh, act.dtanh)
 # bnn.addOutputLayer(1)
 
-bnn.load('test')
+# bnn.load('test')
 
-print(bnn.layers[0].W[0])
 
-for i in range(0):
+# fig = plt.figure()
+for i in range(10):
     # seed = i
     seed = int(time.time())
     # print(seed)
     np.random.seed(seed)
     bnn = BNN(True)
-    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-    bnn.addHiddenLayer(15, np.tanh, act.dtanh)
+    bnn.addInputLayer(2, 20, np.tanh, act.tanh)
+    bnn.addHiddenLayer(15, np.tanh, act.tanh)
     bnn.addOutputLayer(1)
+    # bnn.load('test')
 
-    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 0.001, 8000,0.5, False, X_test, T_test)
+    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 0.001, 3000,0.5)
     errors = np.mean(np.array(errors).reshape(-1, 100), 1)
     grads = np.mean(np.array(grads).reshape(-1, 100), 1)
     accuracy = np.mean(np.array(accuracy).reshape(-1, 100), 1)
     accuracy_val = np.mean(np.array(accuracy_val).reshape(-1, 100), 1)
 
     # print(errors[-1])
-    # plt.plot(grads,label="grad")
-    # plt.plot(errors, label='error')
-    plt.plot(accuracy, label='test')
-    plt.plot(accuracy_val, label='validation')
-
+    plt.plot(grads,label="grad")
+    plt.plot(errors, label='error')
+    # plt.plot(accuracy, label='test')
+    # plt.plot(accuracy_val, label='validation')
+    #
     plt.legend()
     plt.show()
 
     # y = bnn.forward(X_train)
-    # y, grads, errors = bnn.train(X, T, 0.001, 5000)
+    # plt.title("Accuracy={}".format(sk.compute_accuracy(bnn,X_train,T_train)))
     # sk.plot_boundary(bnn,X_train,T_train,0.5)
     # plt.show()
     # plt.plot(lrs)

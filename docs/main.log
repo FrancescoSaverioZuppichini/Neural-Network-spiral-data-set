@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  15 OCT 2017 18:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  15 OCT 2017 18:48
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -367,10 +367,10 @@ See the caption package documentation for explanation.
 LaTeX Warning: Reference `table: performance_NN_BNN' on page 6 undefined on input line 207.
 
 [6]
-./main.tex:232: Undefined control sequence.
+./main.tex:234: Undefined control sequence.
 <recently read> \Beta 
                       
-l.232 $\Beta
+l.234 $\Beta
              \in [0,1]$ is a the momentum factor, usually between $0.5$ and ...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -379,28 +379,28 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Package caption Warning: \label without proper reference on input line 234.
+Package caption Warning: \label without proper reference on input line 236.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:momentum' on page 7 undefined on input line 232.
+LaTeX Warning: Reference `fig:momentum' on page 7 undefined on input line 234.
 
 <images/momentum_plot_0,002.png, id=50, 462.528pt x 346.896pt>
 File: images/momentum_plot_0,002.png Graphic file (type png)
  <use images/momentum_plot_0,002.png>
-Package pdftex.def Info: images/momentum_plot_0,002.png used on input line 236.
+Package pdftex.def Info: images/momentum_plot_0,002.png used on input line 238.
 (pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
  <images/momentum_plot_0,001.png, id=51, 462.528pt x 346.896pt>
 File: images/momentum_plot_0,001.png Graphic file (type png)
  <use images/momentum_plot_0,001.png>
-Package pdftex.def Info: images/momentum_plot_0,001.png used on input line 237.
+Package pdftex.def Info: images/momentum_plot_0,001.png used on input line 239.
 (pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
  <images/momentum_plot_0,0001.png, id=52, 462.528pt x 346.896pt>
 File: images/momentum_plot_0,0001.png Graphic file (type png)
  <use images/momentum_plot_0,0001.png>
-Package pdftex.def Info: images/momentum_plot_0,0001.png used on input line 238.
+Package pdftex.def Info: images/momentum_plot_0,0001.png used on input line 240.
 (pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
- [7 <./images/momentum_plot_0,002.png> <./images/momentum_plot_0,001.png> <./images/momentum_plot_0,0001.png>] [8] (./main.aux)
+ [7] [8 <./images/momentum_plot_0,002.png> <./images/momentum_plot_0,001.png> <./images/momentum_plot_0,0001.png>] [9] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -414,10 +414,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  44i,15n,48p,504b,1462s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on main.pdf (8 pages, 574873 bytes).
+Output written on main.pdf (9 pages, 575520 bytes).
 PDF statistics:
- 124 PDF objects out of 1000 (max. 8388607)
- 78 compressed objects within 1 object stream
+ 127 PDF objects out of 1000 (max. 8388607)
+ 80 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
