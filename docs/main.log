@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  15 OCT 2017 18:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  15 OCT 2017 21:55
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -360,17 +360,17 @@ Overfull \hbox (39.99832pt too wide) in paragraph at lines 180--181
  []
 
 
-Package caption Warning: \label without proper reference on input line 209.
+Package caption Warning: \label without proper reference on input line 207.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `table: performance_NN_BNN' on page 6 undefined on input line 207.
+LaTeX Warning: Reference `table: performance_NN_BNN' on page 6 undefined on input line 205.
 
 [6]
-./main.tex:234: Undefined control sequence.
+./main.tex:232: Undefined control sequence.
 <recently read> \Beta 
                       
-l.234 $\Beta
+l.232 $\Beta
              \in [0,1]$ is a the momentum factor, usually between $0.5$ and ...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -379,45 +379,87 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Package caption Warning: \label without proper reference on input line 236.
+Package caption Warning: \label without proper reference on input line 234.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:momentum' on page 7 undefined on input line 234.
+LaTeX Warning: Reference `fig:momentum' on page 7 undefined on input line 232.
 
-<images/momentum_plot_0,002.png, id=50, 462.528pt x 346.896pt>
-File: images/momentum_plot_0,002.png Graphic file (type png)
- <use images/momentum_plot_0,002.png>
-Package pdftex.def Info: images/momentum_plot_0,002.png used on input line 238.
+<images/momentum_plot_0,1.png, id=50, 462.528pt x 346.896pt>
+File: images/momentum_plot_0,1.png Graphic file (type png)
+ <use images/momentum_plot_0,1.png>
+Package pdftex.def Info: images/momentum_plot_0,1.png used on input line 236.
 (pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
- <images/momentum_plot_0,001.png, id=51, 462.528pt x 346.896pt>
+ <images/momentum_plot_0,01.png, id=51, 462.528pt x 346.896pt>
+File: images/momentum_plot_0,01.png Graphic file (type png)
+ <use images/momentum_plot_0,01.png>
+Package pdftex.def Info: images/momentum_plot_0,01.png used on input line 237.
+(pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
+ <images/momentum_plot_0,001.png, id=52, 462.528pt x 346.896pt>
 File: images/momentum_plot_0,001.png Graphic file (type png)
  <use images/momentum_plot_0,001.png>
-Package pdftex.def Info: images/momentum_plot_0,001.png used on input line 239.
+Package pdftex.def Info: images/momentum_plot_0,001.png used on input line 238.
 (pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
- <images/momentum_plot_0,0001.png, id=52, 462.528pt x 346.896pt>
+ <images/momentum_plot_0,0001.png, id=53, 462.528pt x 346.896pt>
 File: images/momentum_plot_0,0001.png Graphic file (type png)
  <use images/momentum_plot_0,0001.png>
-Package pdftex.def Info: images/momentum_plot_0,0001.png used on input line 240.
+Package pdftex.def Info: images/momentum_plot_0,0001.png used on input line 239.
 (pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
- [7] [8 <./images/momentum_plot_0,002.png> <./images/momentum_plot_0,001.png> <./images/momentum_plot_0,0001.png>] [9] (./main.aux)
+ [7]
+./main.tex:242: Undefined control sequence.
+l.242 ...rrect parameters and type to the \tetxttt
+                                                  {train} method. The follow...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package caption Warning: \label without proper reference on input line 252.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig: adagrad' on page 8 undefined on input line 250.
+
+<images/adagrad_plot_0,1.png, id=58, 462.528pt x 346.896pt>
+File: images/adagrad_plot_0,1.png Graphic file (type png)
+ <use images/adagrad_plot_0,1.png>
+Package pdftex.def Info: images/adagrad_plot_0,1.png used on input line 254.
+(pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
+ <images/adagrad_plot_0,01.png, id=59, 462.528pt x 346.896pt>
+File: images/adagrad_plot_0,01.png Graphic file (type png)
+ <use images/adagrad_plot_0,01.png>
+Package pdftex.def Info: images/adagrad_plot_0,01.png used on input line 255.
+(pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
+ <images/adagrad_plot_0,001.png, id=60, 462.528pt x 346.896pt>
+File: images/adagrad_plot_0,001.png Graphic file (type png)
+ <use images/adagrad_plot_0,001.png>
+Package pdftex.def Info: images/adagrad_plot_0,001.png used on input line 256.
+(pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
+ <images/adagrad_plot_0,0001.png, id=61, 462.528pt x 346.896pt>
+File: images/adagrad_plot_0,0001.png Graphic file (type png)
+ <use images/adagrad_plot_0,0001.png>
+Package pdftex.def Info: images/adagrad_plot_0,0001.png used on input line 257.
+(pdftex.def)             Requested size: 161.88722pt x 121.4154pt.
+ [8 <./images/momentum_plot_0,1.png> <./images/momentum_plot_0,01.png> <./images/momentum_plot_0,001.png> <./images/momentum_plot_0,0001.png>] [9 <./images/adagrad_plot_0,1.png> <./images/adagrad_plot_0,01.png> <./images/adagrad_plot_0,001.png> <./images/adagrad_plot_0,0001.png>] [10] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 6087 strings out of 492995
- 88468 string characters out of 6132703
- 232440 words of memory out of 5000000
- 9562 multiletter control sequences out of 15000+600000
+ 6136 strings out of 492995
+ 89448 string characters out of 6132703
+ 245482 words of memory out of 5000000
+ 9606 multiletter control sequences out of 15000+600000
  12282 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,15n,48p,504b,1462s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on main.pdf (9 pages, 575520 bytes).
+Output written on main.pdf (10 pages, 635193 bytes).
 PDF statistics:
- 127 PDF objects out of 1000 (max. 8388607)
- 80 compressed objects within 1 object stream
+ 140 PDF objects out of 1000 (max. 8388607)
+ 82 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

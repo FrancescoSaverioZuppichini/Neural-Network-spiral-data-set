@@ -136,11 +136,12 @@ class NeuralNetwork:
 
             updates = self.backward(error)
 
+            errors.append(np.mean(np.abs(error)))
+
             # if (n % 100 == 1):
                 # print(cost.MSE(y, targets))
                 # print('Error: ', np.mean(np.abs(error)))
 
-            errors.append(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = learning_rate * delta

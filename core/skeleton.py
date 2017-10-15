@@ -159,7 +159,10 @@ def competition_train_from_scratch(testX, testT):
     model.addHiddenLayer(15, act.tanh, act.dtanh)
     model.addOutputLayer(1)
     ## Implement
-    model.train(trainX,trainT,0.001,4000,0.5)
+    model.train(trainX, trainT ,3500, { 'eta' : 0.1 }, 'adagrad')
+
+    # plot_boundary(model,trainX,trainT,0.5)
+    # plt.show()
 
     BNN_acc = compute_accuracy(model, trainX, trainT)
     print("Accuracy from scratch Train: ", BNN_acc)

@@ -5,42 +5,19 @@ import numpy as np
 def timing(f):
     def wrap(*args):
         time1 = time.time()
-        max_iter = args[4]
+        max_iter = args[3]
         ret = f(*args)
         time2 = time.time()
         total_time = float(time2-time1)*1000.0
         print('--------------------------')
         print('Finish after {:0.3f} ms'.format(total_time,max_iter))
         print('{} iterations'.format(max_iter))
-        print('Learning rage {}'.format(args[3]))
+        print('Learning rage {}'.format(args[4]['eta']))
+        if(len(args) > 5):
+            print('Type {}'.format(args[5]))
         print('{:0.3f} iterations per seconds'.format(max_iter/total_time))
         return ret
     return wrap
-#
-# def get_train_and_test_data(X,T,train_ratio=80):
-#     if(train_ratio > 100 or train_ratio < 0):
-#         raise Exception("train ratio must be >= 0 and <= 100")
-#     # deep copy the source array
-#     # so we do not change them
-#     X = np.copy(X)
-#     T = np.copy(T)
-#
-#     temp = np.array([X],[T])
-#
-#     np.random.shuffle(temp)
-#
-#     size = int(len(X) * train_ratio/100)
-#
-#     X = temp[0]
-#     T = temp[1]
-#
-#     X_train = X[:size]
-#     T_train = T[:size]
-#
-#     X_test = X[size:]
-#     T_test = T[size:]
-#
-#     return X_train,T_train,X_test,T_test
 
 def get_train_and_test_data(X,T,train_ratio=80):
 

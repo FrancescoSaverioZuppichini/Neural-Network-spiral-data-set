@@ -96,10 +96,10 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 # print(cost.MSE(y,T))
 # print(np.mean(np.abs(y - T)))
 
-learning_rates = [0.1,0.01,0.002,0.001,0.0001]
+learning_rates = [0.1,0.01,0.001,0.0001]
 
-# X,T = sk.twospirals(350, noise=0.6, twist=800)
-X,T = sk.twospirals()
+X,T = sk.twospirals(350, noise=0.6, twist=800)
+# X,T = sk.twospirals()
 
 X_train, T_train, X_test, T_test  = utils.get_train_and_test_data(X,T)
 #
@@ -139,7 +139,7 @@ for i in range(0):
 
 
 
-# sk.competition_train_from_scratch(X_train,T_train)
+sk.competition_train_from_scratch(X_train,T_train)
 # seed = int(time.time())
 # print(seed)
 # np.random.seed(seed)
@@ -153,18 +153,19 @@ for i in range(0):
 
 
 # fig = plt.figure()
-for i in range(10):
-    # seed = i
-    seed = int(time.time())
-    # print(seed)
+for i in range(0):
+    seed = i
+    # seed = int(time.time())
+    print(seed)
     np.random.seed(seed)
     bnn = BNN(True)
-    bnn.addInputLayer(2, 20, np.tanh, act.tanh)
-    bnn.addHiddenLayer(15, np.tanh, act.tanh)
+    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
+    bnn.addHiddenLayer(15, np.tanh, act.dtanh)
     bnn.addOutputLayer(1)
-    # bnn.load('test')
 
-    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 0.001, 3000,0.5)
+    params = {'eta':0.01,'beta':0.5}
+    # bnn.train(X_train, T_train, 0.001, 3000)
+    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 3000, params, 'momentum')
     errors = np.mean(np.array(errors).reshape(-1, 100), 1)
     grads = np.mean(np.array(grads).reshape(-1, 100), 1)
     accuracy = np.mean(np.array(accuracy).reshape(-1, 100), 1)
@@ -205,7 +206,7 @@ for i in range(0):
         # np.random.seed(10)
         #
         # nn = NN()
-        bnn = BNN()
+        bnn = BNN(True)
         bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
         bnn.addHiddenLayer(15, np.tanh, act.dtanh)
         bnn.addOutputLayer(1)
@@ -213,13 +214,13 @@ for i in range(0):
         # np.random.seed(seed)
         # np.random.seed(i)
 
-        # bnn2 = BNN()
-        # bnn2.addInputLayer(2, 20, np.tanh, act.dtanh)
-        # bnn2.addHiddenLayer(15, np.tanh, act.dtanh)
-        # bnn2.addOutputLayer(1)
+        bnn2 = BNN(True)
+        bnn2.addInputLayer(2, 20, np.tanh, act.dtanh)
+        bnn2.addHiddenLayer(15, np.tanh, act.dtanh)
+        bnn2.addOutputLayer(1)
 
-        y, grads, BNN_errros = bnn.train(X_train,T_train,eta,ITER,True)
-        # y, grads, BNN_errros_2 = bnn2.train(X_train,T_train,eta,ITER,True)
+        y, grads, BNN_errros, accuracy, accuracy_val = bnn.train(X_train,T_train,ITER, {'eta':eta})
+        y, grads_2, BNN_errros_2, accuracy, accuracy_val = bnn2.train(X_train,T_train,ITER,{'eta':eta,'beta':0.5},'adagrad')
         # y, grads, BNN_errros = bnn2.train(X_train,T_train,eta,ITER)
 
         # testX, testT = sk.twospirals(50)
@@ -230,29 +231,28 @@ for i in range(0):
         #
         print("Accuracy from scratch NN: ", sk.compute_accuracy(bnn,X_test,T_test))
 
-        # print("Accuracy from scratch BNN: ", sk.compute_accuracy(bnn2,X_test,T_test))
+        print("Accuracy from scratch BNN: ", sk.compute_accuracy(bnn2,X_test,T_test))
 
         # print("Accuracy from scratch BNN with momentum: ", sk.compute_accuracy(bnn2,X_test,T_test))
 
         # plt.title("BNN vs NN with eta={}".format(eta))
         BNN_errros = np.mean(np.array(grads).reshape(-1, 100), 1)
-        # BNN_errros_2 = np.mean(np.array(BNN_errros_2).reshape(-1, 100), 1)
+        BNN_errros_2 = np.mean(np.array(grads_2).reshape(-1, 100), 1)
         # fig = plt.figure()
         plt.title('Learning rates')
         #
-        # plt.title('Learning rate {}'.format(eta))
-        plt.plot(BNN_errros,label='eta={}'.format(eta))
-
-        # plt.plot(BNN_errros,label='normal')
-        # plt.plot(BNN_errros_2,label='momentum')
-        # plt.legend()
+        plt.title('Learning rate {}'.format(eta))
+        plt.plot(BNN_errros,label='normal')
+        plt.plot(BNN_errros_2,label='adagrad')
+        plt.legend()
         # plt.show()
-        # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/momentum_plot_{}.png'.format(eta))
+        fig.savefig('/Users/vaevictis/Documents/As1/docs/images/adagrad_plot_{}.png'.format(eta))
+        plt.clf()
         #
         # plt.plot(BNN_errros_2,label='momentum')
-    plt.legend()
-    fig.savefig('/Users/vaevictis/Documents/As1/docs/images/NN_eta_vs_training_momentum.png')
-    plt.show()
+    # plt.legend()
+    # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/NN_eta_vs_training_momentum.png')
+    # plt.show()
 
 
 

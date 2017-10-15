@@ -48,6 +48,8 @@ class Layer:
         self.dW = [np.zeros(self.W.shape)]
         self.db = [np.zeros([1,1])]
 
+        self.cache = [0,0]
+
         # self.dW = 0
         # self.db = 0
 
@@ -72,6 +74,11 @@ class BetterNeuralNetwork:
         self.freeze = True
         # enable debug flag to store useful data
         self.DEBUG = DEBUG
+
+        self.update_func = {
+            'momentum': self.momentum,
+            'adagrad': self.adagrad,
+            'gradient_descent': self.gradient_descent }
 
     def createLayer(self,size_in,size_out,activation,d_activation):
 
@@ -149,65 +156,78 @@ class BetterNeuralNetwork:
 
             i -= 1
 
+    def gradient_descent(self, l, params):
+        learning_rate = params['eta']
+
+        update_W = learning_rate * l.dW[1]
+        update_b = learning_rate * l.db[1]
+
+        return update_W, update_b
+
+    def momentum(self,l,params):
+        learning_rate = params['eta']
+
+        beta = params['beta']
+
+        update_W = learning_rate * l.dW[1] + beta * l.dW[0]
+        update_b = learning_rate * l.db[1] + beta * l.db[0]
+
+        return update_W, update_b
+
+    def adagrad(self, l,params):
+        learning_rate = params['eta']
+        eps = 1e-8
+
+        l.cache[0] += l.dW[1] ** 2
+        l.cache[1] += l.db[1] ** 2
+
+        update_W = learning_rate * l.dW[1] / (np.sqrt(l.cache[0]) + eps)
+        update_b = learning_rate * l.db[1] / (np.sqrt(l.cache[1]) + eps)
+
+        return update_W, update_b
+
+
+    def update_layers(self,params, type):
+        for l in self.layers:
+
+            update_W, update_b = self.update_func[type](l,params)
+
+            l.W -= update_W
+            l.b -= update_b
+
+            l.dW = [update_W]
+            l.db = [update_b]
+
+
     @timing
-    def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=0.0, stochastic=False,X_val=[],T_val=[]):
+    def train(self,inputs, targets, max_iter, params={}, type='gradient_descent',X_val=[],T_val=[]):
         grads = []
         errors = []
         accuracy = []
         accuracy_val = []
 
-        # decay = learning_rate/len(inputs)
+        eps = 1e-8
         y = 0
-        # print(decay)
+
         for n in range(max_iter):
 
-            batch_size = 1
+            y = self.forward(inputs)
 
-            for i in range(batch_size):
-                x = inputs
-                t = targets
+            dx = y - targets
 
-                if(stochastic):
+            self.backward(dx)
 
-                    inputs, targets, dio, porco = get_train_and_test_data(inputs, targets, 100)
-                    x = np.array([inputs[i]])
-                    t = np.array([targets[i]])
-                    batch_size = len(inputs)
+            self.update_layers(params,type)
 
-                y = self.forward(x)
+            if (self.DEBUG):
+                errors.append(cost_func.MSE(y, targets))
+                grads.append(np.mean(np.abs(dx)))
+                acc = np.mean(((y > 0.5) * 1 == targets) * 1)
+                accuracy.append(acc)
 
-                error = y - t
-
-                # learning_rate *= (1. / (1. + decay ))
-                # print(learning_rate)
-
-                self.backward(error)
-
-                if(self.DEBUG):
-                    errors.append(cost_func.MSE(y,t))
-                    grads.append(np.mean(np.abs(error)))
-                    acc = np.mean(((y > 0.5)*1 == t)*1)
-                    accuracy.append(acc)
-
-                if(len(X_val) > 0):
-                    acc = np.mean(((self.forward(X_val) > 0.5)*1 == T_val)*1)
-                    accuracy_val.append(acc)
-
-                for l in self.layers:
-                    beta  = momentum
-
-                    update_W = l.dW[1] * learning_rate
-                    update_b = l.db[1] * learning_rate
-
-                    if(momentum != 0.0):
-                        update_W += beta * l.dW[0]
-                        update_b += beta * l.db[0]
-
-                    l.W -= update_W
-                    l.b -= update_b
-
-                    l.dW = [update_W]
-                    l.db = [update_b]
+            if (len(X_val) > 0):
+                acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
+                accuracy_val.append(acc)
             # if(n % 100 == 0):
             #     plt.title(acc)
             #     plot_boundary(self, inputs, targets,0.5)

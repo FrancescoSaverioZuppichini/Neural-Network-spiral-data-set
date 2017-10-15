@@ -187,9 +187,7 @@ After instance the class, is it possible to add a input layer by calling \texttt
 
 For each layer is also possible to specified the activation function, as default value \emph{signmoid} is used. We have also implemented \texttt{relu} and \texttt{dRelu} to try them.
 
-\texttt{BetterNeuralNetwork} also has \texttt{train} method that performs forward, backpropagation and weight updates directly. It accepts as input the training sets, the targets, learning rate and the momentum flag.
-
-\subsection{Initial weight and bias}
+\texttt{BetterNeuralNetwork} also has \texttt{train} method that performs forward, backpropagation and weight updates directly. It accepts as input the training sets, the targets, max iterations, a dictionary containing the parameters and the update method name, the supported ones are: \texttt{'gradient\_descent'} (default), \texttt{'momentum'} and \texttt{'adagrad'}\subsection{Initial weight and bias}
 Weight initialisation is crucial to create a good model. I used the following formula.
 
 $$w = random(n)/\sqrt{n}$$
@@ -231,17 +229,40 @@ We used Momentum to speed up the convergence of the network, it prevent getting 
 	 w_{k + 1} = w_{k + 1} -   \Delta w_{ t + 1}
 	 \end{split}
 \end{equation}
-$\Beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In our benchmarks we used a classic $0.5$. In Figure \ref{fig:momentum}, we can see the converge rate of a classic gradient descent versus momentum for different step sizes. Momentum converges faster in all cases.
+$\Beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In our benchmarks we used a classic $0.5$. In Figure \ref{fig:momentum}, we can see the converge rate of a classic gradient descent versus momentum for different step sizes. Momentum converges faster in all cases. In my test cases, momentum works better with small step size such as $0.001$.
 \begin{figure}[H]
 \label{fig:momentum}
 \centering
-\includegraphics[scale=0.35]{images/momentum_plot_0,002.png}	
+\includegraphics[scale=0.35]{images/momentum_plot_0,1.png}	
+\includegraphics[scale=0.35]{images/momentum_plot_0,01.png}	
 \includegraphics[scale=0.35]{images/momentum_plot_0,001.png}	
 \includegraphics[scale=0.35]{images/momentum_plot_0,0001.png}	
 \caption{Gradient Discent vs Momentum}
 \end{figure}
-In the \texttt{BetterNeuralNetwork} momentum can be enabled by passing \texttt{True} as last parameter to the \texttt{train} method.
-\\
+In the \texttt{BetterNeuralNetwork} momentum can be enabled by passing the correct parameters and type to the \tetxttt{train} method. The following snippet shows and example
+
+\begin{python}
+params = {'eta': 0.01,'beta': 0.5} # beta must be included or the default 0.5 value will be used
+nn.train(X_train, T_train, 3000, params, 'momentum')	 # pass 'momentum' as type name
+\end{python}
+
+\subsection{Adagrad}
+We also implemented Adagrad in order to speed up the convergence. In Figure \ref{fig: adagrad}, we can see the converge rate of a classic gradient descent versus adagrad for different step sizes.
+\begin{figure}[H]
+\label{fig: adagrad}
+\centering
+\includegraphics[scale=0.35]{images/adagrad_plot_0,1.png}	
+\includegraphics[scale=0.35]{images/adagrad_plot_0,01.png}	
+\includegraphics[scale=0.35]{images/adagrad_plot_0,001.png}	
+\includegraphics[scale=0.35]{images/adagrad_plot_0,0001.png}	
+\caption{Gradient Discent vs Adagrad}
+\end{figure}
+Adagrad seems to work very well with big step size, but too slow with small step. Also, we can notice how linearly the gradient is reduced at each iteration.
+
+The following snippet shows how to enable it
+\begin{python}
+nn.train(X_train, T_train, 3000, params, 'adagrad') // pass 'adagrad' as type name
+\end{python}
 %%%%%%%%%%%%%%%%%%% PUT SOME SECTION IN ORDER TO INTRODUCE THE OTHER MERDA CHE HO PROVATO 
 We trying other techniques with no luck. We also include them in this report.
 \subsection{Dropout}
