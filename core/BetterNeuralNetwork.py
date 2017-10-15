@@ -38,8 +38,6 @@ class Layer:
         # bias must be small, so let's scale them
         self.bias_scale = 0.01
 
-        # self.gain = np.ones([size_out])
-
         self.W = np.random.randn(size_in,size_out)/np.sqrt(size_in)
         self.b = np.random.random([1,1]) * self.bias_scale
 
@@ -102,11 +100,17 @@ class BetterNeuralNetwork:
     def forward(self, inputs):
         self.A = [inputs]
         self.Z = []
+        # dropout probability
+        # p = 0.2
 
         a = inputs
 
         for l in self.layers:
             z = a.dot(l.W) + l.b
+            # create dropout mask
+            # u = (np.random.rand(*z.shape) < p) / p
+            # apply mask
+            # z *= u
             a = l.activation(z)
             # store
             self.A.append(a)
@@ -118,6 +122,7 @@ class BetterNeuralNetwork:
     def backward(self, error):
         A = self.A
         Z = self.Z
+
 
         delta = error
 
@@ -144,16 +149,24 @@ class BetterNeuralNetwork:
     def train(self,inputs,targets,learning_rate=0.001, max_iter=200, momentum=False,X_val=None,T_val=None):
         grads = []
         errors = []
+        lrs = []
 
+        # decay = learning_rate/len(inputs)
+        y = 0
+        # print(decay)
         for n in range(max_iter):
 
             y = self.forward(inputs)
 
             error = y - targets
 
+            # learning_rate *= (1. / (1. + decay ))
+            # print(learning_rate)
+
             self.backward(error)
 
-            errors.append(np.mean(np.abs(error)))
+            errors.append(cost_func.MSE(y,targets))
+            grads.append(np.mean(np.abs(error)))
             # if(n % 100 == 1):
             #     print('Error: ',np.mean(np.abs(error)))
 
@@ -181,4 +194,31 @@ class BetterNeuralNetwork:
             # plt.show(block=False)
             # plt.pause(0.001)
             # plt.clf()
+
         return y, grads, errors
+
+    def save(self,file_name):
+        W = []
+        b = []
+
+        for l in self.layers:
+            W.append(l.W)
+            b.append(l.b)
+
+        np.save(file_name + "_W", W)
+        np.save(file_name + "_b", b)
+
+    def load(self,file_name):
+
+        W = np.load(file_name + "_W")
+        b = np.load(file_name + "_W")
+
+        for i in range(len(W)):
+            j, k = W[i].shape
+
+            new_layer = self.createLayer(j,k)
+
+            new_layer.W = W[i]
+            new_layer.b = b[i]
+         
+

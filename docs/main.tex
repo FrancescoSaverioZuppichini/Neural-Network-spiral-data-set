@@ -221,4 +221,29 @@ $\Beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In 
 \caption{Gradient Discent vs Momentum}
 \end{figure}
 In the \texttt{BetterNeuralNetwork} momentum can be enabled by passing \texttt{True} as last parameter to the \texttt{train} method.
+\subsection{Dropout}
+Dropout is a recently introduced regularisation technique. Basically, each node has a probability to be enable on disable in each forward pass. We implemented it by changing the \texttt{forward} method inside \texttt{BetterNeuralNetwork}
+\begin{python}
+    def forward(self, inputs):
+        self.A = [inputs]
+        self.Z = []
+        # dropout probability
+        p = 0.5
+        
+        a = inputs
+
+        for l in self.layers:
+            z = a.dot(l.W) + l.b
+            # create dropout mask
+            u = (np.random.rand(*z.shape) < p) / p
+            # apply mask
+            z *= u
+            a = l.activation(z)
+            # store
+            self.A.append(a)
+            self.Z.append(z)
+
+        return a
+\end{python}
+At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence.
 \end{document}

@@ -151,42 +151,23 @@ def competition_train_from_scratch(testX, testT):
     Trains the BetterNeuralNet model from scratch using the twospirals data and calls the other
     competition funciton to check the accuracy.
     """
-    trainX, trainT = twospirals(n_points=400, noise=0.6, twist=800)
-
-    # X = trainX[0:450]
-    # T = trainT[0:450]
-    # X_val = trainX[450:]
-    # T_val = trainT[450:]
-    # np.random.seed(int(time.time()))
+    trainX, trainT = twospirals(250, noise=0.6, twist=800)
 
     np.random.seed(1)
-    NN = BetterNeuralNetwork()
-    # NN = NeuralNetwork()
-    NN.addInputLayer(2, 20, act.tanh, act.dtanh)
-    NN.addHiddenLayer(10, act.tanh, act.dtanh)
-    # NN.addHiddenLayer(10, act.tanh, act.dtanh)
-    # NN.addOutputLayer(1)
-
-    NN.addOutputLayer(1)
+    model = BetterNeuralNetwork()
+    model.addInputLayer(2, 20, act.tanh, act.dtanh)
+    model.addHiddenLayer(15, act.tanh, act.dtanh)
+    model.addOutputLayer(1)
     ## Implement
-    NN.train(trainX,trainT,0.001,2000,True)
+    model.train(trainX,trainT,0.001,3000,True)
 
-    ## End
+    BNN_acc = compute_accuracy(model, trainX, trainT)
+    print("Accuracy from scratch Train: ", BNN_acc)
 
-    testX, testT = twospirals()
+    BNN_acc = compute_accuracy(model, testX, testT)
+    print("Accuracy from scratch Test: ", BNN_acc)
 
-    BNN_acc = compute_accuracy(NN, testX, testT)
-    print("Accuracy from scratch BNN: ", BNN_acc)
-    np.random.seed(int(time.time()))
-
-    NN = NeuralNetwork()
-
-    ## Implement
-    NN.train(trainX, trainT, 0.001, 2000)
-    NN_acc = compute_accuracy(NN, testX, testT)
-    print("Accuracy from scratch NN: ", NN_acc)
-
-    return BNN_acc,NN_acc
+    return model
 
 
 def competition_load_weights_and_evaluate_X_and_T(testX, testT):

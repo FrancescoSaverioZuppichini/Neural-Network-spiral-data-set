@@ -125,6 +125,7 @@ class NeuralNetwork:
     def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
         grads = []
         errors = []
+
         y = 0
 
         for n in range(max_iter):
@@ -144,10 +145,5 @@ class NeuralNetwork:
             for var_str, delta in updates.items():
                 update = learning_rate * delta
                 self.var[var_str] -= update
-
-            if (cost_func.MSE(y, targets) < 0.02):
-                print("DIOCAENE {}".format(cost_func.MSE(y, targets)))
-                break
-        # print('Error: ',np.mean(np.abs(y)))
 
         return y, grads, errors
