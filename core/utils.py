@@ -1,5 +1,5 @@
 import time
-from random import choice
+import random
 import numpy as np
 
 def timing(f):
@@ -20,7 +20,7 @@ def timing(f):
     return wrap
 
 def get_train_and_test_data(X,T,train_ratio=80):
-
+    random.seed(10)
     if (train_ratio > 100 or train_ratio < 0):
         raise Exception("train ratio must be >= 0 and <= 100")
     # convert to list so it is easier lol
@@ -40,7 +40,7 @@ def get_train_and_test_data(X,T,train_ratio=80):
 
     i = 0
     while(i < test_size):
-        random_index = choice(indices)
+        random_index = random.choice(indices)
         indices.remove(random_index)
 
         temp = X[random_index]

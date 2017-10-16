@@ -98,11 +98,13 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
 learning_rates = [0.1,0.01,0.001,0.0001]
 
-X,T = sk.twospirals(350, noise=0.6, twist=800)
+X,T = sk.twospirals(300, noise=0.6, twist=800)
 # X,T = sk.twospirals()
-
+# X_train = X
+# T_train = T
 X_train, T_train, X_test, T_test  = utils.get_train_and_test_data(X,T)
-#
+# Dio, Cane, X_test, T_test  = utils.get_train_and_test_data(X,T)
+
 # fig =  plt.figure()
 # plt.title('Train')
 # sk.plot_data(X_train,T_train)
@@ -111,74 +113,62 @@ X_train, T_train, X_test, T_test  = utils.get_train_and_test_data(X,T)
 # plt.title('Test')
 # sk.plot_data(X_test,T_test)
 # fig2.savefig('/Users/vaevictis/Documents/As1/docs/images/test_set.png')
-nn_speed = []
-bnn_speed = []
-# test performance
-for i in range(0):
-    iter = 10 * (10 ** i)
 
-    seed = int(time.time())
-    np.random.seed(seed)
-
-    time1 = time.time()
-
-    nn = NN()
-    nn.train(X_train,T_train,0.001, iter)
-    time2 = time.time()
-    nn_speed.append(float(time2-time1)*1000.0)
-
-    bnn = BNN()
-    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-    bnn.addHiddenLayer(15, np.tanh, act.dtanh)
-    bnn.addOutputLayer(1)
-
-    time1 = time.time()
-    bnn.train(X_train, T_train, 0.001, iter)
-    time2 = time.time()
-    bnn_speed.append(float(time2 - time1) * 1000.0)
-
-
-
-sk.competition_train_from_scratch(X_train,T_train)
+for i in range(1):
+    sk.competition_train_from_scratch(X_test,T_test)
 # seed = int(time.time())
 # print(seed)
 # np.random.seed(seed)
 
 # bnn = BNN(True)
-# bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-# bnn.addHiddenLayer(15, np.tanh, act.dtanh)
-# bnn.addOutputLayer(1)
+# bnn.add_input_layer(2, 20, np.tanh, act.dtanh)
+# bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+# bnn.add_output_layer(1)
 
 # bnn.load('test')
-
+# print(len(X_train))
 
 # fig = plt.figure()
 for i in range(0):
-    seed = i
+    # seed = i
     # seed = int(time.time())
-    print(seed)
-    np.random.seed(seed)
+    np.random.seed(1508166319)
+    # nn = NN()
+    # nn.train(X_train,T_train,0.01,30000)
     bnn = BNN(True)
-    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-    bnn.addHiddenLayer(15, np.tanh, act.dtanh)
-    bnn.addOutputLayer(1)
-
-    params = {'eta':0.01,'beta':0.5}
-    # bnn.train(X_train, T_train, 0.001, 3000)
-    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 3000, params, 'momentum')
-    errors = np.mean(np.array(errors).reshape(-1, 100), 1)
-    grads = np.mean(np.array(grads).reshape(-1, 100), 1)
-    accuracy = np.mean(np.array(accuracy).reshape(-1, 100), 1)
-    accuracy_val = np.mean(np.array(accuracy_val).reshape(-1, 100), 1)
-
-    # print(errors[-1])
-    plt.plot(grads,label="grad")
-    plt.plot(errors, label='error')
-    # plt.plot(accuracy, label='test')
-    # plt.plot(accuracy_val, label='validation')
+    bnn.add_input_layer(2, 20, np.tanh, act.dtanh)
+    bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+    bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+    # bnn.add_hidden_layer(8, np.tanh, act.dtanh)
+    bnn.add_output_layer(1)
     #
-    plt.legend()
-    plt.show()
+    params = {'eta':0.2,'beta':0.5}
+    # # bnn = NN()
+    # # bnn.train(X_train, T_train, 0.001, 3000)
+    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 4000, params, 'adagrad',X_test,T_test)
+    # errors = np.mean(np.array(errors).reshape(-1, 10), 1)
+    # grads = np.mean(np.array(grads).reshape(-1, 10), 1)
+    # accuracy = np.mean(np.array(accuracy).reshape(-1, 10), 1)
+    # accuracy_val = np.mean(np.array(accuracy_val).reshape(-1, 10), 1)
+
+    # fig = plt.figure()
+    sk.plot_boundary(bnn,X,T,0.5)
+    plt.plot()
+    # print(errors[-1])
+    # plt.title("train={0:.3f}, seed={1}".format(accuracy[-1],seed))
+
+    # plt.title("train={0:.3f}, test={0:.3f}".format(accuracy[-1], accuracy_val[-1]))
+    # plt.plot(grads,label="grad")
+    # plt.plot(errors, label='error')
+    # plt.legend()
+    # plt.show()
+    # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/competition/competition_{}.png'.format(seed))
+
+    # plt.title("train={}, test={}".format(accuracy[-1], accuracy_val[-1]))
+    # plt.plot(accuracy, label='train')
+    # plt.plot(accuracy_val, label='validation')
+    # plt.legend()
+    # plt.show()
 
     # y = bnn.forward(X_train)
     # plt.title("Accuracy={}".format(sk.compute_accuracy(bnn,X_train,T_train)))
@@ -188,7 +178,7 @@ for i in range(0):
     # plt.show()
 
     print(sk.compute_accuracy(bnn,X_train,T_train))
-    print(sk.compute_accuracy(bnn,X_test,T_test))
+    # print(sk.compute_accuracy(bnn,X_test,T_test))
 # part 4
 ITER = 10000
 
@@ -207,17 +197,17 @@ for i in range(0):
         #
         # nn = NN()
         bnn = BNN(True)
-        bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-        bnn.addHiddenLayer(15, np.tanh, act.dtanh)
-        bnn.addOutputLayer(1)
+        bnn.add_input_layer(2, 20, np.tanh, act.dtanh)
+        bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+        bnn.add_output_layer(1)
 
         # np.random.seed(seed)
         # np.random.seed(i)
 
         bnn2 = BNN(True)
-        bnn2.addInputLayer(2, 20, np.tanh, act.dtanh)
-        bnn2.addHiddenLayer(15, np.tanh, act.dtanh)
-        bnn2.addOutputLayer(1)
+        bnn2.add_input_layer(2, 20, np.tanh, act.dtanh)
+        bnn2.add_hidden_layer(15, np.tanh, act.dtanh)
+        bnn2.add_output_layer(1)
 
         y, grads, BNN_errros, accuracy, accuracy_val = bnn.train(X_train,T_train,ITER, {'eta':eta})
         y, grads_2, BNN_errros_2, accuracy, accuracy_val = bnn2.train(X_train,T_train,ITER,{'eta':eta,'beta':0.5},'adagrad')

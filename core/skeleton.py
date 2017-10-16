@@ -9,6 +9,8 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 from utils import timing
+from utils import get_train_and_test_data
+
 from Perceptron import Perceptron
 from NeuralNetwork import NeuralNetwork
 from BetterNeuralNetwork import BetterNeuralNetwork
@@ -152,23 +154,36 @@ def competition_train_from_scratch(testX, testT):
     competition funciton to check the accuracy.
     """
     trainX, trainT = twospirals(250, noise=0.6, twist=800)
+    train_X = trainX
+    train_T = trainT
+    # train_X, train_T, testX, testT = get_train_and_test_data(trainX, trainT)
+    # seed = int(time.time())
+    np.random.seed(1508171833)
+    # np.random.seed(10)
+    model = BetterNeuralNetwork(True)
+    model.add_input_layer(2, 20, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_output_layer(1)
 
-    np.random.seed(int(time.time()))
-    model = BetterNeuralNetwork()
-    model.addInputLayer(2, 20, act.tanh, act.dtanh)
-    model.addHiddenLayer(15, act.tanh, act.dtanh)
-    model.addOutputLayer(1)
-    ## Implement
-    model.train(trainX, trainT ,3500, { 'eta' : 0.1 }, 'adagrad')
+    y, grads, errors, accuracy, accuracy_val = model.train(train_X, train_T ,8000, { 'eta' : 0.1, 'beta' : 0.5 },'adagrad', testX, testT)
 
+    acc_train = compute_accuracy(model, trainX, trainT)
+    acc_test = compute_accuracy(model, testX, testT)
+
+    # plt.title("train={}, test={}".format(acc_train, acc_test))
     # plot_boundary(model,trainX,trainT,0.5)
     # plt.show()
 
-    BNN_acc = compute_accuracy(model, trainX, trainT)
-    print("Accuracy from scratch Train: ", BNN_acc)
+    print("Accuracy from scratch Train: ", acc_train)
+    print("Accuracy from scratch Test: ", acc_test)
 
-    BNN_acc = compute_accuracy(model, testX, testT)
-    print("Accuracy from scratch Test: ", BNN_acc)
+    fig = plt.figure()
+    plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
+    plot_boundary(model,trainX,trainT,0.5)
+
+    plt.show()
+    # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/competition/competition_{}.png'.format(seed))
 
     return model
 

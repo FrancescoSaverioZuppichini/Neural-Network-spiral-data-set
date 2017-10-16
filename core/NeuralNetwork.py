@@ -17,14 +17,11 @@ class NeuralNetwork:
         The variables are stored inside a dictonary to make them easy accessible.
         """
         ## Implement
-        # hold the layers size
-        L_sizes = [7,4]
 
         # will hold all the intermediate quantity
         self.Z = []
         # will hold all the activation functions
         self.A = []
-
         # according to this http://cs231n.github.io/neural-networks-2/
         # bias must be small, so let's scale them
         scale_factor = 0.01
@@ -32,9 +29,9 @@ class NeuralNetwork:
         self.var = {
          "W1": np.random.randn(2,20)/np.sqrt(2.0),
          "b1": np.random.random([1,1]) * scale_factor,
-         "W2": np.random.rand(20,15)/np.sqrt(20),
+         "W2": np.random.randn(20,15)/np.sqrt(20),
          "b2": np.random.random([1,1]) * scale_factor,
-         "W3": np.random.rand(15,1)/np.sqrt(15),
+         "W3": np.random.randn(15,1)/np.sqrt(15),
          "b3": np.random.random([1,1]) * scale_factor
         }
 
@@ -122,9 +119,8 @@ class NeuralNetwork:
         return updates
 
     @timing
-    def train(self,inputs,targets,learning_rate=0.01, max_iter=200):
+    def train(self,inputs,targets,learning_rate=0.01, max_iter=1000):
         grads = []
-        errors = []
 
         y = 0
 
@@ -136,15 +132,11 @@ class NeuralNetwork:
 
             updates = self.backward(error)
 
-            errors.append(np.mean(np.abs(error)))
-
-            # if (n % 100 == 1):
-                # print(cost.MSE(y, targets))
-                # print('Error: ', np.mean(np.abs(error)))
-
+            print(cost_func.MSE(y,targets))
+            # grads.append(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = learning_rate * delta
                 self.var[var_str] -= update
 
-        return y, grads, errors
+        return y, grads

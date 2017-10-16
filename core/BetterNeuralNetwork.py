@@ -1,13 +1,9 @@
 import numpy as np
+import matplotlib.pyplot as plt
+# custom imports
 import activation as act
 import MSE as cost_func
 from utils import timing
-from utils import get_train_and_test_data
-
-import math
-from concurrent.futures import ThreadPoolExecutor
-from threading import Thread
-import matplotlib.pyplot as plt
 
 def plot_data(X,T):
     """
@@ -32,10 +28,11 @@ def plot_boundary(model, X, targets, threshold=0.0):
 
 
 class Layer:
-
+    """
+    Layer high-level implementation.
+    """
     def __init__(self,size_in,size_out, activation=act.sigmoid, d_activation=act.dsigmoid):
         self.shape = [size_in,size_out]
-
         # according to this http://cs231n.github.io/neural-networks-2/
         # bias must be small, so let's scale them
         self.bias_scale = 0.01
@@ -47,11 +44,8 @@ class Layer:
         # self.dB = np.zeros([1,1])
         self.dW = [np.zeros(self.W.shape)]
         self.db = [np.zeros([1,1])]
-
+        # used for momentum
         self.cache = [0,0]
-
-        # self.dW = 0
-        # self.db = 0
 
         self.activation = activation
         self.d_activation = d_activation
@@ -62,7 +56,6 @@ class BetterNeuralNetwork:
     used for predictoin and to compute the gradients.
     """
     def __init__(self, DEBUG=False):
-
         # will hold all the intermediate quantity
         self.Z = []
         # will hold all the activation functions
@@ -74,13 +67,13 @@ class BetterNeuralNetwork:
         self.freeze = True
         # enable debug flag to store useful data
         self.DEBUG = DEBUG
-
+        # holds all available gradient descent update methods
         self.update_func = {
             'momentum': self.momentum,
             'adagrad': self.adagrad,
             'gradient_descent': self.gradient_descent }
 
-    def createLayer(self,size_in,size_out,activation,d_activation):
+    def create_layer(self,size_in,size_out,activation,d_activation):
 
         if(self.freeze):
             return
@@ -90,25 +83,37 @@ class BetterNeuralNetwork:
         return new_layer
 
 
-    def addInputLayer(self,size_in,size_out,activation=act.sigmoid, d_activation=act.dsigmoid):
+    def add_input_layer(self,size_in,size_out,activation=act.sigmoid, d_activation=act.dsigmoid):
+        """
+        Add a input layer, size_in is required.
+        """
         self.freeze = False
 
-        self.layers.append(self.createLayer(size_in,size_out,activation,d_activation))
+        self.layers.append(self.create_layer(size_in,size_out,activation,d_activation))
 
-    def addOutputLayer(self, size_out,activation=act.sigmoid, d_activation=act.dsigmoid):
+    def add_output_layer(self, size_out,activation=act.sigmoid, d_activation=act.dsigmoid):
+        """
+        Add a output layer, size_in is calculated by the Network
+        """
         prev_layer_size = self.layers[-1].shape[1]
 
-        self.layers.append(self.createLayer(prev_layer_size,size_out,activation,d_activation))
+        self.layers.append(self.create_layer(prev_layer_size,size_out,activation,d_activation))
 
         self.freeze = True
 
-    def addHiddenLayer(self,size, activation=act.sigmoid, d_activation=act.dsigmoid):
+    def add_hidden_layer(self,size, activation=act.sigmoid, d_activation=act.dsigmoid):
+        """
+        Add a hidden layer, size_in is calculated by the Network
+        """
         prev_layer_size = self.layers[-1].shape[1]
 
-        self.layers.append(self.createLayer(prev_layer_size,size,activation,d_activation))
+        self.layers.append(self.create_layer(prev_layer_size,size,activation,d_activation))
 
 
     def forward(self, inputs):
+        """
+        Compute forward and store booth activations and weighted outputs.
+        """
         self.A = [inputs]
         self.Z = []
         # dropout probability
@@ -131,9 +136,11 @@ class BetterNeuralNetwork:
 
 
     def backward(self, error):
+        """
+        Compute backward propagation for each layer and store the result.
+        """
         A = self.A
         Z = self.Z
-
 
         delta = error
 
@@ -157,6 +164,9 @@ class BetterNeuralNetwork:
             i -= 1
 
     def gradient_descent(self, l, params):
+        """
+        Vanilla gradient descent.
+        """
         learning_rate = params['eta']
 
         update_W = learning_rate * l.dW[1]
@@ -165,6 +175,10 @@ class BetterNeuralNetwork:
         return update_W, update_b
 
     def momentum(self,l,params):
+        """
+        Momentum implementation. More detail can be found here:
+        http://ruder.io/optimizing-gradient-descent/#momentum
+        """
         learning_rate = params['eta']
 
         beta = params['beta']
@@ -175,6 +189,10 @@ class BetterNeuralNetwork:
         return update_W, update_b
 
     def adagrad(self, l,params):
+        """
+        Adagrad implementation. More detail can be found here:
+        http://ruder.io/optimizing-gradient-descent/#adagrad
+        """
         learning_rate = params['eta']
         eps = 1e-8
 
@@ -188,6 +206,9 @@ class BetterNeuralNetwork:
 
 
     def update_layers(self,params, type):
+        """
+        Update each layer sequentially calling the correct gradient descent method
+        """
         for l in self.layers:
 
             update_W, update_b = self.update_func[type](l,params)
@@ -201,12 +222,23 @@ class BetterNeuralNetwork:
 
     @timing
     def train(self,inputs, targets, max_iter, params={}, type='gradient_descent',X_val=[],T_val=[]):
+        """
+        Train the Neural Network according to the given parameters
+
+        Args:
+            inputs : The inputs vector.
+            targets: The targets vector.
+            max_iter (int) : Number of maximum iterations.
+            params (dict) : The parameters
+            type (string) : The name of the gradient descent method to use
+            X_val : Validation inputs.
+            T_val : Validation targets.
+        """
         grads = []
         errors = []
         accuracy = []
         accuracy_val = []
 
-        eps = 1e-8
         y = 0
 
         for n in range(max_iter):
@@ -228,8 +260,9 @@ class BetterNeuralNetwork:
             if (len(X_val) > 0):
                 acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
                 accuracy_val.append(acc)
+
             # if(n % 100 == 0):
-            #     plt.title(acc)
+            #     plt.title("acc={}, iter={}".format(accuracy[-1],n))
             #     plot_boundary(self, inputs, targets,0.5)
             #     plt.show(block=False)
             #     plt.pause(0.001)
@@ -238,6 +271,9 @@ class BetterNeuralNetwork:
         return y, grads, errors, accuracy, accuracy_val
 
     def save(self,file_name):
+        """
+        Save the current status into a file.
+        """
         # TODO Save activations
 
         W = []
@@ -251,6 +287,9 @@ class BetterNeuralNetwork:
         np.save(file_name + "_b", b)
 
     def load(self,file_name):
+        """
+        Load the current status from a file.
+        """
         # TODO add file check
         # TODO load activations
         W = np.load(file_name + "_W.npy")
@@ -262,7 +301,7 @@ class BetterNeuralNetwork:
         for i in range(len(W)):
             j, k = W[i].shape
 
-            new_layer = self.createLayer(j,k,act.sigmoid,act.dsigmoid)
+            new_layer = self.create_layer(j,k,act.sigmoid,act.dsigmoid)
 
             self.layers.append(new_layer)
 

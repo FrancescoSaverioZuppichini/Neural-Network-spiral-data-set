@@ -1,5 +1,9 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
+\usepackage{biblatex}
+\bibliography{main} 
+
+\addbibresource{main.bib}
 
 \usepackage{amsmath}
 \usepackage{listings}
@@ -9,7 +13,6 @@
 \usepackage{caption}
 \usepackage{float}
 \usepackage{subfig}
-
 \author{Francesco Saverio Zuppichini}
 \title{Machine Learning - Assignment 1}
 \begin{document}
@@ -24,7 +27,7 @@ Equation \ref{eq:vectorized_perceptron} shows the vectorised equation for a sing
 \label{eq:vectorized_perceptron}
 output = XW + b
 \end{equation}
-Where $X = {x_1, ... x_n}$, $W = {w_1, ..., w_n}$. We denote $y$ the output of the perceptron
+Where $X = {x_1, ... x_n}$ is the input set and $W = {w_1, ..., w_n}$ is the target set. We denote $y$ the output of the perceptron.
 
 \subsubsection{Mean Squared Error}
 Equation \ref{eq: MSE_perceptron} denotes the Mean Square Error function for our single perceptron
@@ -35,12 +38,12 @@ Equation \ref{eq: MSE_perceptron} denotes the Mean Square Error function for our
 One trick that is usual done is to multiply equation $(2)$ by $\frac{1}{2}$, so when we take the derivative the $2$ goes away. This is called One Half Mean Squared Error.
 
 \subsubsection{Derivate of the error with respect to the weights}
-In order to reduce our error function and adjust each weight we need to compute the first derivati with respect to the weights. We will use the modified version of equation $(2)$ called One Half Mean Squared Error.
+In order to reduce our error function we need to compute the first derivative with respect to the weights. We will use the modified version of equation $(2)$ called One Half Mean Squared Error.
 \begin{equation}
 \frac{\delta E}{\delta w_i}	= y - t
 \end{equation}
 \subsubsection{Compute the new weight values after one step using a learning rate of 0.02}
-Since it was not specified that the calculation must be done by hand, we called \texttt{train\_one\_step} in order to compute the new weights, as follow
+Since it was not specified that the calculation must be done by hand, we called \texttt{train\_one\_step} in order to compute the new weights, as follows:
 \begin{python}
 X,T = get_part1_data()
 p = Perceptron()
@@ -56,22 +59,22 @@ $$W_{k + 1} = \begin{pmatrix}
 	1.95218181818
 \end{pmatrix}$$
 \subsubsection{Gradient Descend}
-The gradient descend is an iterative optimisation algorithm that follows the direction of the negative descent in order to minimised the objective function. It can be effectively used as Learning Algorithm because it reduces our error function, Equation \ref{eq: MSE_perceptron}, in order to adjust the weights properly. Equation \ref{eq: GD} shows the generic update rule.
+The gradient descend is an iterative optimisation algorithm that follows the direction of the negative gradient in order to minimised an objective function. It can be effectively used as Learning Algorithm because it reduces the error function, Equation \ref{eq: MSE_perceptron}, and adjusts the weights properly. Equation \ref{eq: GD} shows the generic update rule.
 \begin{equation}
 \label{eq: GD}
 	w_{k + 1} = w_k - \eta \nabla E(w_k)
 \end{equation}
-Where $\eta$ is the step size, also called \textbf{learning rate} in Machine Learning. This parameter influence the behavior of Gradient Descent, a small number can lead to local minimum, while a bigger learning rate could "over-shoot" and decreasing the converge ration. Later in this project you will how a wrong $\eta$ can strongly change the converge rate of a Neural Network.
+Where $\eta$ is the step size, also called \textbf{learning rate} in Machine Learning. This parameter influences the behaviour of gradient descent, a small number can lead to local minimum, while a bigger learning rate could "over-shoot" and decreasing the converge ration. Later in this project you will how a wrong $\eta$ can strongly change the output of a Neural Network.
 
 For this reasons, numerous improvements have been proposed to avoid local minima and increase its convergence ration. Some of them are: Conjugate Gradient and Momentum.
 % TODO if time talk about them
 \subsection{Implement the MSE and dMSE}
 You can find them in \emph{MSE.py}
 \subsection{Implement the function forward and backward}
-For the \emph{forward} and \emph{backward} function you can find the code in \emph{Perceptron.py}. You can find \emph{train\_one\_step} in \emph{sketron.py}.
+The \emph{forward} and \emph{backward} function can be found in \emph{Perceptron.py}. You can find \emph{train\_one\_step} in \emph{skeletron.py}.
 
 \subsection{Implement the \emph{run\_part1}}
-You can find the implementation in the code. Figure \ref{fig:runPart1} shows the final result after 15 steps using a learning rate of $0.02$. We can notice that the Perceptron worked as aspected since it correctly classified the two colour sets.
+You can find the implementation in the code, \emph{skeletron.py}. Figure \ref{fig:runPart1} shows the final result after 15 steps using a learning rate of $0.02$. We can notice that the Perceptron worked as aspected since it correctly classified the two colour sets.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{images/run_part1}
@@ -99,13 +102,13 @@ Where $w^l_{jk}$ is the connection from neuron $k$ in the $l-1$ layer to $j$, $a
 a^l = \sigma(W^la^{l-1} + b^l)
 \end{equation}
 
-\subsubsection{delta rules}
-A Neural Network try to change its weights in order to decrease the error function, $E$. We define $\delta^l_j$ the output error of neuron $j$ in layer $l$
+\subsubsection{Delta rules}
+In a Neural Network the weights are iteratively changed in order to decrease the error function, called $E$.Equation \ref{eq:deltaRule_1} defines $\delta^l_j$ as the output error of neuron $j$ in layer $l$
 \begin{equation}
-	\label{eq:deltaRule_1}
+	\label{eq: deltaRule_1}
 	\delta^l_j = \frac{\delta E}{\delta z^l_j}
 \end{equation}
-Strictly speaking, $\delta^l_j$, is how much the error function changes by changing the weighted input on that layer. Applying the chain rule, equation \ref{eq:deltaRule_1} becomes
+Strictly speaking, $\delta^l_j$, is how much the error function changes by changing the weighted input on that layer. Applying the chain rule, Equation \ref{eq:deltaRule_1} becomes:
 \begin{equation}
 \label{eq:deltaRule_2}
 \delta^l_j = \frac{\delta E}{\delta a^l_j} \frac{\delta a^l_j}{\delta z^l_j}
@@ -120,7 +123,7 @@ By knowing that $a^l_j = \sigma(z^l_j)$, Equation \ref{eq:deltaRule_2} can be ex
 %We define $\Delta z^l_j$ the quantity added to the $j$-th neuron's weighted input in the $l$ layer by the network.
 % The new output of that neuron becomes $\sigma(z^l_k + \Delta z^l_j)$ causing a changing by $\frac{\delta E}{\delta z^l_k}\Delta z^l_j$. 
 \subsubsection{Derivatives of the weights}
-We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule
+We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule:
 \begin{equation}
 \frac{\delta E}{\delta w^l_{jk}} = \frac{\delta E}{\delta z^l_j}\frac{\delta z^l_j}{\delta w^l_{jk}} =	
 \frac{\delta E}{\delta a^l_j}\frac{\delta a^l_j}{\delta z^l_{j}}
@@ -134,12 +137,12 @@ We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule
 You can find them in \emph{NeuralNetwork.py}
 \subsection{Train Network}
 \subsubsection{ Split the data into a train set and a test set}
-I decide to split my Training set and Test set by a ratio of 80:20. If we choose a smaller train set we may under-train the network, on the other hand we if we shrink the test set we may \emph{overfit}. We created a function called \texttt{get\_train\_and\_test\_data} in \emph{utils.py} that create the two sets with random sampling.
-Figure \ref{fig: train_test_set} shows the plot for the train set and the test set. They are created using \texttt{twospirals} using the configuration used for the competition.
+We decided to split the training set and test set with a ratio of 80:20. If we choose a smaller train set we may under-train the network and, on the other hand, if we shrink the test set we may \emph{overfit}. In order to do so, we created a function called \texttt{get\_train\_and\_test\_data} in \emph{utils.py}.
 
+Figure \ref{fig: train_test_set} shows the plot for the train set and the test set. They are created by calling \texttt{twospirals} using competition's configuration.
 \begin{figure}[h]
-	\centering
 	\label{fig: train_test_set}
+	\centering
 	\includegraphics[scale=0.5]{images/train_set}
 	\includegraphics[scale=0.5]{images/test_set}
 	\caption{Train set and Test set}
@@ -152,11 +155,11 @@ In order to find the correct learning rate, we decided to fist test the network 
 \begin{figure}[H]
 \centering
 \label{fig: learning_rate_convergence}
-\includegraphics[scale=0.5]{images/NN_eta_vs_training}
+\includegraphics[scale=0.6]{images/NN_eta_vs_training}
 \caption{Learning rate convergences}
 \end{figure}
 
-This little benchmark shows that a big step size, like $0.1$, do not lead to good converge since it cannot find the correct minimum. On the other hand, a very small eta, $0.0001$, converges very slowly. The best choice is a value between then, $0.002$ or $0.001$.
+This little benchmark shows that a big step size, like $0.1$, do not lead to good converge because it overshoots and it cannot find the correct minimum. On the other hand, a very small eta, $0.0001$, converges very slowly and training a model with it will take forever. The best choice is a value between then, $0.002$ or $0.001$.
 \subsubsection{Plot the learning rate of at least 5 different learning rates on both sets}
 TODO
 \subsubsection{Plot the boundary of the model which converged the most on the training data}
@@ -164,20 +167,20 @@ Figure \ref{fig: NN_MSE_002_boundary} shows the model boundary after reach a MSE
 \begin{figure}[H]
 \label{fig: NN_MSE_002_boundary}
 \centering
-\includegraphics[scale=0.5]{images/NN_MSE_002_boundary}	
+\includegraphics[scale=0.6]{images/NN_MSE_002_boundary}	
 \caption{Boundary of the model with MSE less than 0.02}
 \end{figure}
 
 \subsection{Explain if this is a good model for the data}
 
 \section{Further Improvements}
-In this sections we will analised each extension that I tried to add, even if they did not improve our solution, in order to create a better model.
+In this sections we analyse each extension that we tried, even if they did not improve our solution, in order to create a better model.
 \subsection{Generic Implementation}
 Since the NeuralNetwork class has a fixed number of layers, the first improvement that we did was to create a generic implementation.
 
-The \texttt{BetterNeuralNetwork} class exposes an API that allows to create a generic Neural Network by adding and shaping layers.
+The \texttt{BetterNeuralNetwork} class exposes an API allowing the creation of a generic Neural Network by adding and shaping layers.
 
-After instance the class, is it possible to add a input layer by calling \texttt{addInputLayer(size\_in,size\_out)}. Then the client can add as many hidden layer has he wants by using \texttt{addHiddenLayer(size\_out)}, the "size\_in" is not necessary since it can be easily calculated by the network. Then, as last step, the output layer is added calling \texttt{addOutputLayer(size\_out)}. It follows a full example where we create the same Neural Network from Exercise 2.
+After instance the class, is it possible to add a input layer by calling \texttt{add\_hnput\_layer(size\_in,size\_out)}. Many hidden layers can be added by using \texttt{add\_hidden\_layer(size\_out)}, the "size\_in" is not necessary since it can be easily calculated by the network. Then method \texttt{add\_output\_layer(size\_out)} adds the output lauer. It follows a full example where we create the same Neural Network from Exercise 2.
 \begin{python}
    bnn = BNN()
    bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
@@ -187,7 +190,7 @@ After instance the class, is it possible to add a input layer by calling \texttt
 
 For each layer is also possible to specified the activation function, as default value \emph{signmoid} is used. We have also implemented \texttt{relu} and \texttt{dRelu} to try them.
 
-\texttt{BetterNeuralNetwork} also has \texttt{train} method that performs forward, backpropagation and weight updates directly. It accepts as input the training sets, the targets, max iterations, a dictionary containing the parameters and the update method name, the supported ones are: \texttt{'gradient\_descent'} (default), \texttt{'momentum'} and \texttt{'adagrad'}\subsection{Initial weight and bias}
+\texttt{BetterNeuralNetwork} exposes \texttt{train} method that performs forward, backpropagation and weight updates directly. It accepts as input the training sets, the targets, max iterations, a dictionary containing the parameters and the gradient descent update method name, the supported ones are: \texttt{'gradient\_descent'} (default), \texttt{'momentum'} and \texttt{'adagrad'}\subsection{Initial weight and bias}
 Weight initialisation is crucial to create a good model. I used the following formula.
 
 $$w = random(n)/\sqrt{n}$$
@@ -220,7 +223,7 @@ I have also tried to create a small thread pool, so we can save time in thread a
 \subsection{Stochastic Gradient Descent}
 TODO does it work?
 \subsection{Momentum}
-We used Momentum to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula. 
+We used Momentum \cite{Ruder} to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula. 
 
 \begin{equation}
 	\label{eq: momentum}
@@ -229,17 +232,17 @@ We used Momentum to speed up the convergence of the network, it prevent getting 
 	 w_{k + 1} = w_{k + 1} -   \Delta w_{ t + 1}
 	 \end{split}
 \end{equation}
-$\Beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In our benchmarks we used a classic $0.5$. In Figure \ref{fig:momentum}, we can see the converge rate of a classic gradient descent versus momentum for different step sizes. Momentum converges faster in all cases. In my test cases, momentum works better with small step size such as $0.001$.
+$\beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In our benchmarks we used a classic $0.5$. In Figure \ref{fig:momentum}, we can see the converge rate of a classic gradient descent versus momentum for different step sizes. Momentum converges faster in all cases. In my test cases, momentum works better with small step size such as $0.001$.
 \begin{figure}[H]
 \label{fig:momentum}
 \centering
-\includegraphics[scale=0.35]{images/momentum_plot_0,1.png}	
-\includegraphics[scale=0.35]{images/momentum_plot_0,01.png}	
-\includegraphics[scale=0.35]{images/momentum_plot_0,001.png}	
-\includegraphics[scale=0.35]{images/momentum_plot_0,0001.png}	
+\includegraphics[scale=0.5]{images/momentum_plot_0,1.png}	
+\includegraphics[scale=0.5]{images/momentum_plot_0,01.png}	
+\includegraphics[scale=0.5]{images/momentum_plot_0,001.png}	
+\includegraphics[scale=0.5]{images/momentum_plot_0,0001.png}	
 \caption{Gradient Discent vs Momentum}
 \end{figure}
-In the \texttt{BetterNeuralNetwork} momentum can be enabled by passing the correct parameters and type to the \tetxttt{train} method. The following snippet shows and example
+In the \texttt{BetterNeuralNetwork} class, momentum can be enabled by passing the correct parameters and type to the \texttt{train} method. The following snippet shows and example
 
 \begin{python}
 params = {'eta': 0.01,'beta': 0.5} # beta must be included or the default 0.5 value will be used
@@ -247,22 +250,25 @@ nn.train(X_train, T_train, 3000, params, 'momentum')	 # pass 'momentum' as type 
 \end{python}
 
 \subsection{Adagrad}
-We also implemented Adagrad in order to speed up the convergence. In Figure \ref{fig: adagrad}, we can see the converge rate of a classic gradient descent versus adagrad for different step sizes.
+Adagrad \cite{AdaGrad} is an adaptive learning rate algorithm that we implement in order to speed up the convergence. In Figure \ref{fig: adagrad}, we can see the converge rate of a classic gradient descent versus adagrad for different step sizes.
 \begin{figure}[H]
 \label{fig: adagrad}
 \centering
-\includegraphics[scale=0.35]{images/adagrad_plot_0,1.png}	
-\includegraphics[scale=0.35]{images/adagrad_plot_0,01.png}	
-\includegraphics[scale=0.35]{images/adagrad_plot_0,001.png}	
-\includegraphics[scale=0.35]{images/adagrad_plot_0,0001.png}	
+\includegraphics[scale=0.5]{images/adagrad_plot_0,1.png}	
+\includegraphics[scale=0.5]{images/adagrad_plot_0,01.png}	
+\includegraphics[scale=0.5]{images/adagrad_plot_0,001.png}	
+\includegraphics[scale=0.5]{images/adagrad_plot_0,0001.png}	
 \caption{Gradient Discent vs Adagrad}
 \end{figure}
-Adagrad seems to work very well with big step size, but too slow with small step. Also, we can notice how linearly the gradient is reduced at each iteration.
+Adagrad seems to work very well with big step size, but too slow with small step. With little step sizes, Adagrad continue to accumulate the squared gradients in the denominator during training leading to a huge reduction of the step sizes that becomes close to zero. Therefore it cannot converge anymore and we get that really horizontal line in the last two plots of Figure \ref{fig: adagrad}
 
 The following snippet shows how to enable it
 \begin{python}
 nn.train(X_train, T_train, 3000, params, 'adagrad') // pass 'adagrad' as type name
 \end{python}
+
+\subsection{Network deep}
+We used an empirical approach to find a correct number of hidden layer. We fist tried to add thinner layers with a size between four and eight with no success. After some other benchmarks, our the best configuration is a network with one input layer of size $(2,20)$, two hidden layer of size $(20,15)$ and$(15,15)$ and one output layer of size $(15,1)$. Basically we just added one hidden layer to the model from Section 2.
 %%%%%%%%%%%%%%%%%%% PUT SOME SECTION IN ORDER TO INTRODUCE THE OTHER MERDA CHE HO PROVATO 
 We trying other techniques with no luck. We also include them in this report.
 \subsection{Dropout}
@@ -290,4 +296,32 @@ Dropout is a recently introduced regularisation technique. Basically, each node 
         return a
 \end{python}
 At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence, probably because the network is too small.
+\subsection{Results}
+Figure \ref{fig: results_boundary} shows the boundary of our new model with one of the best seed: \texttt{1508171833}.
+
+\begin{figure}[H]
+\label{fig: results_boundary}
+\centering
+\includegraphics[scale=0.6]{images/competition/competition_1508171833.png}	
+\caption{Boundary of the model}
+\end{figure}
+
+The following snippet show our to re-create the model with our API.
+\begin{python}
+	# use same seed
+	np.random.seed(1508171833)
+    model = BetterNeuralNetwork()
+    # add layers
+    model.add_input_layer(2, 20, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_output_layer(1)
+
+    model.train(train_X, train_T ,4000, { 'eta' : 0.1, 'beta' : 0.5 },'adagrad')
+\end{python}
+
+As you may notice we used the \textbf{Adagrad} method.
+%\newpage
+\printbibliography
+
 \end{document}

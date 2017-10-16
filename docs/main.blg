@@ -1,0 +1,15 @@
+[0] Config.pm:354> INFO - This is Biber 2.7
+[0] Config.pm:357> INFO - Logfile is '/Users/vaevictis/Documents/As1/docs/main.blg'
+[41] biber-darwin:303> INFO - === Mon Oct 16, 2017, 20:47:50
+[62] Biber.pm:359> INFO - Reading '/Users/vaevictis/Documents/As1/docs/main.bcf'
+[149] Biber.pm:835> INFO - Found 2 citekeys in bib section 0
+[162] Biber.pm:3670> INFO - Processing section 0
+[174] Biber.pm:3840> INFO - Looking for bibtex format file 'main.bib' for section 0
+[181] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
+[185] bibtex.pm:1292> INFO - Found BibTeX data source 'main.bib'
+[198] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[198] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[198] Biber.pm:3499> INFO - Sorting list 'nty/global/' of type 'entry' with scheme 'nty' and locale 'en-US'
+[199] Biber.pm:3505> INFO - No sort tailoring available for locale 'en-US'
+[202] bbl.pm:608> INFO - Writing '/Users/vaevictis/Documents/As1/docs/main.bbl' with encoding 'ascii'
+[202] bbl.pm:712> INFO - Output to /Users/vaevictis/Documents/As1/docs/main.bbl
