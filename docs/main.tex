@@ -228,7 +228,7 @@ We used Momentum \cite{Ruder} to speed up the convergence of the network, it pre
 \begin{equation}
 	\label{eq: momentum}
 	\begin{split}
-	\Delta w_{ t + 1} = - (\eta \nabla E(w_{t + 1}) + \beta \Delta w_t) \\
+	\Delta w_{ t + 1} = (\eta \nabla E(w_{t + 1}) + \beta \Delta w_t) \\
 	 w_{k + 1} = w_{k + 1} -   \Delta w_{ t + 1}
 	 \end{split}
 \end{equation}
@@ -296,9 +296,9 @@ Dropout is a recently introduced regularisation technique. Basically, each node 
         return a
 \end{python}
 At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence, probably because the network is too small.
+
 \subsection{Results}
 Figure \ref{fig: results_boundary} shows the boundary of our new model with one of the best seed: \texttt{1508171833}.
-
 \begin{figure}[H]
 \label{fig: results_boundary}
 \centering
@@ -321,7 +321,22 @@ The following snippet show our to re-create the model with our API.
 \end{python}
 
 As you may notice we used the \textbf{Adagrad} method.
-%\newpage
+
+\subsection{Save and Load}
+You can save and load the network state by calling \texttt{.save(file\_name)} \texttt{.load(file\_name}). The following snippet shows hot to load the previous network.
+
+\begin{python}
+    model = BetterNeuralNetwork()
+    # create layers
+    model.add_input_layer(2, 20, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_output_layer(1)
+    # load prev weights
+    model.load('test')
+\end{python}
+
+\newpage
 \printbibliography
 
 \end{document}

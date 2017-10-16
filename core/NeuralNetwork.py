@@ -28,11 +28,11 @@ class NeuralNetwork:
 
         self.var = {
          "W1": np.random.randn(2,20)/np.sqrt(2.0),
-         "b1": np.random.random([1,1]) * scale_factor,
+         "b1": np.random.rand(1,20) * scale_factor,
          "W2": np.random.randn(20,15)/np.sqrt(20),
-         "b2": np.random.random([1,1]) * scale_factor,
+         "b2": np.random.rand(1,15) * scale_factor,
          "W3": np.random.randn(15,1)/np.sqrt(15),
-         "b3": np.random.random([1,1]) * scale_factor
+         "b3": np.random.rand(1,1) * scale_factor
         }
 
         ## End
@@ -120,7 +120,9 @@ class NeuralNetwork:
 
     @timing
     def train(self,inputs,targets,learning_rate=0.01, max_iter=1000):
+
         grads = []
+        costs = []
 
         y = 0
 
@@ -132,11 +134,12 @@ class NeuralNetwork:
 
             updates = self.backward(error)
 
-            print(cost_func.MSE(y,targets))
-            # grads.append(np.mean(np.abs(error)))
+            costs.append(cost_func.MSE(y,targets))
+
+            grads.append(np.mean(np.abs(error)))
 
             for var_str, delta in updates.items():
                 update = learning_rate * delta
                 self.var[var_str] -= update
 
-        return y, grads
+        return y, grads, costs

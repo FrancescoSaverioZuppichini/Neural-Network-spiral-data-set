@@ -14,29 +14,6 @@ from queue import Queue
 
 from utils import timing
 
-
-def full_training(model, learning_rate, inputs, targets, maxIter, momentum, beta, training_offset):
-    grads_average = []
-    errros_average = []
-
-    total_grads = []
-    total_erros = []
-    total_results = []
-
-    ## Implement
-    for n in range(maxIter):
-
-        results, errors, grads = sk.train_one_step(model, learning_rate, inputs, targets, momentum, beta, training_offset)
-
-        total_results.append(results)
-        total_erros.append(errors)
-        total_grads.append(grads)
-
-        grads_average.append(sum(grads)/len(inputs))
-        errros_average.append(sum(errors)/len(inputs))
-
-    return total_results,grads_average, errros_average, total_grads,total_erros
-
 # sk.run_part1()
 
 # print(model.forward(X))
@@ -98,12 +75,16 @@ def parall_train(X, T, learning_rate=0.001, max_iter=200, max_workers=1,steps=2)
 
 learning_rates = [0.1,0.01,0.001,0.0001]
 
-X,T = sk.twospirals(300, noise=0.6, twist=800)
-# X,T = sk.twospirals()
+# sk.gradient_check()
+# X,T = sk.twospirals(250, noise=0.7, twist=810)
 # X_train = X
 # T_train = T
-X_train, T_train, X_test, T_test  = utils.get_train_and_test_data(X,T)
-# Dio, Cane, X_test, T_test  = utils.get_train_and_test_data(X,T)
+# X_train, T_train, X_test, T_test  = utils.get_train_and_test_data(X,T)
+
+X_train,T_train= sk.twospirals(250, noise=0.7, twist=810)
+Dio, Cane, X_test, T_test  = utils.get_train_and_test_data(X_train,T_train)
+
+X,T = sk.twospirals(250, noise=0.6, twist=800)
 
 # fig =  plt.figure()
 # plt.title('Train')
@@ -131,37 +112,50 @@ for i in range(1):
 # fig = plt.figure()
 for i in range(0):
     # seed = i
-    # seed = int(time.time())
-    np.random.seed(1508166319)
+    # seed = int(0)
+    np.random.seed(1508186659)
     # nn = NN()
-    # nn.train(X_train,T_train,0.01,30000)
+    # y, grads, costs = nn.train(X,T,0.001,10000)
+    # grads = np.mean(np.array(grads).reshape(-1, 100), 1)
+    # costs = np.mean(np.array(costs).reshape(-1, 100), 1)
+    #
+    # print(sk.compute_accuracy(nn,X,T))
+    # print(costs[-1])
+    # plt.plot(costs, label='cost')
+    # plt.plot(grads, label='grads')
+    # plt.legend()
+    # plt.show()
+
     bnn = BNN(True)
     bnn.add_input_layer(2, 20, np.tanh, act.dtanh)
     bnn.add_hidden_layer(15, np.tanh, act.dtanh)
     bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+    # bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+    # bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+
     # bnn.add_hidden_layer(8, np.tanh, act.dtanh)
     bnn.add_output_layer(1)
     #
-    params = {'eta':0.2,'beta':0.5}
+    params = {'eta':0.1,'beta':0.5}
     # # bnn = NN()
-    # # bnn.train(X_train, T_train, 0.001, 3000)
-    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 4000, params, 'adagrad',X_test,T_test)
-    # errors = np.mean(np.array(errors).reshape(-1, 10), 1)
-    # grads = np.mean(np.array(grads).reshape(-1, 10), 1)
-    # accuracy = np.mean(np.array(accuracy).reshape(-1, 10), 1)
-    # accuracy_val = np.mean(np.array(accuracy_val).reshape(-1, 10), 1)
+    # nn.train(X_train, T_train, 0.001, 3000)
+    y, grads, errors, accuracy, accuracy_val = bnn.train(X_train, T_train, 8000, params, 'adagrad', 1, X_test,T_test)
+    errors = np.mean(np.array(errors).reshape(-1, 10), 1)
+    grads = np.mean(np.array(grads).reshape(-1, 10), 1)
+    accuracy = np.mean(np.array(accuracy).reshape(-1, 10), 1)
+    accuracy_val = np.mean(np.array(accuracy_val).reshape(-1, 10), 1)
 
     # fig = plt.figure()
+    plt.title("train={0:.3f}, test={0:.3f}".format(accuracy[-1], accuracy_val[-1]))
     sk.plot_boundary(bnn,X,T,0.5)
     plt.plot()
-    # print(errors[-1])
-    # plt.title("train={0:.3f}, seed={1}".format(accuracy[-1],seed))
+    plt.show()
 
-    # plt.title("train={0:.3f}, test={0:.3f}".format(accuracy[-1], accuracy_val[-1]))
-    # plt.plot(grads,label="grad")
-    # plt.plot(errors, label='error')
-    # plt.legend()
-    # plt.show()
+    plt.title("train={0:.3f}, test={0:.3f}".format(accuracy[-1], accuracy_val[-1]))
+    plt.plot(grads,label="grad")
+    plt.plot(errors, label='error')
+    plt.legend()
+    plt.show()
     # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/competition/competition_{}.png'.format(seed))
 
     # plt.title("train={}, test={}".format(accuracy[-1], accuracy_val[-1]))
@@ -177,7 +171,7 @@ for i in range(0):
     # plt.plot(lrs)
     # plt.show()
 
-    print(sk.compute_accuracy(bnn,X_train,T_train))
+    # print(sk.compute_accuracy(bnn,X_train,T_train))
     # print(sk.compute_accuracy(bnn,X_test,T_test))
 # part 4
 ITER = 10000

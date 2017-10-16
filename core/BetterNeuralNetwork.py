@@ -38,7 +38,7 @@ class Layer:
         self.bias_scale = 0.01
 
         self.W = np.random.randn(size_in,size_out)/np.sqrt(size_in)
-        self.b = np.random.random([1,1]) * self.bias_scale
+        self.b = np.random.randn(1,size_out) * self.bias_scale
 
         # self.dW = np.zeros(self.W.shape)
         # self.dB = np.zeros([1,1])
@@ -221,7 +221,7 @@ class BetterNeuralNetwork:
 
 
     @timing
-    def train(self,inputs, targets, max_iter, params={}, type='gradient_descent',X_val=[],T_val=[]):
+    def train(self,inputs, targets, max_iter, params={}, type='gradient_descent', batch_size=1, X_val=[],T_val=[]):
         """
         Train the Neural Network according to the given parameters
 
@@ -241,33 +241,46 @@ class BetterNeuralNetwork:
 
         y = 0
 
+        X = [inputs]
+        T = [targets]
+
+        step = len(inputs) / batch_size
+
+        for i in range(batch_size):
+            X.append(inputs[int(step * i): int(step * (i + 1))])
+            T.append(targets[int(step * i): int(step * (i + 1))])
+
+
         for n in range(max_iter):
+            for i in range(len(X)):
+                x = X[i]
+                t = T[i]
 
-            y = self.forward(inputs)
+                y = self.forward(x)
 
-            dx = y - targets
+                dx = y - t
 
-            self.backward(dx)
+                self.backward(dx)
 
-            self.update_layers(params,type)
+                self.update_layers(params,type)
 
-            if (self.DEBUG):
-                errors.append(cost_func.MSE(y, targets))
-                grads.append(np.mean(np.abs(dx)))
-                acc = np.mean(((y > 0.5) * 1 == targets) * 1)
-                accuracy.append(acc)
+                if (self.DEBUG):
+                    errors.append(cost_func.MSE(y, t))
+                    grads.append(np.mean(np.abs(dx)))
+                    acc = np.mean(((y > 0.5) * 1 == T) * 1)
+                    accuracy.append(acc)
 
-            if (len(X_val) > 0):
-                acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
-                accuracy_val.append(acc)
+                if (len(X_val) > 0):
+                    acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
+                    accuracy_val.append(acc)
 
             # if(n % 100 == 0):
-            #     plt.title("acc={}, iter={}".format(accuracy[-1],n))
+            #     plt.title("acc={}, iter={}, err={}".format(accuracy[-1],n, errors[-1]))
             #     plot_boundary(self, inputs, targets,0.5)
             #     plt.show(block=False)
             #     plt.pause(0.001)
             #     plt.clf()
-
+        #
         return y, grads, errors, accuracy, accuracy_val
 
     def save(self,file_name):
@@ -301,12 +314,10 @@ class BetterNeuralNetwork:
         for i in range(len(W)):
             j, k = W[i].shape
 
-            new_layer = self.create_layer(j,k,act.sigmoid,act.dsigmoid)
+            # new_layer = self.create_layer(j,k,act.sigmoid,act.dsigmoid)
 
-            self.layers.append(new_layer)
-
-            new_layer.W = W[i]
-            new_layer.b = b[i]
+            self.layers[i].W = W[i]
+            self.layers[i].b = b[i]
 
         # lock net
         self.freeze = True
