@@ -271,6 +271,12 @@ nn.train(X_train, T_train, 3000, params, 'adagrad') // pass 'adagrad' as type na
 We used an empirical approach to find a correct number of hidden layer. We fist tried to add thinner layers with a size between four and eight with no success. After some other benchmarks, our the best configuration is a network with one input layer of size $(2,20)$, two hidden layer of size $(20,15)$ and$(15,15)$ and one output layer of size $(15,1)$. Basically we just added one hidden layer to the model from Section 2.
 %%%%%%%%%%%%%%%%%%% PUT SOME SECTION IN ORDER TO INTRODUCE THE OTHER MERDA CHE HO PROVATO 
 We trying other techniques with no luck. We also include them in this report.
+\subsection{Stochastic Gradient Descent}
+We implemented Stochastic Gradient Descent, it can be enabled by passing the \texttt{batch\_size} value inside the \texttt{params} dictionary
+
+\begin{python}
+model.train(train_X, train_T, 4000, { 'eta' : 0.1, 'beta' : 0.5, 'batch_size': 10 }, 'adagrad',testX, testT)	
+\end{python}
 \subsection{Dropout}
 Dropout is a recently introduced regularisation technique. Basically, each node has a probability to be enable on disable in each forward pass. We implemented it by changing the \texttt{forward} method inside \texttt{BetterNeuralNetwork}
 \begin{python}
@@ -298,18 +304,18 @@ Dropout is a recently introduced regularisation technique. Basically, each node 
 At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence, probably because the network is too small.
 
 \subsection{Results}
-Figure \ref{fig: results_boundary} shows the boundary of our new model with one of the best seed: \texttt{1508171833}.
+Figure \ref{fig: results_boundary} shows the boundary of our new model with one of the best seed: \texttt{1508186659}.
 \begin{figure}[H]
 \label{fig: results_boundary}
 \centering
-\includegraphics[scale=0.6]{images/competition/competition_1508171833.png}	
+\includegraphics[scale=0.6]{images/competition/competition_1508186659.png}	
 \caption{Boundary of the model}
 \end{figure}
 
 The following snippet show our to re-create the model with our API.
 \begin{python}
 	# use same seed
-	np.random.seed(1508171833)
+	np.random.seed(1508186659)
     model = BetterNeuralNetwork()
     # add layers
     model.add_input_layer(2, 20, act.tanh, act.dtanh)
@@ -320,7 +326,11 @@ The following snippet show our to re-create the model with our API.
     model.train(train_X, train_T ,4000, { 'eta' : 0.1, 'beta' : 0.5 },'adagrad')
 \end{python}
 
-As you may notice we used the \textbf{Adagrad} method.
+As you may notice we used the \textbf{Adagrad} method. Figure shows the errors, gradients, error and accuracy for this model with respect to the one from section 2.
+
+\begin{figure}
+	
+\end{figure}
 
 \subsection{Save and Load}
 You can save and load the network state by calling \texttt{.save(file\_name)} \texttt{.load(file\_name}). The following snippet shows hot to load the previous network.

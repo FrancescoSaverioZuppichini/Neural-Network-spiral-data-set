@@ -170,43 +170,47 @@ def competition_train_from_scratch(testX, testT):
     np.random.seed(1508186659)
 
     # np.random.seed(seed)
-    model = BetterNeuralNetwork(True)
+    model = BetterNeuralNetwork()
     # create layers
     model.add_input_layer(2, 20, act.tanh, act.dtanh)
     model.add_hidden_layer(15, act.tanh, act.dtanh)
     model.add_hidden_layer(15, act.tanh, act.dtanh)
     model.add_output_layer(1)
     # load prev weights
+    model.load('test')
+    # model.train(train_X, train_T, 8000, { 'eta' : 0.1, 'beta' : 0.5 }, 'adagrad',testX, testT)
+
+    # y, grads, errors, accuracy, accuracy_val = model.train(train_X, train_T, 8000, { 'eta' : 0.1, 'beta' : 0.5 }, 'adagrad', 1, testX, testT)
+
+    # model.save('test')
     # model.load('test')
 
-    y, grads, errors, accuracy, accuracy_val = model.train(train_X, train_T, 8000, { 'eta' : 0.001, 'beta' : 0.5 }, 'adagrad', 10, testX, testT)
-
-    errors = np.mean(np.array(errors).reshape(-1, 10), 1)
-    grads = np.mean(np.array(grads).reshape(-1, 10), 1)
-
+    # errors = np.mean(np.array(errors).reshape(-1, 10), 1)
+    # grads = np.mean(np.array(grads).reshape(-1, 10), 1)
+    #
     acc_train = compute_accuracy(model, trainX, trainT)
     acc_test = compute_accuracy(model, testX, testT)
-
-    plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
-    plt.plot(grads, label="grad")
-    plt.plot(errors, label='error')
-    plt.legend()
-    plt.show()
-
-    # plt.title("train={}, test={}".format(acc_train, acc_test))
-    # plot_boundary(model,trainX,trainT,0.5)
+    #
+    # plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
+    # plt.plot(grads, label="grad")
+    # plt.plot(errors, label='error')
+    # plt.legend()
     # plt.show()
 
-    print("Accuracy from scratch Train: ", acc_train)
-    print("Accuracy from scratch Test: ", acc_test)
-
-    fig = plt.figure()
-    plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
+    plt.title("train={}, test={}".format(acc_train, acc_test))
     plot_boundary(model,trainX,trainT,0.5)
-
     plt.show()
+
+    # print("Accuracy from scratch Train: ", acc_train)
+    # print("Accuracy from scratch Test: ", acc_test)
+
+    # fig = plt.figure()
+    # plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
+    # plot_boundary(model,trainX,trainT,0.5)
+
+# /z    plt.show()
     # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/competition/competition_{}.png'.format(seed))
-    fig.clf()
+    # fig.clf()
 
     return model
 

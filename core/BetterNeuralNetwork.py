@@ -44,7 +44,7 @@ class Layer:
         # self.dB = np.zeros([1,1])
         self.dW = [np.zeros(self.W.shape)]
         self.db = [np.zeros([1,1])]
-        # used for momentum
+        # used for adagrad
         self.cache = [0,0]
 
         self.activation = activation
@@ -174,7 +174,7 @@ class BetterNeuralNetwork:
 
         return update_W, update_b
 
-    def momentum(self,l,params):
+    def momentum(self, l, params):
         """
         Momentum implementation. More detail can be found here:
         http://ruder.io/optimizing-gradient-descent/#momentum
@@ -188,7 +188,7 @@ class BetterNeuralNetwork:
 
         return update_W, update_b
 
-    def adagrad(self, l,params):
+    def adagrad(self, l, params):
         """
         Adagrad implementation. More detail can be found here:
         http://ruder.io/optimizing-gradient-descent/#adagrad
@@ -205,13 +205,13 @@ class BetterNeuralNetwork:
         return update_W, update_b
 
 
-    def update_layers(self,params, type):
+    def update_layers(self,params, method):
         """
         Update each layer sequentially calling the correct gradient descent method
         """
         for l in self.layers:
 
-            update_W, update_b = self.update_func[type](l,params)
+            update_W, update_b = method(l,params)
 
             l.W -= update_W
             l.b -= update_b
@@ -219,9 +219,39 @@ class BetterNeuralNetwork:
             l.dW = [update_W]
             l.db = [update_b]
 
+    def one_train_step(self, x, t, params, method):
+        y = self.forward(x)
+
+        dx = y - t
+
+        self.backward(dx)
+
+        self.update_layers(params, method)
+
+        return y, dx
+
+    def compute_batches(self, inputs, targets, params):
+        X = [inputs]
+        T = [targets]
+
+        # set default size to 1
+        params.setdefault('batch_size', 1)
+
+        batch_size = params['batch_size']
+
+        print('Batch size {}'.format(batch_size))
+
+        if (batch_size > 1):
+            step = len(inputs) / batch_size
+
+            for i in range(batch_size):
+                X.append(inputs[int(step * i): int(step * (i + 1))])
+                T.append(targets[int(step * i): int(step * (i + 1))])
+
+        return X, T
 
     @timing
-    def train(self,inputs, targets, max_iter, params={}, type='gradient_descent', batch_size=1, X_val=[],T_val=[]):
+    def train(self,inputs, targets, max_iter, params=None, type='gradient_descent', X_val=[],T_val=[]):
         """
         Train the Neural Network according to the given parameters
 
@@ -234,6 +264,10 @@ class BetterNeuralNetwork:
             X_val : Validation inputs.
             T_val : Validation targets.
         """
+
+        if(params == None):
+            params = { 'eta':0.001 }
+
         grads = []
         errors = []
         accuracy = []
@@ -241,28 +275,17 @@ class BetterNeuralNetwork:
 
         y = 0
 
-        X = [inputs]
-        T = [targets]
+        method = self.update_func[type]
 
-        step = len(inputs) / batch_size
-
-        for i in range(batch_size):
-            X.append(inputs[int(step * i): int(step * (i + 1))])
-            T.append(targets[int(step * i): int(step * (i + 1))])
-
+        X, T = self.compute_batches(inputs, targets, params)
 
         for n in range(max_iter):
             for i in range(len(X)):
+
                 x = X[i]
                 t = T[i]
 
-                y = self.forward(x)
-
-                dx = y - t
-
-                self.backward(dx)
-
-                self.update_layers(params,type)
+                y, dx = self.one_train_step(x,t,params,method)
 
                 if (self.DEBUG):
                     errors.append(cost_func.MSE(y, t))
@@ -270,9 +293,9 @@ class BetterNeuralNetwork:
                     acc = np.mean(((y > 0.5) * 1 == T) * 1)
                     accuracy.append(acc)
 
-                if (len(X_val) > 0):
-                    acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
-                    accuracy_val.append(acc)
+                    if (len(X_val) > 0):
+                        acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
+                        accuracy_val.append(acc)
 
             # if(n % 100 == 0):
             #     plt.title("acc={}, iter={}, err={}".format(accuracy[-1],n, errors[-1]))
@@ -282,42 +305,34 @@ class BetterNeuralNetwork:
             #     plt.clf()
         #
         return y, grads, errors, accuracy, accuracy_val
-
     def save(self,file_name):
         """
         Save the current status into a file.
         """
-        # TODO Save activations
 
-        W = []
-        b = []
+        stuff = { 'size' : len(self.layers) }
 
-        for l in self.layers:
-            W.append(l.W)
-            b.append(l.b)
+        for i in range(len(self.layers)):
+            l = self.layers[i]
+            stuff['W_{}'.format(i)] = l.W
+            stuff['b_{}'.format(i)] = l.b
 
-        np.save(file_name + "_W", W)
-        np.save(file_name + "_b", b)
+        np.save(file_name,stuff)
+
 
     def load(self,file_name):
         """
         Load the current status from a file.
         """
         # TODO add file check
-        # TODO load activations
-        W = np.load(file_name + "_W.npy")
-        b = np.load(file_name + "_b.npy")
-
+        stuff = np.load(file_name + ".npy").item()
         # unlock net
         self.freeze = False
 
-        for i in range(len(W)):
-            j, k = W[i].shape
+        for i in range(stuff['size']):
 
-            # new_layer = self.create_layer(j,k,act.sigmoid,act.dsigmoid)
-
-            self.layers[i].W = W[i]
-            self.layers[i].b = b[i]
+            self.layers[i].W = stuff['W_{}'.format(i)]
+            self.layers[i].b = stuff['b_{}'.format(i)]
 
         # lock net
         self.freeze = True
