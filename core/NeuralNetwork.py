@@ -22,17 +22,15 @@ class NeuralNetwork:
         self.Z = []
         # will hold all the activation functions
         self.A = []
-        # according to this http://cs231n.github.io/neural-networks-2/
-        # bias must be small, so let's scale them
-        scale_factor = 0.01
+
 
         self.var = {
          "W1": np.random.randn(2,20)/np.sqrt(2.0),
-         "b1": np.random.rand(1,20) * scale_factor,
+         "b1": np.random.rand(1,20),
          "W2": np.random.randn(20,15)/np.sqrt(20),
-         "b2": np.random.rand(1,15) * scale_factor,
+         "b2": np.random.rand(1,15),
          "W3": np.random.randn(15,1)/np.sqrt(15),
-         "b3": np.random.rand(1,1) * scale_factor
+         "b3": np.random.rand(1,1)
         }
 
         ## End
@@ -44,8 +42,6 @@ class NeuralNetwork:
         """
         x = self.x = inputs
 
-        p = 0.5
-
         W1 = self.var['W1']
         b1 = self.var['b1']
         W2 = self.var['W2']
@@ -56,18 +52,12 @@ class NeuralNetwork:
         # prediction at each layer
         # find out each z -> zl = W^l * a^{l-1} + b^l
         z1 = inputs.dot(W1) + b1
-        # u1 = (np.random.rand(*z1.shape) < p) / p
-        # z1 *= u1
         a1 = np.tanh(z1)
 
         z2 = a1.dot(W2) + b2
-        # u2 = (np.random.rand(*z2.shape) < p) / p
-        # z2 *= u2
         a2 = np.tanh(z2)
 
         z3 =  a2.dot(W3) + b3
-        # u3 = (np.random.rand(*z3.shape) < p) / p
-        # z3 *= u3
         a3 = act.sigmoid(z3)
 
         self.Z = [z1,z2,z3]
@@ -95,13 +85,13 @@ class NeuralNetwork:
         A = self.A
 
         dW3 = error * act.dsigmoid(Z[-1])
-        db3 = np.mean(dW3)
+        db3 = np.sum(dW3, axis=0, keepdims=True)
 
         dW2 = dW3.dot(W3.T) * act.dtanh(Z[1])
-        db2 = np.mean(dW2)
+        db2 = np.sum(dW2, axis=0, keepdims=True)
 
         dW1 = dW2.dot(W2.T) * act.dtanh(Z[0])
-        db1 = np.mean(dW1)
+        db1 = np.sum(dW1, axis=0, keepdims=True)
 
         # compute grads
         dW3 = A[2].T.dot(dW3)
@@ -118,7 +108,6 @@ class NeuralNetwork:
 
         return updates
 
-    @timing
     def train(self,inputs,targets,learning_rate=0.01, max_iter=1000):
 
         grads = []
@@ -141,5 +130,8 @@ class NeuralNetwork:
             for var_str, delta in updates.items():
                 update = learning_rate * delta
                 self.var[var_str] -= update
+
+            # if(n % 100 == 0):
+            #     print(costs[-1])
 
         return y, grads, costs

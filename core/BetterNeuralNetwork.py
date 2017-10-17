@@ -33,15 +33,10 @@ class Layer:
     """
     def __init__(self,size_in,size_out, activation=act.sigmoid, d_activation=act.dsigmoid):
         self.shape = [size_in,size_out]
-        # according to this http://cs231n.github.io/neural-networks-2/
-        # bias must be small, so let's scale them
-        self.bias_scale = 0.01
 
         self.W = np.random.randn(size_in,size_out)/np.sqrt(size_in)
-        self.b = np.random.randn(1,size_out) * self.bias_scale
+        self.b = np.random.randn(1,size_out)
 
-        # self.dW = np.zeros(self.W.shape)
-        # self.dB = np.zeros([1,1])
         self.dW = [np.zeros(self.W.shape)]
         self.db = [np.zeros([1,1])]
         # used for adagrad
@@ -117,7 +112,7 @@ class BetterNeuralNetwork:
         self.A = [inputs]
         self.Z = []
         # dropout probability
-        # p = 0.2
+        # p = 0.9
 
         a = inputs
 
@@ -156,7 +151,8 @@ class BetterNeuralNetwork:
             # get the gradient
             # grad = a^{l-1}.d^l
             dW = A[i].T.dot(dW)
-            db = np.mean(dW)
+            db = np.sum(dW, axis=0, keepdims=True)
+            # db = np.mean(dW)
 
             l.dW.append(dW)
             l.db.append(db)
@@ -220,6 +216,9 @@ class BetterNeuralNetwork:
             l.db = [update_b]
 
     def one_train_step(self, x, t, params, method):
+        """
+        Compute one forward, one backpropagation and one weights update
+        """
         y = self.forward(x)
 
         dx = y - t
@@ -239,8 +238,6 @@ class BetterNeuralNetwork:
 
         batch_size = params['batch_size']
 
-        print('Batch size {}'.format(batch_size))
-
         if (batch_size > 1):
             step = len(inputs) / batch_size
 
@@ -253,16 +250,16 @@ class BetterNeuralNetwork:
     @timing
     def train(self,inputs, targets, max_iter, params=None, type='gradient_descent', X_val=[],T_val=[]):
         """
-        Train the Neural Network according to the given parameters
+        Train the Neural Network with the given parameters
 
-        Args:
-            inputs : The inputs vector.
-            targets: The targets vector.
-            max_iter (int) : Number of maximum iterations.
-            params (dict) : The parameters
-            type (string) : The name of the gradient descent method to use
-            X_val : Validation inputs.
-            T_val : Validation targets.
+        :param inputs: The inputs vector
+        :param targets: The targets vector
+        :param max_iter:  Number of maximum iterations
+        :param params: The parameters
+        :param type: The name of the gradient descent method to use
+        :param X_val: Validation inputs
+        :param T_val:  Validation targets
+        :return:
         """
 
         if(params == None):
@@ -303,21 +300,23 @@ class BetterNeuralNetwork:
             #     plt.show(block=False)
             #     plt.pause(0.001)
             #     plt.clf()
-        #
+
         return y, grads, errors, accuracy, accuracy_val
     def save(self,file_name):
         """
         Save the current status into a file.
         """
-
         stuff = { 'size' : len(self.layers) }
 
         for i in range(len(self.layers)):
             l = self.layers[i]
+
             stuff['W_{}'.format(i)] = l.W
             stuff['b_{}'.format(i)] = l.b
 
         np.save(file_name,stuff)
+
+        print("******* saved into {} *******".format(file_name))
 
 
     def load(self,file_name):

@@ -156,61 +156,55 @@ def run_part2():
     Train the multi layer perceptron according to the assignment.
     """
 
+    X,T = twospirals()
+
+    np.random.seed(1)
+
+    model = NeuralNetwork()
+
+    model.train(X, T, 0.001, 10000)
+
+    plot_boundary(model,X,T,0.5)
+    plt.show()
+
+    print('accuracy {}'.format(compute_accuracy(model, X, T)))
+
+
 
 def competition_train_from_scratch(testX, testT):
     """
     Trains the BetterNeuralNet model from scratch using the twospirals data and calls the other
     competition funciton to check the accuracy.
     """
-    trainX, trainT = twospirals(250, noise=0.6, twist=800)
-    train_X = trainX
-    train_T = trainT
-    # train_X, train_T, testX, testT = get_train_and_test_data(trainX, trainT)
-    # seed = int(time.time())
-    np.random.seed(1508186659)
+    train_X, train_T = twospirals(250, noise=0.6, twist=800)
+
+    np.random.seed(1508255316)
 
     # np.random.seed(seed)
-    model = BetterNeuralNetwork()
+    model = BetterNeuralNetwork(True)
     # create layers
     model.add_input_layer(2, 20, act.tanh, act.dtanh)
     model.add_hidden_layer(15, act.tanh, act.dtanh)
     model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_output_layer(1)
-    # load prev weights
-    model.load('test')
-    # model.train(train_X, train_T, 8000, { 'eta' : 0.1, 'beta' : 0.5 }, 'adagrad',testX, testT)
+    model.add_output_layer(1,)
 
-    # y, grads, errors, accuracy, accuracy_val = model.train(train_X, train_T, 8000, { 'eta' : 0.1, 'beta' : 0.5 }, 'adagrad', 1, testX, testT)
-
-    # model.save('test')
     # model.load('test')
 
-    # errors = np.mean(np.array(errors).reshape(-1, 10), 1)
-    # grads = np.mean(np.array(grads).reshape(-1, 10), 1)
-    #
-    acc_train = compute_accuracy(model, trainX, trainT)
+    model.train(train_X, train_T, 8000, { 'eta' : 0.1 }, 'adagrad',testX, testT)
+
+    model.save('competition')
+
+    acc_train = compute_accuracy(model, train_X, train_T)
     acc_test = compute_accuracy(model, testX, testT)
+
+    # plt.title("NN: train={}, test={}".format(acc_train, acc_test))
+    # plot_boundary(model,train_X,train_T,0.5)
     #
-    # plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
-    # plt.plot(grads, label="grad")
-    # plt.plot(errors, label='error')
-    # plt.legend()
     # plt.show()
 
-    plt.title("train={}, test={}".format(acc_train, acc_test))
-    plot_boundary(model,trainX,trainT,0.5)
-    plt.show()
+    print("Accuracy from scratch Train: ", acc_train)
+    print("Accuracy from scratch Test: ", acc_test)
 
-    # print("Accuracy from scratch Train: ", acc_train)
-    # print("Accuracy from scratch Test: ", acc_test)
-
-    # fig = plt.figure()
-    # plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
-    # plot_boundary(model,trainX,trainT,0.5)
-
-# /z    plt.show()
-    # fig.savefig('/Users/vaevictis/Documents/As1/docs/images/competition/competition_{}.png'.format(seed))
-    # fig.clf()
 
     return model
 
@@ -219,15 +213,18 @@ def competition_load_weights_and_evaluate_X_and_T(testX, testT):
     """
     Loads the weight values from a file into the BetterNeuralNetwork class and computes the accuracy.
     """
-    NN = BetterNeuralNetwork()
+    model = BetterNeuralNetwork()
 
-    ## Implement
+    model.add_input_layer(2, 20, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_hidden_layer(15, act.tanh, act.dtanh)
+    model.add_output_layer(1)
 
-
+    model.load('competition')
 
     ## End
 
-    print("Accuracy from trained model: ", compute_accuracy(NN, testX, testT))
+    print("Accuracy from trained model: ", compute_accuracy(model, testX, testT))
 
 
 
