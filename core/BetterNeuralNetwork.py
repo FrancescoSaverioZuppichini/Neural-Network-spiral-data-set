@@ -104,61 +104,6 @@ class BetterNeuralNetwork:
 
         self.layers.append(self.create_layer(prev_layer_size,size,activation,d_activation))
 
-
-    def forward(self, inputs):
-        """
-        Compute forward and store booth activations and weighted outputs.
-        """
-        self.A = [inputs]
-        self.Z = []
-        # dropout probability
-        # p = 0.9
-
-        a = inputs
-
-        for l in self.layers:
-            z = a.dot(l.W) + l.b
-            # create dropout mask
-            # u = (np.random.rand(*z.shape) < p) / p
-            # apply mask
-            # z *= u
-            a = l.activation(z)
-            # store
-            self.A.append(a)
-            self.Z.append(z)
-
-        return a
-
-
-    def backward(self, error):
-        """
-        Compute backward propagation for each layer and store the result.
-        """
-        A = self.A
-        Z = self.Z
-
-        delta = error
-
-        # backprop starting from the last layer
-        i = len(self.layers) - 1
-     
-        while (i >= 0):
-            l = self.layers[i]
-            # d = (W^{l+1}).d^{l+1} * a^l
-            dW = delta * l.d_activation(Z[i])
-            # will be used next iteration
-            delta = dW.dot(l.W.T)
-            # get the gradient
-            # grad = a^{l-1}.d^l
-            dW = A[i].T.dot(dW)
-            db = np.sum(dW, axis=0, keepdims=True)
-            # db = np.mean(dW)
-
-            l.dW.append(dW)
-            l.db.append(db)
-
-            i -= 1
-
     def gradient_descent(self, l, params):
         """
         Vanilla gradient descent.
@@ -214,6 +159,53 @@ class BetterNeuralNetwork:
 
             l.dW = [update_W]
             l.db = [update_b]
+
+    def forward(self, inputs):
+        """
+        Compute forward and store booth activations and weighted outputs.
+        """
+        self.A = [inputs]
+        self.Z = []
+
+        a = inputs
+
+        for l in self.layers:
+            z = a.dot(l.W) + l.b
+            a = l.activation(z)
+            # store
+            self.A.append(a)
+            self.Z.append(z)
+
+        return a
+
+    def backward(self, error):
+        """
+        Compute backward propagation for each layer and store the result.
+        """
+        A = self.A
+        Z = self.Z
+
+        delta = error
+
+        # start from the last layer
+        i = len(self.layers) - 1
+
+        while (i >= 0):
+            l = self.layers[i]
+            # d = (W^{l+1}).d^{l+1} * a^l
+            dW = delta * l.d_activation(Z[i])
+            # will be used next iteration
+            delta = dW.dot(l.W.T)
+            # get the gradient
+            # grad = a^{l-1}.d^l
+            dW = A[i].T.dot(dW)
+            db = np.sum(dW, axis=0, keepdims=True)
+            # db = np.mean(dW)
+
+            l.dW.append(dW)
+            l.db.append(db)
+
+            i -= 1
 
     def one_train_step(self, x, t, params, method):
         """
