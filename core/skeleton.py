@@ -85,7 +85,7 @@ def run_part1():
         y = train_one_step(model, learning_rate, X, T)
 
     plot_boundary(model, X, T)
-    plt.savefig('/Users/vaevictis/Documents/As1/docs/images/run_part1.png')
+    # plt.savefig('/Users/vaevictis/Documents/As1/docs/images/run_part1.png')
 
 
     return y
@@ -158,16 +158,18 @@ def run_part2():
 
     X,T = twospirals()
 
-    np.random.seed(1)
+    np.random.seed(0)
 
     model = NeuralNetwork()
 
-    model.train(X, T, 0.001, 10000)
+    res = model.train(X, T, 0.1, 40000)
 
     plot_boundary(model,X,T,0.5)
-    plt.show()
 
-    print('accuracy {}'.format(compute_accuracy(model, X, T)))
+    # plt.show()
+
+    print('Error: {}'.format(MSE(res[0],T)))
+    print('Accuracy: {}'.format(compute_accuracy(model, X, T)))
 
 
 
@@ -178,32 +180,36 @@ def competition_train_from_scratch(testX, testT):
     """
     train_X, train_T = twospirals(250, noise=0.6, twist=800)
 
-    np.random.seed(1508255316)
-
-    # np.random.seed(seed)
+    # train_X, train_T, testX, testT = get_train_and_test_data(train_X,train_T,80)
+    seed = int(time.time())
+    # np.random.seed(1508255316)
+    #
+    np.random.seed(0)
     model = BetterNeuralNetwork(True)
     # create layers
-    model.add_input_layer(2, 20, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_output_layer(1,)
+    model.add_input_layer(2, 30, act.relu, act.drelu)
+    model.add_hidden_layer(20, act.relu, act.drelu)
+    model.add_hidden_layer(15, act.relu, act.drelu)
+    model.add_hidden_layer(10, act.relu, act.drelu)
+    model.add_output_layer(1, act.tanh, act.dtanh)
 
-    # model.load('test')
 
-    model.train(train_X, train_T, 8000, { 'eta' : 0.1 }, 'adagrad',testX, testT)
+    model.train(train_X, train_T, 4000, { 'eta' : 0.1, 'beta':0.5 }, 'adagrad',testX, testT)
 
-    model.save('competition')
+    # model.save('competition')
 
     acc_train = compute_accuracy(model, train_X, train_T)
     acc_test = compute_accuracy(model, testX, testT)
-
-    # plt.title("NN: train={}, test={}".format(acc_train, acc_test))
-    # plot_boundary(model,train_X,train_T,0.5)
-    #
-    # plt.show()
-
     print("Accuracy from scratch Train: ", acc_train)
     print("Accuracy from scratch Test: ", acc_test)
+
+    fig = plt.figure(1)
+    plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
+    plot_boundary(model, train_X, train_T, 0.5)
+
+    # fig.clf()
+
+
 
 
     return model
@@ -215,10 +221,11 @@ def competition_load_weights_and_evaluate_X_and_T(testX, testT):
     """
     model = BetterNeuralNetwork()
 
-    model.add_input_layer(2, 20, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_output_layer(1)
+    model.add_input_layer(2, 30, act.relu, act.drelu)
+    model.add_hidden_layer(20, act.relu, act.drelu)
+    model.add_hidden_layer(15, act.relu, act.drelu)
+    model.add_hidden_layer(10, act.relu, act.drelu)
+    model.add_output_layer(1, act.tanh, act.dtanh)
 
     model.load('competition')
 

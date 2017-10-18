@@ -26,7 +26,6 @@ def plot_boundary(model, X, targets, threshold=0.0):
     plt.ylim([y_min, y_max])
     plt.xlim([x_min, x_max])
 
-
 class Layer:
     """
     Layer high-level implementation.
@@ -200,7 +199,6 @@ class BetterNeuralNetwork:
             # grad = a^{l-1}.d^l
             dW = A[i].T.dot(dW)
             db = np.sum(dW, axis=0, keepdims=True)
-            # db = np.mean(dW)
 
             l.dW.append(dW)
             l.db.append(db)
@@ -213,7 +211,7 @@ class BetterNeuralNetwork:
         """
         y = self.forward(x)
 
-        dx = y - t
+        dx = (y - t) / len(x)
 
         self.backward(dx)
 
@@ -286,8 +284,9 @@ class BetterNeuralNetwork:
                         acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
                         accuracy_val.append(acc)
 
-            # if(n % 100 == 0):
-            #     plt.title("acc={}, iter={}, err={}".format(accuracy[-1],n, errors[-1]))
+            #
+            # if(n % 200 == 0):
+            #     plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(accuracy[-1], accuracy_val[-1],n, errors[-1]))
             #     plot_boundary(self, inputs, targets,0.5)
             #     plt.show(block=False)
             #     plt.pause(0.001)

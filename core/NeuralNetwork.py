@@ -1,11 +1,7 @@
 import numpy as np
 import activation as act
 import MSE as cost_func
-from utils import timing
-import MSE as cost
-import math
-from concurrent.futures import ThreadPoolExecutor
-from threading import Thread
+
 
 class NeuralNetwork:
     """
@@ -119,7 +115,7 @@ class NeuralNetwork:
 
             y = self.forward(inputs)
 
-            error = y - targets
+            error = (y - targets)/len(inputs)
 
             updates = self.backward(error)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  17 OCT 2017 20:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  18 OCT 2017 18:54
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -428,18 +428,18 @@ File: english.lbx 2016/12/05 v3.7 biblatex localization (PK/JW/AB)
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -484,8 +484,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 (./main.bbl)
-Package biblatex Info: Reference section=0 on input line 18.
-Package biblatex Info: Reference segment=0 on input line 18.
+Package biblatex Info: Reference section=0 on input line 17.
+Package biblatex Info: Reference segment=0 on input line 17.
 \c@lstlisting=\count308
  (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -522,239 +522,155 @@ Package caption Info: End \AtBeginDocument code.
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 51.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 50.
  [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] <images/run_part1.png, id=18, 462.528pt x 346.896pt>
 File: images/run_part1.png Graphic file (type png)
  <use images/run_part1.png>
-Package pdftex.def Info: images/run_part1.png used on input line 80.
+Package pdftex.def Info: images/run_part1.png used on input line 79.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  [2 <./images/run_part1.png>]
 
-LaTeX Warning: Reference `eq:deltaRule_1' on page 3 undefined on input line 106.
+LaTeX Warning: Reference `eq:deltaRule_1' on page 3 undefined on input line 105.
 
 
-LaTeX Warning: Reference `eq:deltaRule_1' on page 3 undefined on input line 111.
+LaTeX Warning: Reference `eq:deltaRule_1' on page 3 undefined on input line 110.
 
-[3]
-
-Package caption Warning: \label without proper reference on input line 144.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: train_test_set' on page 4 undefined on input line 142.
-
-<images/train_set.png, id=31, 462.528pt x 346.896pt>
+[3] <images/train_set.png, id=31, 462.528pt x 346.896pt>
 File: images/train_set.png Graphic file (type png)
  <use images/train_set.png>
-Package pdftex.def Info: images/train_set.png used on input line 146.
+Package pdftex.def Info: images/train_set.png used on input line 144.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/test_set.png, id=32, 462.528pt x 346.896pt>
 File: images/test_set.png Graphic file (type png)
  <use images/test_set.png>
-Package pdftex.def Info: images/test_set.png used on input line 147.
+Package pdftex.def Info: images/test_set.png used on input line 145.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
-
-
-Package caption Warning: \label without proper reference on input line 157.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: learning_rate_convergence' on page 4 undefined on input line 153.
-
-<images/NN_eta_vs_training.png, id=33, 462.528pt x 346.896pt>
-File: images/NN_eta_vs_training.png Graphic file (type png)
- <use images/NN_eta_vs_training.png>
-Package pdftex.def Info: images/NN_eta_vs_training.png used on input line 158.
-(pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
- [4 <./images/train_set.png> <./images/test_set.png>]
-
-Package caption Warning: \label without proper reference on input line 166.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: learning_rate_boundary' on page 5 undefined on input line 164.
-
-<images/NN_boundary_vs_learning_rates/0,1.png, id=39, 462.528pt x 346.896pt>
-File: images/NN_boundary_vs_learning_rates/0,1.png Graphic file (type png)
- <use images/NN_boundary_vs_learning_rates/0,1.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0,1.png used on input line 167.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/NN_boundary_vs_learning_rates/0,01.png, id=40, 462.528pt x 346.896pt>
-File: images/NN_boundary_vs_learning_rates/0,01.png Graphic file (type png)
- <use images/NN_boundary_vs_learning_rates/0,01.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0,01.png used on input line 168.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/NN_boundary_vs_learning_rates/0,002.png, id=41, 462.528pt x 346.896pt>
-File: images/NN_boundary_vs_learning_rates/0,002.png Graphic file (type png)
- <use images/NN_boundary_vs_learning_rates/0,002.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0,002.png used on input line 169.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/NN_boundary_vs_learning_rates/0,001.png, id=42, 462.528pt x 346.896pt>
-File: images/NN_boundary_vs_learning_rates/0,001.png Graphic file (type png)
- <use images/NN_boundary_vs_learning_rates/0,001.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0,001.png used on input line 170.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/NN_boundary_vs_learning_rates/0,0001.png, id=43, 462.528pt x 346.896pt>
-File: images/NN_boundary_vs_learning_rates/0,0001.png Graphic file (type png)
- <use images/NN_boundary_vs_learning_rates/0,0001.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0,0001.png used on input line 172.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
-
-
-LaTeX Warning: Reference `grad_vs_eta' on page 5 undefined on input line 176.
-
-
-LaTeX Warning: Reference `eq: costs_vs_eta' on page 5 undefined on input line 176.
-
-<images/NN_boundary_vs_learning_rates/grads.png, id=44, 462.528pt x 346.896pt>
+ <images/NN_boundary_vs_learning_rates/grads.png, id=33, 462.528pt x 346.896pt>
 File: images/NN_boundary_vs_learning_rates/grads.png Graphic file (type png)
  <use images/NN_boundary_vs_learning_rates/grads.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/grads.png used on input line 181.
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/grads.png used on input line 156.
 (pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
- <images/NN_boundary_vs_learning_rates/costs.png, id=45, 462.528pt x 346.896pt>
-File: images/NN_boundary_vs_learning_rates/costs.png Graphic file (type png)
- <use images/NN_boundary_vs_learning_rates/costs.png>
-Package pdftex.def Info: images/NN_boundary_vs_learning_rates/costs.png used on input line 187.
+ [4 <./images/train_set.png> <./images/test_set.png>] <images/NN_boundary_vs_learning_rates/0.png, id=39, 462.528pt x 346.896pt>
+File: images/NN_boundary_vs_learning_rates/0.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/0.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0.png used on input line 166.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ <images/NN_boundary_vs_learning_rates/1.png, id=40, 462.528pt x 346.896pt>
+File: images/NN_boundary_vs_learning_rates/1.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/1.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/1.png used on input line 167.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ <images/NN_boundary_vs_learning_rates/2.png, id=41, 462.528pt x 346.896pt>
+File: images/NN_boundary_vs_learning_rates/2.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/2.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/2.png used on input line 168.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ <images/NN_boundary_vs_learning_rates/3.png, id=42, 462.528pt x 346.896pt>
+File: images/NN_boundary_vs_learning_rates/3.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/3.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/3.png used on input line 169.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ <images/NN_boundary_vs_learning_rates/4.png, id=43, 462.528pt x 346.896pt>
+File: images/NN_boundary_vs_learning_rates/4.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/4.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/4.png used on input line 171.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ [5 <./images/NN_boundary_vs_learning_rates/grads.png>]
+
+LaTeX Warning: Reference `grad_vs_eta' on page 6 undefined on input line 176.
+
+File: images/NN_boundary_vs_learning_rates/grads.png Graphic file (type png)
+<use images/NN_boundary_vs_learning_rates/grads.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/grads.png used on input line 180.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ <images/NN_boundary_vs_learning_rates/errors.png, id=48, 462.528pt x 346.896pt>
+File: images/NN_boundary_vs_learning_rates/errors.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/errors.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/errors.png used on input line 181.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+ [6 <./images/NN_boundary_vs_learning_rates/0.png> <./images/NN_boundary_vs_learning_rates/1.png> <./images/NN_boundary_vs_learning_rates/2.png> <./images/NN_boundary_vs_learning_rates/3.png> <./images/NN_boundary_vs_learning_rates/4.png>]
+File: images/NN_boundary_vs_learning_rates/0.png Graphic file (type png)
+ <use images/NN_boundary_vs_learning_rates/0.png>
+Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0.png used on input line 190.
 (pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
-
-
-Package caption Warning: \label without proper reference on input line 193.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: NN_MSE_002_boundary' on page 5 undefined on input line 191.
-
-<images/NN_MSE_002_boundary.png, id=46, 462.528pt x 346.896pt>
-File: images/NN_MSE_002_boundary.png Graphic file (type png)
- <use images/NN_MSE_002_boundary.png>
-Package pdftex.def Info: images/NN_MSE_002_boundary.png used on input line 195.
-(pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
- [5 <./images/NN_eta_vs_training.png>] [6 <./images/NN_boundary_vs_learning_rates/0,1.png> <./images/NN_boundary_vs_learning_rates/0,01.png> <./images/NN_boundary_vs_learning_rates/0,002.png> <./images/NN_boundary_vs_learning_rates/0,001.png> <./images/NN_boundary_vs_learning_rates/0,0001.png>] [7 <./images/NN_boundary_vs_learning_rates/grads.png> <./images/NN_boundary_vs_learning_rates/costs.png>]
-Overfull \hbox (48.27643pt too wide) in paragraph at lines 209--210
+ [7 <./images/NN_boundary_vs_learning_rates/errors.png>]
+Overfull \hbox (48.27643pt too wide) in paragraph at lines 204--205
 []\OT1/cmr/m/n/10.95 After in-stance the class, is it pos-si-ble to add a in-put layer by call-ing \OT1/cmtt/m/n/10.95 add[]hnput[]layer(size[]in,size[]out)\OT1/cmr/m/n/10.95 .
  []
 
-[8 <./images/NN_MSE_002_boundary.png>]
-
-Package caption Warning: \label without proper reference on input line 236.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `table: performance_NN_BNN' on page 9 undefined on input line 234.
-
-[9]
-
-Package caption Warning: \label without proper reference on input line 263.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig:momentum' on page 10 undefined on input line 261.
-
-<images/momentum/momentum_plot_0.png, id=74, 462.528pt x 346.896pt>
+[8] <images/momentum/momentum_plot_0.png, id=67, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_0.png Graphic file (type png)
  <use images/momentum/momentum_plot_0.png>
-Package pdftex.def Info: images/momentum/momentum_plot_0.png used on input line 265.
+Package pdftex.def Info: images/momentum/momentum_plot_0.png used on input line 258.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/momentum/momentum_plot_1.png, id=75, 462.528pt x 346.896pt>
+ <images/momentum/momentum_plot_1.png, id=68, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_1.png Graphic file (type png)
  <use images/momentum/momentum_plot_1.png>
-Package pdftex.def Info: images/momentum/momentum_plot_1.png used on input line 266.
+Package pdftex.def Info: images/momentum/momentum_plot_1.png used on input line 259.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/momentum/momentum_plot_2.png, id=76, 462.528pt x 346.896pt>
+ <images/momentum/momentum_plot_2.png, id=69, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_2.png Graphic file (type png)
  <use images/momentum/momentum_plot_2.png>
-Package pdftex.def Info: images/momentum/momentum_plot_2.png used on input line 267.
+Package pdftex.def Info: images/momentum/momentum_plot_2.png used on input line 260.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/momentum/momentum_plot_3.png, id=77, 462.528pt x 346.896pt>
+ <images/momentum/momentum_plot_3.png, id=70, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_3.png Graphic file (type png)
  <use images/momentum/momentum_plot_3.png>
-Package pdftex.def Info: images/momentum/momentum_plot_3.png used on input line 268.
+Package pdftex.def Info: images/momentum/momentum_plot_3.png used on input line 261.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
-
-
-Package caption Warning: \label without proper reference on input line 281.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: adagrad' on page 10 undefined on input line 279.
-
-<images/adagrad/adagrad_plot_0.png, id=78, 462.528pt x 346.896pt>
+ [9] <images/adagrad/adagrad_plot_0.png, id=74, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_0.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_0.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_0.png used on input line 283.
+Package pdftex.def Info: images/adagrad/adagrad_plot_0.png used on input line 277.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/adagrad/adagrad_plot_1.png, id=79, 462.528pt x 346.896pt>
+ <images/adagrad/adagrad_plot_1.png, id=75, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_1.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_1.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_1.png used on input line 284.
+Package pdftex.def Info: images/adagrad/adagrad_plot_1.png used on input line 278.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/adagrad/adagrad_plot_2.png, id=80, 462.528pt x 346.896pt>
+ <images/adagrad/adagrad_plot_2.png, id=76, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_2.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_2.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_2.png used on input line 285.
+Package pdftex.def Info: images/adagrad/adagrad_plot_2.png used on input line 279.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/adagrad/adagrad_plot_3.png, id=81, 462.528pt x 346.896pt>
+ <images/adagrad/adagrad_plot_3.png, id=77, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_3.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_3.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_3.png used on input line 286.
+Package pdftex.def Info: images/adagrad/adagrad_plot_3.png used on input line 280.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- [10 <./images/momentum/momentum_plot_0.png> <./images/momentum/momentum_plot_1.png> <./images/momentum/momentum_plot_2.png> <./images/momentum/momentum_plot_3.png>]
-
-Package caption Warning: \label without proper reference on input line 281.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: adagrad' on page 11 undefined on input line 289.
-
-[11 <./images/adagrad/adagrad_plot_0.png> <./images/adagrad/adagrad_plot_1.png> <./images/adagrad/adagrad_plot_2.png> <./images/adagrad/adagrad_plot_3.png>]
-
-Package caption Warning: \label without proper reference on input line 335.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: results_boundary' on page 12 undefined on input line 333.
-
-<images/competition/competition_1508255316.png, id=97, 462.528pt x 346.896pt>
-File: images/competition/competition_1508255316.png Graphic file (type png)
- <use images/competition/competition_1508255316.png>
-Package pdftex.def Info: images/competition/competition_1508255316.png used on input line 337.
+ [10 <./images/momentum/momentum_plot_0.png> <./images/momentum/momentum_plot_1.png> <./images/momentum/momentum_plot_2.png> <./images/momentum/momentum_plot_3.png>] [11 <./images/adagrad/adagrad_plot_0.png> <./images/adagrad/adagrad_plot_1.png> <./images/adagrad/adagrad_plot_2.png> <./images/adagrad/adagrad_plot_3.png>] <images/competition/competition_0.png, id=93, 462.528pt x 346.896pt>
+File: images/competition/competition_0.png Graphic file (type png)
+ <use images/competition/competition_0.png>
+Package pdftex.def Info: images/competition/competition_0.png used on input line 330.
 (pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
- [12]
-
-Package caption Warning: \label without proper reference on input line 360.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig: bnnVsNn' on page 13 undefined on input line 357.
-
-<images/BNN_vs_NN/BNN_vs_NN_grads.png, id=101, 462.528pt x 346.896pt>
+ [12 <./images/competition/competition_0.png>] <images/BNN_vs_NN/BNN_vs_NN_grads.png, id=98, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_grads.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_grads.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_grads.png used on input line 361.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_grads.png used on input line 355.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/BNN_vs_NN/BNN_vs_NN_error.png, id=102, 462.528pt x 346.896pt>
+ <images/BNN_vs_NN/BNN_vs_NN_error.png, id=99, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_error.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_error.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_error.png used on input line 362.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_error.png used on input line 356.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/BNN_vs_NN/BNN_vs_NN_accuracy.png, id=103, 462.528pt x 346.896pt>
+ <images/BNN_vs_NN/BNN_vs_NN_accuracy.png, id=100, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_accuracy.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_accuracy.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_accuracy.png used on input line 363.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_accuracy.png used on input line 357.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- <images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png, id=104, 462.528pt x 346.896pt>
+ <images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png, id=101, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png used on input line 364.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png used on input line 358.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
- [13 <./images/competition/competition_1508255316.png>] <images/BNN_vs_NN/BNN_vs_NN_boundary.png, id=110, 570.2103pt x 569.4876pt>
+ <images/BNN_vs_NN/BNN_vs_NN_boundary.png, id=102, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_boundary.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_boundary.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_boundary.png used on input line 372.
-(pdftex.def)             Requested size: 342.12881pt x 341.69519pt.
- [14 <./images/BNN_vs_NN/BNN_vs_NN_grads.png> <./images/BNN_vs_NN/BNN_vs_NN_error.png> <./images/BNN_vs_NN/BNN_vs_NN_accuracy.png> <./images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png>] [15 <./images/BNN_vs_NN/BNN_vs_NN_boundary.png>] [16] (./main.aux)
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_boundary.png used on input line 367.
+(pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
+ [13 <./images/BNN_vs_NN/BNN_vs_NN_grads.png> <./images/BNN_vs_NN/BNN_vs_NN_error.png> <./images/BNN_vs_NN/BNN_vs_NN_accuracy.png> <./images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png>] [14 <./images/BNN_vs_NN/BNN_vs_NN_boundary.png>] [15] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -763,18 +679,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 12633 strings out of 492995
- 209532 string characters out of 6132703
- 709144 words of memory out of 5000000
- 16025 multiletter control sequences out of 15000+600000
+ 12620 strings out of 492995
+ 208970 string characters out of 6132703
+ 689679 words of memory out of 5000000
+ 16014 multiletter control sequences out of 15000+600000
  12282 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,15n,48p,812b,1453s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,15n,48p,812b,1639s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on main.pdf (16 pages, 1240219 bytes).
+Output written on main.pdf (15 pages, 1001680 bytes).
 PDF statistics:
- 185 PDF objects out of 1000 (max. 8388607)
- 95 compressed objects within 1 object stream
+ 178 PDF objects out of 1000 (max. 8388607)
+ 93 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 

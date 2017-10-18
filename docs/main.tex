@@ -1,10 +1,9 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
+
 \usepackage{biblatex}
 \bibliography{main} 
-
 \addbibresource{main.bib}
-
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{graphicx}
@@ -12,7 +11,7 @@
 \usepackage{subfig}
 \usepackage{caption}
 \usepackage{float}
-\usepackage{subfig}
+
 \author{Francesco Saverio Zuppichini}
 \title{Machine Learning - Assignment 1}
 \begin{document}
@@ -25,7 +24,7 @@ Equation \ref{eq:vectorized_perceptron} shows the vectorised equation for a sing
 
 \begin{equation}
 \label{eq:vectorized_perceptron}
-output = XW + b
+output = X\times W + b
 \end{equation}
 Where $X = {x_1, ... x_n}$ is the input set and $W = {w_1, ..., w_n}$ is the target set. We denote $y$ the output of the perceptron.
 
@@ -47,16 +46,16 @@ Since it was not specified that the calculation must be done by hand, we called 
 \begin{python}
 X,T = get_part1_data()
 p = Perceptron()
-train_one_step(p,0.02,X,T)
+sk.train_one_step(p,0.02,np.array([X[0]]),np.array([T[0]]))
 print(p.var['W']) //output weights the values	
 print(p.var['b']) //output the new bias value
 \end{python}
 Where the new weights and bias are
 $$W_{k + 1} = \begin{pmatrix}
- 0.43963636 \\
- -0.75109091
+ 0.844 \\
+ -0.148
 \end{pmatrix}, b_{k+1} = \begin{pmatrix}
-	1.95218181818
+	2.044
 \end{pmatrix}$$
 \subsubsection{Gradient Descend}
 The gradient descend is an iterative optimisation algorithm that follows the direction of the negative gradient in order to minimised an objective function. It can be effectively used as Learning Algorithm because it reduces the error function, Equation \ref{eq: MSE_perceptron}, and adjusts the weights properly. Equation \ref{eq: GD} shows the generic update rule.
@@ -141,11 +140,11 @@ We decided to split the training set and test set with a ratio of 80:20. If we c
 
 Figure \ref{fig: train_test_set} shows the plot for the train set and the test set. They are created by calling \texttt{twospirals} using competition's configuration.
 \begin{figure}[h]
-	\label{fig: train_test_set}
 	\centering
 	\includegraphics[scale=0.5]{images/train_set}
 	\includegraphics[scale=0.5]{images/test_set}
 	\caption{Train set and Test set}
+	\label{fig: train_test_set}
 \end{figure}
 
 
@@ -154,49 +153,45 @@ In order to find the correct learning rate, we decided to fist test the network 
 
 \begin{figure}[H]
 \centering
-\label{fig: learning_rate_convergence}
-\includegraphics[scale=0.6]{images/NN_eta_vs_training}
-\caption{Learning rate convergences}
-\end{figure}
-
-This little benchmark shows that a big step size, like $0.1$, do not lead to a very stable converge because it overshoots and it cannot find the correct minimum. On the other hand, a very small eta, $0.0001$, converges very slowly and training a model with it will take forever. The best choice is a value between then, $0.01$, $0.002$ or $0.001$.
-\subsubsection{Plot the learning rate of at least 5 different learning rates on both sets}
-Since it was not clear what to plot, we decided to plot five boundaries for the five learning rates used in section 2.4.2. We used 20k iterations that are more than enough to make each model converge to a good solution. Figure \ref{fig: learning_rate_boundary} shows the results
-\begin{figure}
-	\label{fig: learning_rate_boundary}
-	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/0,1}
-	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/0,01}
-	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/0,002}
-	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/0,001}
-	\centering
-	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/0,0001}
-
-	\caption{model boundary vs learning rates}
-\end{figure}
-Figure \ref{grad_vs_eta} and Figure \ref{eq: costs_vs_eta} shows differents eta vs gradients and errors respectively
-
-\begin{figure}
-\centering
-\label{fig: grad_vs_eta}
 \includegraphics[scale=0.6]{images/NN_boundary_vs_learning_rates/grads}
+\caption{Learning rate convergences}
+\label{fig: learning_rate_convergence}
+\end{figure}
+
+%This little benchmark shows that a big step size, like $0.1$, do not lead to a very stable converge because it overshoots and it cannot find the correct minimum. On the other hand, a very small eta, $0.0001$, converges very slowly and training a model with it will take forever. The best choice is a value between then, $0.01$, $0.002$ or $0.001$.
+The benchmark shows that $0.1$ is the best $\eta$ choice since it is the faster and more stable, $0.5$ is also a good choice.
+\subsubsection{Plot the learning rate of at least 5 different learning rates on both sets}
+Since it was not clear what to plot, we decided to plot five boundaries for the five learning rates used in section 2.4.2. For the benchmark, we used 40.000 iterations that are more than enough to make the model converge to a good solution. Figure \ref{fig: learning_rate_boundary} shows the results
+\begin{figure}[H]
+	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/0}
+	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/1}
+	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/2}
+	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/3}
+	\centering
+	\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/4}
+	\caption{model boundary vs learning rates}
+	\label{fig: learning_rate_boundary}
 
 \end{figure}
-\begin{figure}
+Figure \ref{grad_vs_eta} shows different eta vs gradients and errors respectively
+
+\begin{figure}[H]
 \centering
-\label{fig: costs_vs_eta}
-\includegraphics[scale=0.6]{images/NN_boundary_vs_learning_rates/costs}
-
+\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/grads}
+\includegraphics[scale=0.5]{images/NN_boundary_vs_learning_rates/errors}
+\caption{eta vs grads and costs}
+\label{fig: grad_vs_grads_costs}
 \end{figure}
+
 \subsubsection{Plot the boundary of the model which converged the most on the training data}
 Figure \ref{fig: NN_MSE_002_boundary} shows the model boundary after reach a MSE error less than $0.02$ using a step size of $0.001$. The network used the following seed: \texttt{1}. You can get the same plot by calling \texttt{run\_part2}.
 \begin{figure}[H]
-\label{fig: NN_MSE_002_boundary}
 \centering
-\includegraphics[scale=0.6]{images/NN_MSE_002_boundary}	
+\includegraphics[scale=0.6]{images/NN_boundary_vs_learning_rates/0}	
 \caption{Boundary of the model with MSE less than 0.02}
+\label{fig: NN_MSE_002_boundary}
 \end{figure}
-
-\subsection{Explain if this is a good model for the data}
+ \subsection{Explain if this is a good model for the data}
 The model seems good enough for the data generated by calling \texttt{twospirals} with the standard configuration. however, by using the data for part 3 the model loose lots of accuracy due to its gradient descent implementation that does not prevent the algorithm to fall into local minima. 
 A better model is present in detail in the following Section.
 \section{Further Improvements}
@@ -209,9 +204,9 @@ The \texttt{BetterNeuralNetwork} class exposes an API allowing the creation of a
 After instance the class, is it possible to add a input layer by calling \texttt{add\_hnput\_layer(size\_in,size\_out)}. Many hidden layers can be added by using \texttt{add\_hidden\_layer(size\_out)}, the "size\_in" is not necessary since it can be easily calculated by the network. Then method \texttt{add\_output\_layer(size\_out)} adds the output lauer. It follows a full example where we create the same Neural Network from Exercise 2.
 \begin{python}
    bnn = BNN()
-   bnn.addInputLayer(2, 20, np.tanh, act.dtanh)
-   bnn.addHiddenLayer(15, np.tanh, act.dtanh)
-   bnn.addOutputLayer(1)
+   bnn.add_input_layer(2, 20, np.tanh, act.dtanh)
+   bnn.add_hidden_layer(15, np.tanh, act.dtanh)
+   bnn.add_output_layer(1)
 \end{python}
 
 For each layer is also possible to specified the activation function, as default value \emph{signmoid} is used. We have also implemented \texttt{relu} and \texttt{dRelu} to try them.
@@ -233,7 +228,6 @@ The bias are initialised with a very small number close to zero, for such reason
 \subsection{Performance}
 Due to a better and generic implementation, our \texttt{BetterNeuralNetwork} is slightly faster than the one from Section 2. Table \ref{table: performance_NN_BNN} shows the result of a little benchmark
 \begin{table}[H]
-	\label{table: performance_NN_BNN}
 \centering
   \begin{tabular}{ | l | c | r |}
     \hline
@@ -244,10 +238,10 @@ Due to a better and generic implementation, our \texttt{BetterNeuralNetwork} is 
     10000 & 4455.6ms & 4157.9ms \\ \hline    
   \end{tabular}
   \caption{}
+  	\label{table: performance_NN_BNN}
+
 \end{table}
 I have also tried to create a small thread pool, so we can save time in thread allocation, in order to parallelise the weight updates, since they are independent operation but without any real advantages. Probably the network is so small that it take more time to call a free thread and submit a work than to compute the operations  sequentially.
-\subsection{Stochastic Gradient Descent}
-TODO does it work?
 \subsection{Momentum}
 We used Momentum \cite{Ruder} to speed up the convergence of the network, it prevent getting stuck in local minima and pushes the objective more quickly along the shallow ravine. Basically it give a global direction to the gradient descent based on the previous update. Equation \ref{eq: momentum} shows the new update formula. 
 
@@ -258,15 +252,16 @@ We used Momentum \cite{Ruder} to speed up the convergence of the network, it pre
 	 w_{k + 1} = w_{k + 1} -   \Delta w_{ t + 1}
 	 \end{split}
 \end{equation}
-$\beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In our benchmarks we used a classic $0.5$. In Figure \ref{fig:momentum}, we can see the converge rate of a classic gradient descent versus momentum for different step sizes. Momentum converges faster in all cases. In my test cases, momentum works better with small step size such as $0.001$.
+$\beta \in [0,1]$ is a the momentum factor, usually between $0.5$ and $0.9$. In our benchmarks we used a classic $0.5$. In Figure \ref{fig:momentum}, we can see the converge rate of a classic gradient descent versus momentum for different step sizes. Momentum converges faster in all cases. 
 \begin{figure}[H]
-\label{fig:momentum}
 \centering
 \includegraphics[scale=0.5]{images/momentum/momentum_plot_0.png}	
 \includegraphics[scale=0.5]{images/momentum/momentum_plot_1.png}	
 \includegraphics[scale=0.5]{images/momentum/momentum_plot_2.png}	
 \includegraphics[scale=0.5]{images/momentum/momentum_plot_3.png}	
 \caption{Gradient Discent vs Momentum}
+\label{fig:momentum}
+
 \end{figure}
 In the \texttt{BetterNeuralNetwork} class, momentum can be enabled by passing the correct parameters and type to the \texttt{train} method. The following snippet shows and example
 
@@ -278,16 +273,15 @@ nn.train(X_train, T_train, 3000, params, 'momentum')	 # pass 'momentum' as type 
 \subsection{Adagrad}
 Adagrad \cite{AdaGrad} is an adaptive learning rate algorithm that we implement in order to speed up the convergence. In Figure \ref{fig: adagrad}, we can see the converge rate of a classic gradient descent versus adagrad for different step sizes.
 \begin{figure}[H]
-\label{fig: adagrad}
 \centering
 \includegraphics[scale=0.5]{images/adagrad/adagrad_plot_0.png}	
 \includegraphics[scale=0.5]{images/adagrad/adagrad_plot_1.png}	
 \includegraphics[scale=0.5]{images/adagrad/adagrad_plot_2.png}	
 \includegraphics[scale=0.5]{images/adagrad/adagrad_plot_3.png}	
 \caption{Gradient Discent vs Adagrad}
+\label{fig: adagrad}
 \end{figure}
-Adagrad seems to work very well with big step size, but too slow with small step. With little step sizes, Adagrad continue to accumulate the squared gradients in the denominator during training leading to a huge reduction of the step sizes that becomes close to zero. Therefore it cannot converge anymore and we get that really horizontal line in the last two plots of Figure \ref{fig: adagrad}
-
+Adagrads works better in any case.
 The following snippet shows how to enable it
 \begin{python}
 nn.train(X_train, T_train, 3000, params, 'adagrad') // pass 'adagrad' as type name
@@ -306,50 +300,51 @@ model.train(train_X, train_T, 4000, { 'eta' : 0.1, 'beta' : 0.5, 'batch_size': 1
 \subsection{Dropout}
 Dropout is a recently introduced regularisation technique. Basically, each node has a probability to be enable on disable in each forward pass. We implemented it by changing the \texttt{forward} method inside \texttt{BetterNeuralNetwork}
 \begin{python}
-    def forward(self, inputs):
-        self.A = [inputs]
-        self.Z = []
-        # dropout probability
-        p = 0.5
-        
-        a = inputs
+def forward(self, inputs):
+    self.A = [inputs]
+    self.Z = []
+    # dropout probability
+    p = 0.5
+    
+    a = inputs
 
-        for l in self.layers:
-            z = a.dot(l.W) + l.b
-            # create dropout mask
-            u = (np.random.rand(*z.shape) < p) / p
-            # apply mask
-            z *= u
-            a = l.activation(z)
-            # store
-            self.A.append(a)
-            self.Z.append(z)
+    for l in self.layers:
+        z = a.dot(l.W) + l.b
+        # create dropout mask
+        u = (np.random.rand(*z.shape) < p) / p
+        # apply mask
+        z *= u
+        a = l.activation(z)
+        # store
+        self.A.append(a)
+        self.Z.append(z)
 
-        return a
+    return a
 \end{python}
 At each pass, a binary mask \texttt{u} is created and applied to the layer weighted output \texttt{z}. Unfortunately, this approach did not work well for us and lead to a bad convergence, probably because the network is too small.
 
 \subsection{Results}
-Figure \ref{fig: results_boundary} shows the boundary of our new model with one of the best seed: \texttt{1508255316}.
+Figure \ref{fig: results_boundary} shows the boundary of our new model with one of the best seed: \texttt{0}.
 \begin{figure}[H]
-\label{fig: results_boundary}
 \centering
-\includegraphics[scale=0.6]{images/competition/competition_1508255316.png}	
+\includegraphics[scale=0.6]{images/competition/competition_0.png}	
 \caption{Boundary of the model}
+\label{fig: results_boundary}
 \end{figure}
 
 The following snippet show our to re-create the model with our API.
 \begin{python}
-	# use same seed
-	np.random.seed(1508186659)
-    model = BetterNeuralNetwork()
-    # add layers
-    model.add_input_layer(2, 20, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_output_layer(1)
+# use same seed
+np.random.seed(0)
+model = BetterNeuralNetwork()
+# create layers
+model.add_input_layer(2, 30, act.relu, act.drelu)
+model.add_hidden_layer(20, act.relu, act.drelu)
+model.add_hidden_layer(15, act.relu, act.drelu)
+model.add_hidden_layer(10, act.relu, act.drelu)
+model.add_output_layer(1, act.tanh, act.dtanh)
 
-    model.train(train_X, train_T ,8000, { 'eta' : 0.1, 'beta' : 0.5 },'adagrad')
+model.train(train_X, train_T , 4000, { 'eta' : 0.1, 'beta' : 0.5 },'adagrad')
 \end{python}
 
 %As you may notice we used the \textbf{Adagrad} method.
@@ -357,13 +352,13 @@ The following snippet show our to re-create the model with our API.
 Figure \ref{fig: bnnVsNn} shows the errors, gradients, error and accuracy for this model with respect to the one from section 2. Obviously the new model is better in every aspect.
 
 \begin{figure}[H]
-\label{fig: bnnVsNn}
 \includegraphics[scale=0.5]{images/BNN_vs_NN/BNN_vs_NN_grads}
 \includegraphics[scale=0.5]{images/BNN_vs_NN/BNN_vs_NN_error}
 \includegraphics[scale=0.5]{images/BNN_vs_NN/BNN_vs_NN_accuracy}
 \includegraphics[scale=0.5]{images/BNN_vs_NN/BNN_vs_NN_test_accuracy}
+\caption{BetterNeuralNetwork vs Neural Network}
+\label{fig: bnnVsNn}
 
-\caption{BetterNeuralNetwork vs Neural Netwotk}
 \end{figure}
 
 
@@ -375,14 +370,15 @@ Figure \ref{fig: bnnVsNn} shows the errors, gradients, error and accuracy for th
 You can save and load the network state by calling \texttt{.save(file\_name)} \texttt{.load(file\_name}). The following snippet shows hot to load the previous network.
 
 \begin{python}
-    model = BetterNeuralNetwork()
-    # create layers
-    model.add_input_layer(2, 20, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_hidden_layer(15, act.tanh, act.dtanh)
-    model.add_output_layer(1)
-    # load prev weights
-    model.load('test')
+model = BetterNeuralNetwork()
+# create layers
+model.add_input_layer(2, 30, act.relu, act.drelu)
+model.add_hidden_layer(20, act.relu, act.drelu)
+model.add_hidden_layer(15, act.relu, act.drelu)
+model.add_hidden_layer(10, act.relu, act.drelu)
+model.add_output_layer(1, act.tanh, act.dtanh)
+# load prev weights
+model.load('competition')
 \end{python}
 
 \newpage
