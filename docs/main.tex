@@ -37,9 +37,8 @@ Equation \ref{eq: MSE_perceptron} denotes the Mean Square Error function for our
 One trick that is usual done is to multiply equation $(2)$ by $\frac{1}{2}$, so when we take the derivative the $2$ goes away. This is called One Half Mean Squared Error.
 
 \subsubsection{Derivate of the error with respect to the weights}
-In order to reduce our error function we need to compute the first derivative with respect to the weights. We will use the modified version of equation $(2)$ called One Half Mean Squared Error.
-\begin{equation}
-\frac{\delta E}{\delta w_i}	= y - t
+In order to reduce our error function we need to compute the first derivative with respect to the weights.\begin{equation}
+\frac{\partial E}{\partial w_k}	=\frac{\partial E}{\partial y_i}\frac{\partial y_i}{\partial w_k} =  (w_k \cdot x_{ik} - t) \cdot x_{ik}
 \end{equation}
 \subsubsection{Compute the new weight values after one step using a learning rate of 0.02}
 Since it was not specified that the calculation must be done by hand, we called \texttt{train\_one\_step} in order to compute the new weights, as follows:
@@ -63,7 +62,7 @@ The gradient descend is an iterative optimisation algorithm that follows the dir
 \label{eq: GD}
 	w_{k + 1} = w_k - \eta \nabla E(w_k)
 \end{equation}
-Where $\eta$ is the step size, also called \textbf{learning rate} in Machine Learning. This parameter influences the behaviour of gradient descent, a small number can lead to local minimum, while a bigger learning rate could "over-shoot" and decreasing the converge ration. Later in this project you will how a wrong $\eta$ can strongly change the output of a Neural Network.
+Where $\eta$ is the step size, also called \textbf{learning rate} in Machine Learning. This parameter influences the behaviour of gradient descent, a small number can lead to local minimum, while a bigger learning rate could "over-shoot" and decreasing the converge ration. Later in this project you will see how a wrong $\eta$ can strongly change the output of a Neural Network.
 
 For this reasons, numerous improvements have been proposed to avoid local minima and increase its convergence ration. Some of them are: Conjugate Gradient and Momentum.
 % TODO if time talk about them
@@ -105,32 +104,32 @@ a^l = \sigma(W^la^{l-1} + b^l)
 In a Neural Network the weights are iteratively changed in order to decrease the error function, called $E$.Equation \ref{eq:deltaRule_1} defines $\delta^l_j$ as the output error of neuron $j$ in layer $l$
 \begin{equation}
 	\label{eq: deltaRule_1}
-	\delta^l_j = \frac{\delta E}{\delta z^l_j}
+	\delta^l_j = \frac{\partial E}{\partial z^l_j}
 \end{equation}
 Strictly speaking, $\delta^l_j$, is how much the error function changes by changing the weighted input on that layer. Applying the chain rule, Equation \ref{eq:deltaRule_1} becomes:
 \begin{equation}
 \label{eq:deltaRule_2}
-\delta^l_j = \frac{\delta E}{\delta a^l_j} \frac{\delta a^l_j}{\delta z^l_j}
+\delta^l_j = \frac{\partial E}{\partial a^l_j} \frac{\partial a^l_j}{\partial z^l_j}
 \end{equation}
 By knowing that $a^l_j = \sigma(z^l_j)$, Equation \ref{eq:deltaRule_2} can be expressed as
 \begin{equation}
 \label{eq:deltaRule}	
-\delta^l_j = \frac{\delta E}{\delta a^l_j} \sigma'(z^l_j)
+\delta^l_j = \frac{\partial E}{\partial a^l_j} \sigma'(z^l_j)
 \end{equation}  
 
  %
 %We define $\Delta z^l_j$ the quantity added to the $j$-th neuron's weighted input in the $l$ layer by the network.
 % The new output of that neuron becomes $\sigma(z^l_k + \Delta z^l_j)$ causing a changing by $\frac{\delta E}{\delta z^l_k}\Delta z^l_j$. 
 \subsubsection{Derivatives of the weights}
-We want to compute $\frac{\delta E}{\delta w^l_{jk}}$. Applying the delta rule:
+We want to compute $\frac{\partial E}{\partial w^l_{jk}}$. Applying the delta rule:
 \begin{equation}
-\frac{\delta E}{\delta w^l_{jk}} = \frac{\delta E}{\delta z^l_j}\frac{\delta z^l_j}{\delta w^l_{jk}} =	
-\frac{\delta E}{\delta a^l_j}\frac{\delta a^l_j}{\delta z^l_{j}}
-\frac{\delta z^l_j}{\delta w^l_{jk}}
+\frac{\partial E}{\partial w^l_{jk}} = \frac{\partial E}{\partial z^l_j}\frac{\partial z^l_j}{\partial w^l_{jk}} =	
+\frac{\partial E}{\partial a^l_j}\frac{\partial a^l_j}{\partial z^l_{j}}
+\frac{\partial z^l_j}{\partial w^l_{jk}}
 \end{equation}
 \begin{equation}
 \label{eq:derivativesWeigthDeltas}	
-\frac{\delta E}{\delta w^l_{jk}} = a^{l-1}_k \delta^l_j
+\frac{\partial E}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j
 \end{equation}
 \subsection{Implement the functions forward and backward of the Neural Network class.}
 You can find them in \emph{NeuralNetwork.py}
@@ -288,7 +287,9 @@ nn.train(X_train, T_train, 3000, params, 'adagrad') // pass 'adagrad' as type na
 \end{python}
 
 \subsection{Network deep}
-We used an empirical approach to find a correct number of hidden layer. We fist tried to add thinner layers with a size between four and eight with no success. After some other benchmarks, our the best configuration is a network with one input layer of size $(2,20)$, two hidden layer of size $(20,15)$ and$(15,15)$ and one output layer of size $(15,1)$. Basically we just added one hidden layer to the model from Section 2.
+Our model is composed by one input layer, three hidden layer and one output layer. We used an empirical approach to find a correct number of hidden layer. We started by make the first layer bigger in order to make our model learn more features about the function. Then we added other three layers, each of them roughly one third smaller than the other. Doing so, our model can recognise more detail about the spiral.
+
+After some tests, we switched to the \textbf{relu} activation function on each layer expect for the output where we used \emph{tanh}. 
 %%%%%%%%%%%%%%%%%%% PUT SOME SECTION IN ORDER TO INTRODUCE THE OTHER MERDA CHE HO PROVATO 
 We trying other techniques with no luck. We also include them in this report.
 \subsection{Stochastic Gradient Descent}
