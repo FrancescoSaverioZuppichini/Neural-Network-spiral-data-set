@@ -1,6 +1,6 @@
 import numpy as np
-from activation import tanh
-from MSE import dMSE
+from activation_function import tanh
+from cost_functions import dMSE
 
 class Perceptron:
     """

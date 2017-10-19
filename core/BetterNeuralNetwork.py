@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 # custom imports
-import activation as act
-import MSE as cost_func
+import activation_function as act
+import cost_functions as cost_func
 from utils import timing
 
 def plot_data(X,T):
@@ -66,6 +66,12 @@ class BetterNeuralNetwork:
             'momentum': self.momentum,
             'adagrad': self.adagrad,
             'gradient_descent': self.gradient_descent }
+
+    def init_debug_info(self):
+        self.grads = []
+        self.errors = []
+        self.accuracy = []
+        self.accuracy_val = []
 
     def create_layer(self,size_in,size_out,activation,d_activation):
 
@@ -237,6 +243,38 @@ class BetterNeuralNetwork:
 
         return X, T
 
+    def store_debug_data(self,x, y, t, dx, X_val, T_val):
+        """
+        Store debug info
+
+        :param y: The prediction
+        :param t: The target
+        :param dx: The gradient
+        :param X_val: Validation inputs, if any
+        :param T_val: Targets inputs, if any
+        :return:
+        """
+
+        should_store_validation = len(X_val) > 0
+
+        if (self.DEBUG):
+            acc = np.mean(((y > 0.5) * 1 == t) * 1)
+
+            self.errors.append(cost_func.MSE(y, t))
+            self.grads.append(np.mean(np.abs(dx)))
+            self.accuracy.append(acc)
+
+            if (should_store_validation):
+                acc_val = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
+                self.accuracy_val.append(acc_val)
+
+
+            # if(len(self.grads) % 200 == 0):
+            #     plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(self.accuracy[-1], self.accuracy_val[-1],len(self.grads), self.errors[-1]))
+            #     plot_boundary(self, x, t,0.5)
+            #     plt.show(block=False)
+            #     plt.pause(0.001)
+            #     plt.clf()
     @timing
     def train(self,inputs, targets, max_iter, params=None, type='gradient_descent', X_val=[],T_val=[]):
         """
@@ -255,10 +293,7 @@ class BetterNeuralNetwork:
         if(params == None):
             params = { 'eta':0.001 }
 
-        grads = []
-        errors = []
-        accuracy = []
-        accuracy_val = []
+        self.init_debug_info()
 
         y = 0
 
@@ -274,25 +309,10 @@ class BetterNeuralNetwork:
 
                 y, dx = self.one_train_step(x,t,params,method)
 
-                if (self.DEBUG):
-                    errors.append(cost_func.MSE(y, t))
-                    grads.append(np.mean(np.abs(dx)))
-                    acc = np.mean(((y > 0.5) * 1 == T) * 1)
-                    accuracy.append(acc)
+                self.store_debug_data(x,y, t, dx, X_val, T_val)
 
-                    if (len(X_val) > 0):
-                        acc = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
-                        accuracy_val.append(acc)
 
-            #
-            # if(n % 200 == 0):
-            #     plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(accuracy[-1], accuracy_val[-1],n, errors[-1]))
-            #     plot_boundary(self, inputs, targets,0.5)
-            #     plt.show(block=False)
-            #     plt.pause(0.001)
-            #     plt.clf()
-
-        return y, grads, errors, accuracy, accuracy_val
+        return y, self.grads, self.errors, self.accuracy, self.accuracy_val
     def save(self,file_name):
         """
         Save the current status into a file.

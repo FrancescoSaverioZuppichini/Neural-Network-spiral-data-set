@@ -14,10 +14,10 @@ from utils import get_train_and_test_data
 from Perceptron import Perceptron
 from NeuralNetwork import NeuralNetwork
 from BetterNeuralNetwork import BetterNeuralNetwork
-import activation as act
-from MSE import MSE
+import activation_function as act
+from cost_functions import MSE
 import time
-from MSE import dMSE
+from cost_functions import dMSE
 
 ## Part 1
 
@@ -194,7 +194,7 @@ def competition_train_from_scratch(testX, testT):
     model.add_output_layer(1, act.tanh, act.dtanh)
 
 
-    model.train(train_X, train_T, 4000, { 'eta' : 0.1, 'beta':0.5 }, 'adagrad',testX, testT)
+    res = model.train(train_X, train_T, 4000, { 'eta' : 0.1, }, 'adagrad',testX, testT)
 
     # model.save('competition')
 
@@ -203,15 +203,9 @@ def competition_train_from_scratch(testX, testT):
     print("Accuracy from scratch Train: ", acc_train)
     print("Accuracy from scratch Test: ", acc_test)
 
-    fig = plt.figure(1)
     plt.title("train={0:.3f}, test={1:.3f}".format(acc_train, acc_test))
     plot_boundary(model, train_X, train_T, 0.5)
-
-    # fig.clf()
-
-
-
-
+    plt.show()
     return model
 
 

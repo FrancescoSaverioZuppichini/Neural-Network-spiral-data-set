@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
-
+\usepackage{dirtree}
 \usepackage{biblatex}
 \bibliography{main} 
 \addbibresource{main.bib}
@@ -16,6 +16,19 @@
 \title{Machine Learning - Assignment 1}
 \begin{document}
 \maketitle
+
+We decided to split the code in the following files in order to decouple the logic and create a better environment booth for developing and testing.
+\begin{itemize}
+	\item \texttt{skeleton.py} Holds the original function such as \texttt{run\_part1} and \texttt{run\_part2}
+	\item \texttt{Perceptron.py} Holds the Perceptron class
+	\item \texttt{NeuralNetwork.py} Holds the NeuralNetwork class
+	\item \texttt{BetterNeuralNetwork.py} Holds the BetterNeuralNetwork class
+	\item \texttt{activation\_function.py} Holds all the activation functions, eg. \texttt{tanh}
+	\item \texttt{cost\_functions.py.} Holds all the errors functions, eg. \texttt{MSE}
+	\item \texttt{main.py} Main scripts where the functions are called
+	\item \texttt{utils.py} A set of utils function 
+	\item \texttt{plots.py} Functions used to generate the plots in the report
+\end{itemize}
 
 \section{The Perceptron}
 \subsection{Question 1}
@@ -64,10 +77,10 @@ The gradient descend is an iterative optimisation algorithm that follows the dir
 \end{equation}
 Where $\eta$ is the step size, also called \textbf{learning rate} in Machine Learning. This parameter influences the behaviour of gradient descent, a small number can lead to local minimum, while a bigger learning rate could "over-shoot" and decreasing the converge ration. Later in this project you will see how a wrong $\eta$ can strongly change the output of a Neural Network.
 
-For this reasons, numerous improvements have been proposed to avoid local minima and increase its convergence ration. Some of them are: Conjugate Gradient and Momentum.
+For this reasons, numerous improvements have been proposed to avoid local minima and increase its convergence ration, some of them are: Conjugate Gradient and Momentum.
 % TODO if time talk about them
 \subsection{Implement the MSE and dMSE}
-You can find them in \emph{MSE.py}
+You can find them in \emph{cost\_functions.py}
 \subsection{Implement the function forward and backward}
 The \emph{forward} and \emph{backward} function can be found in \emph{Perceptron.py}. You can find \emph{train\_one\_step} in \emph{skeletron.py}.
 
@@ -75,14 +88,14 @@ The \emph{forward} and \emph{backward} function can be found in \emph{Perceptron
 You can find the implementation in the code, \emph{skeletron.py}. Figure \ref{fig:runPart1} shows the final result after 15 steps using a learning rate of $0.02$. We can notice that the Perceptron worked as aspected since it correctly classified the two colour sets.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{images/run_part1}
+	\includegraphics[scale=0.6]{images/run_part1}
 	\caption{\emph{run\_part1} plot}
 	\label{fig:runPart1}
 \end{figure}
 
 \section{A Neural Network}
 \subsection{ Implement the activation functions}
-You can find them inside \emph{activation.py}. I have also implemented the \textbf{Relu} activation function for didactic purpose.
+You can find them inside \emph{activation\_functions.py}. I have also implemented the \textbf{Relu} that will be used in Section 3.
 \subsection{Question 2}
 \subsubsection{Forward pass}
 In order to calculate the forward pass of a Neural Network we need to compute the activation of each layer, $l$, ad use it as input of the next one until we reach the output layer. 

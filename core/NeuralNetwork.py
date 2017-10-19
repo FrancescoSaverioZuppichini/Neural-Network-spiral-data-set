@@ -1,6 +1,6 @@
 import numpy as np
-import activation as act
-import MSE as cost_func
+import activation_function as act
+import cost_functions as cost_func
 
 
 class NeuralNetwork:
@@ -18,7 +18,6 @@ class NeuralNetwork:
         self.Z = []
         # will hold all the activation functions
         self.A = []
-
 
         self.var = {
          "W1": np.random.randn(2,20)/np.sqrt(2.0),
@@ -119,15 +118,11 @@ class NeuralNetwork:
 
             updates = self.backward(error)
 
-            costs.append(cost_func.MSE(y,targets))
-
-            grads.append(np.mean(np.abs(error)))
-
             for var_str, delta in updates.items():
                 update = learning_rate * delta
                 self.var[var_str] -= update
 
-            # if(n % 100 == 0):
-            #     print(costs[-1])
+            costs.append(cost_func.MSE(y, targets))
+            grads.append(np.mean(np.abs(error)))
 
         return y, grads, costs

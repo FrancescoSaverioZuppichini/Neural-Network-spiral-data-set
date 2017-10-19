@@ -3,9 +3,9 @@ from NeuralNetwork import NeuralNetwork
 import utils
 import matplotlib.pyplot as plt
 import numpy as np
-import activation as act
+import activation_function as act
 import skeleton as sk
-import MSE
+import cost_functions
 import time
 
 BASE_PATH = '/Users/vaevictis/Documents/As1/docs/images'
@@ -230,7 +230,7 @@ def plot_part_2():
         y, grads, errors, accuracy, accuracy_val  = model.train(train_X,train_T,40000,{'eta':eta})
         acc_train = sk.compute_accuracy(model, train_X, train_T)
         fig = plt.figure()
-        plt.title("eta={0}, accuracy={1:0.3f}, errors={2:0.3f}".format(eta,acc_train,MSE.MSE(y,train_T)))
+        plt.title("eta={0}, accuracy={1:0.3f}, errors={2:0.3f}".format(eta, acc_train, cost_functions.MSE(y, train_T)))
         sk.plot_boundary(model,train_X,train_T,0.5)
         print("Accuracy from scratch Train: ", acc_train)
         fig.savefig(BASE_PATH + '/NN_boundary_vs_learning_rates/{}.png'.format(i))
