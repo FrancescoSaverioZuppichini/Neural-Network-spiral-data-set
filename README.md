@@ -1,4 +1,4 @@
-# Multi Layer Perceptron for the spiral data set
+# Neural Network for the spiral data set
 ## Assgnment 1 - Machine Learning 2017
 ## Francesco Saverio Zuppichini
 ### Quick Start
