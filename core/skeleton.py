@@ -186,7 +186,7 @@ def competition_train_from_scratch(testX, testT):
     #
     seed = 0
     np.random.seed(seed)
-    model = BetterNeuralNetwork(True)
+    model = BetterNeuralNetwork(animation=True)
     # create layers
     model.add_input_layer(2, 30, act.relu, act.drelu)
     model.add_hidden_layer(20, act.relu, act.drelu)

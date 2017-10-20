@@ -396,6 +396,11 @@ model.add_output_layer(1, act.tanh, act.dtanh)
 # load prev weights
 model.load('competition')
 \end{python}
+\subsection{Animation}
+You set the \texttt{animation} flag to \texttt{True} in order to see a nice looking animation of the Network's status.
+\begin{python}
+model = BetterNeuralNetwork(animation=True)
+\end{python}
 
 \newpage
 \printbibliography

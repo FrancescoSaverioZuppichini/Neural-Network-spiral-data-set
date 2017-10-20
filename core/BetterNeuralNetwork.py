@@ -49,7 +49,7 @@ class BetterNeuralNetwork:
     Keeps track of the variables of the Multi Layer Perceptron model. Can be
     used for predictoin and to compute the gradients.
     """
-    def __init__(self, DEBUG=False):
+    def __init__(self, DEBUG=False, animation=False):
         # will hold all the intermediate quantity
         self.Z = []
         # will hold all the activation functions
@@ -61,6 +61,8 @@ class BetterNeuralNetwork:
         self.freeze = True
         # enable debug flag to store useful data
         self.DEBUG = DEBUG
+        # display an nice looking animation every 100 iterations
+        self.animation = animation
         # holds all available gradient descent update methods
         self.update_func = {
             'momentum': self.momentum,
@@ -243,6 +245,28 @@ class BetterNeuralNetwork:
 
         return X, T
 
+    def display_animation(self,n, X, T):
+        """
+        Display a nice looking animnation of the network status
+
+        :param n: Current iterations number
+        :param X: Inputs
+        :param T: Targets
+        :return:
+        """
+        if(not self.animation): return
+
+        if (n % 100 == 0):
+            if(self.DEBUG):
+                plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(self.accuracy[-1],
+                                                                                           self.accuracy_val[-1],
+                                                                                           n,
+                                                                                           self.errors[-1]))
+            plot_boundary(self, X, T, 0.5)
+            plt.show(block=False)
+            plt.pause(0.001)
+            plt.clf()
+
     def store_debug_data(self,x, y, t, dx,X,T, X_val, T_val):
         """
         Store debug info
@@ -267,8 +291,6 @@ class BetterNeuralNetwork:
             if (should_store_validation):
                 acc_val = np.mean(((self.forward(X_val) > 0.5) * 1 == T_val) * 1)
                 self.accuracy_val.append(acc_val)
-
-
 
     @timing
     def train(self,inputs, targets, max_iter, params=None, type='gradient_descent', X_val=[],T_val=[]):
@@ -306,15 +328,7 @@ class BetterNeuralNetwork:
 
                 self.store_debug_data(x,y, t, dx,inputs,targets, X_val, T_val)
 
-            # if (len(self.grads) % 100 == 0):
-            #     plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(self.accuracy[-1],
-            #                                                                                self.accuracy_val[-1],
-            #                                                                                n,
-            #                                                                                self.errors[-1]))
-            #     plot_boundary(self, inputs, targets, 0.5)
-            #     plt.show(block=False)
-            #     plt.pause(0.001)
-            #     plt.clf()
+            self.display_animation(n,inputs,targets)
 
         return y, self.grads, self.errors, self.accuracy, self.accuracy_val
     def save(self,file_name):
