@@ -4,28 +4,7 @@ import matplotlib.pyplot as plt
 import activation_function as act
 import cost_functions as cost_func
 from utils import timing
-
-# These two functions must be placed inside an other third-party file
-def plot_data(X,T):
-    """
-    Plots the 2D data as a scatterplot
-    """
-    plt.scatter(X[:,0], X[:,1], s=40, c=T, cmap=plt.cm.Spectral)
-
-
-def plot_boundary(model, X, targets, threshold=0.0):
-    """
-    Plots the data and the boundary lane which seperates the input space into two classes.
-    """
-    x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
-    y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
-    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200), np.linspace(y_min, y_max, 200))
-    X_grid = np.c_[xx.ravel(), yy.ravel()]
-    y = model.forward(X_grid)
-    plt.contourf(xx, yy, y.reshape(*xx.shape) < threshold, alpha=0.5)
-    plot_data(X, targets)
-    plt.ylim([y_min, y_max])
-    plt.xlim([x_min, x_max])
+from plot_boundary import plot_boundary
 
 class Layer:
     """

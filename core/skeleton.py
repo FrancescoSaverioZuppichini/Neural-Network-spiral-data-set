@@ -11,7 +11,7 @@ from Perceptron import Perceptron
 from NeuralNetwork import NeuralNetwork
 from BetterNeuralNetwork import BetterNeuralNetwork
 import activation_function as act
-
+from plot_boundary import plot_boundary
 from cost_functions import MSE
 from cost_functions import dMSE
 
@@ -45,26 +45,6 @@ def train_one_step(model, learning_rate, inputs, targets):
 
     return y
 
-def plot_data(X,T):
-    """
-    Plots the 2D data as a scatterplot
-    """
-    plt.scatter(X[:,0], X[:,1], s=40, c=T, cmap=plt.cm.Spectral)
-
-def plot_boundary(model, X, targets, threshold=0.0):
-    """
-    Plots the data and the boundary lane which seperates the input space into two classes.
-    """
-    x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
-    y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
-    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200), np.linspace(y_min, y_max, 200))
-    X_grid = np.c_[xx.ravel(), yy.ravel()]
-    y = model.forward(X_grid)
-    plt.contourf(xx, yy, y.reshape(*xx.shape) < threshold, alpha=0.5)
-    plot_data(X, targets)
-    plt.ylim([y_min, y_max])
-    plt.xlim([x_min, x_max])
-
 def run_part1():
     """
     Train the perceptron according to the assignment.
@@ -83,6 +63,7 @@ def run_part1():
         y = train_one_step(model, learning_rate, X, T)
 
     plot_boundary(model, X, T)
+    plt.show()
     # plt.savefig('/Users/vaevictis/Documents/As1/docs/images/run_part1.png')
 
 
