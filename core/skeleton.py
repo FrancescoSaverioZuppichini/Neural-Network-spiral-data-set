@@ -6,18 +6,16 @@
 # Code Skeleton
 
 import numpy as np
-import math
 import matplotlib.pyplot as plt
-from utils import timing
-from utils import get_train_and_test_data
-
 from Perceptron import Perceptron
 from NeuralNetwork import NeuralNetwork
 from BetterNeuralNetwork import BetterNeuralNetwork
 import activation_function as act
+
 from cost_functions import MSE
-import time
 from cost_functions import dMSE
+
+import time
 
 ## Part 1
 

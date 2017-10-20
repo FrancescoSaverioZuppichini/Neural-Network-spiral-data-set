@@ -5,6 +5,7 @@ import activation_function as act
 import cost_functions as cost_func
 from utils import timing
 
+# These two functions must be placed inside an other third-party file
 def plot_data(X,T):
     """
     Plots the 2D data as a scatterplot
@@ -151,7 +152,6 @@ class BetterNeuralNetwork:
         update_b = learning_rate * l.db[1] / (np.sqrt(l.cache[1]) + eps)
 
         return update_W, update_b
-
 
     def update_layers(self,params, method):
         """
