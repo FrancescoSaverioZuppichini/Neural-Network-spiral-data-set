@@ -184,7 +184,8 @@ def competition_train_from_scratch(testX, testT):
     seed = int(time.time())
     # np.random.seed(1508255316)
     #
-    np.random.seed(0)
+    seed = 0
+    np.random.seed(seed)
     model = BetterNeuralNetwork(True)
     # create layers
     model.add_input_layer(2, 30, act.relu, act.drelu)
@@ -194,7 +195,7 @@ def competition_train_from_scratch(testX, testT):
     model.add_output_layer(1, act.tanh, act.dtanh)
 
 
-    res = model.train(train_X, train_T, 4000, { 'eta' : 0.1, }, 'adagrad',testX, testT)
+    res = model.train(train_X, train_T, 4000, { 'eta' : 0.1}, 'adagrad',testX, testT)
 
     # model.save('competition')
 

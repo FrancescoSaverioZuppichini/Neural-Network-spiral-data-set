@@ -243,7 +243,7 @@ class BetterNeuralNetwork:
 
         return X, T
 
-    def store_debug_data(self,x, y, t, dx, X_val, T_val):
+    def store_debug_data(self,x, y, t, dx,X,T, X_val, T_val):
         """
         Store debug info
 
@@ -269,12 +269,7 @@ class BetterNeuralNetwork:
                 self.accuracy_val.append(acc_val)
 
 
-            # if(len(self.grads) % 200 == 0):
-            #     plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(self.accuracy[-1], self.accuracy_val[-1],len(self.grads), self.errors[-1]))
-            #     plot_boundary(self, x, t,0.5)
-            #     plt.show(block=False)
-            #     plt.pause(0.001)
-            #     plt.clf()
+
     @timing
     def train(self,inputs, targets, max_iter, params=None, type='gradient_descent', X_val=[],T_val=[]):
         """
@@ -309,8 +304,17 @@ class BetterNeuralNetwork:
 
                 y, dx = self.one_train_step(x,t,params,method)
 
-                self.store_debug_data(x,y, t, dx, X_val, T_val)
+                self.store_debug_data(x,y, t, dx,inputs,targets, X_val, T_val)
 
+            # if (len(self.grads) % 100 == 0):
+            #     plt.title("acc={0:0.3f}, test={1:0.3f},iter={2:0.3f}, err={3:0.3f}".format(self.accuracy[-1],
+            #                                                                                self.accuracy_val[-1],
+            #                                                                                n,
+            #                                                                                self.errors[-1]))
+            #     plot_boundary(self, inputs, targets, 0.5)
+            #     plt.show(block=False)
+            #     plt.pause(0.001)
+            #     plt.clf()
 
         return y, self.grads, self.errors, self.accuracy, self.accuracy_val
     def save(self,file_name):

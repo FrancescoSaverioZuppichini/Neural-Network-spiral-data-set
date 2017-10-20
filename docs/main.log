@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  19 OCT 2017 21:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.11)  20 OCT 2017 09:36
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -619,7 +619,7 @@ Package pdftex.def Info: images/NN_boundary_vs_learning_rates/4.png used on inpu
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  [5 <./images/train_set.png> <./images/test_set.png> <./images/NN_boundary_vs_learning_rates/grads.png>]
 
-LaTeX Warning: Reference `grad_vs_eta' on page 6 undefined on input line 191.
+LaTeX Warning: Reference `grad_vs_grads_costs' on page 6 undefined on input line 191.
 
 File: images/NN_boundary_vs_learning_rates/grads.png Graphic file (type png)
 <use images/NN_boundary_vs_learning_rates/grads.png>
@@ -636,79 +636,79 @@ File: images/NN_boundary_vs_learning_rates/0.png Graphic file (type png)
 Package pdftex.def Info: images/NN_boundary_vs_learning_rates/0.png used on input line 205.
 (pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
  [7 <./images/NN_boundary_vs_learning_rates/errors.png>]
-Overfull \hbox (48.27643pt too wide) in paragraph at lines 219--220
+Overfull \hbox (48.27643pt too wide) in paragraph at lines 218--219
 []\OT1/cmr/m/n/10.95 After in-stance the class, is it pos-si-ble to add a in-put layer by call-ing \OT1/cmtt/m/n/10.95 add[]hnput[]layer(size[]in,size[]out)\OT1/cmr/m/n/10.95 .
  []
 
 [8] <images/momentum/momentum_plot_0.png, id=67, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_0.png Graphic file (type png)
  <use images/momentum/momentum_plot_0.png>
-Package pdftex.def Info: images/momentum/momentum_plot_0.png used on input line 273.
+Package pdftex.def Info: images/momentum/momentum_plot_0.png used on input line 272.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/momentum/momentum_plot_1.png, id=68, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_1.png Graphic file (type png)
  <use images/momentum/momentum_plot_1.png>
-Package pdftex.def Info: images/momentum/momentum_plot_1.png used on input line 274.
+Package pdftex.def Info: images/momentum/momentum_plot_1.png used on input line 273.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/momentum/momentum_plot_2.png, id=69, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_2.png Graphic file (type png)
  <use images/momentum/momentum_plot_2.png>
-Package pdftex.def Info: images/momentum/momentum_plot_2.png used on input line 275.
+Package pdftex.def Info: images/momentum/momentum_plot_2.png used on input line 274.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/momentum/momentum_plot_3.png, id=70, 462.528pt x 346.896pt>
 File: images/momentum/momentum_plot_3.png Graphic file (type png)
  <use images/momentum/momentum_plot_3.png>
-Package pdftex.def Info: images/momentum/momentum_plot_3.png used on input line 276.
+Package pdftex.def Info: images/momentum/momentum_plot_3.png used on input line 275.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  [9] <images/adagrad/adagrad_plot_0.png, id=74, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_0.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_0.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_0.png used on input line 292.
+Package pdftex.def Info: images/adagrad/adagrad_plot_0.png used on input line 291.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/adagrad/adagrad_plot_1.png, id=75, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_1.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_1.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_1.png used on input line 293.
+Package pdftex.def Info: images/adagrad/adagrad_plot_1.png used on input line 292.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/adagrad/adagrad_plot_2.png, id=76, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_2.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_2.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_2.png used on input line 294.
+Package pdftex.def Info: images/adagrad/adagrad_plot_2.png used on input line 293.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/adagrad/adagrad_plot_3.png, id=77, 462.528pt x 346.896pt>
 File: images/adagrad/adagrad_plot_3.png Graphic file (type png)
  <use images/adagrad/adagrad_plot_3.png>
-Package pdftex.def Info: images/adagrad/adagrad_plot_3.png used on input line 295.
+Package pdftex.def Info: images/adagrad/adagrad_plot_3.png used on input line 294.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  [10 <./images/momentum/momentum_plot_0.png> <./images/momentum/momentum_plot_1.png> <./images/momentum/momentum_plot_2.png> <./images/momentum/momentum_plot_3.png>] [11 <./images/adagrad/adagrad_plot_0.png> <./images/adagrad/adagrad_plot_1.png> <./images/adagrad/adagrad_plot_2.png> <./images/adagrad/adagrad_plot_3.png>] <images/competition/competition_0.png, id=93, 462.528pt x 346.896pt>
 File: images/competition/competition_0.png Graphic file (type png)
  <use images/competition/competition_0.png>
-Package pdftex.def Info: images/competition/competition_0.png used on input line 347.
+Package pdftex.def Info: images/competition/competition_0.png used on input line 346.
 (pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
  [12 <./images/competition/competition_0.png>] <images/BNN_vs_NN/BNN_vs_NN_grads.png, id=98, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_grads.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_grads.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_grads.png used on input line 372.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_grads.png used on input line 371.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/BNN_vs_NN/BNN_vs_NN_error.png, id=99, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_error.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_error.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_error.png used on input line 373.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_error.png used on input line 372.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/BNN_vs_NN/BNN_vs_NN_accuracy.png, id=100, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_accuracy.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_accuracy.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_accuracy.png used on input line 374.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_accuracy.png used on input line 373.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png, id=101, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png used on input line 375.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png used on input line 374.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
  <images/BNN_vs_NN/BNN_vs_NN_boundary.png, id=102, 462.528pt x 346.896pt>
 File: images/BNN_vs_NN/BNN_vs_NN_boundary.png Graphic file (type png)
  <use images/BNN_vs_NN/BNN_vs_NN_boundary.png>
-Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_boundary.png used on input line 384.
+Package pdftex.def Info: images/BNN_vs_NN/BNN_vs_NN_boundary.png used on input line 383.
 (pdftex.def)             Requested size: 277.51894pt x 208.13919pt.
  [13 <./images/BNN_vs_NN/BNN_vs_NN_grads.png> <./images/BNN_vs_NN/BNN_vs_NN_error.png> <./images/BNN_vs_NN/BNN_vs_NN_accuracy.png> <./images/BNN_vs_NN/BNN_vs_NN_test_accuracy.png>] [14 <./images/BNN_vs_NN/BNN_vs_NN_boundary.png>] [15] (./main.aux)
 
@@ -720,14 +720,14 @@ Package logreq Info: Writing requests to 'main.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
  12675 strings out of 492995
- 209929 string characters out of 6132703
+ 209937 string characters out of 6132703
  690575 words of memory out of 5000000
  16060 multiletter control sequences out of 15000+600000
  12282 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,15n,48p,812b,1639s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on main.pdf (15 pages, 1004643 bytes).
+Output written on main.pdf (15 pages, 1004636 bytes).
 PDF statistics:
  178 PDF objects out of 1000 (max. 8388607)
  93 compressed objects within 1 object stream
